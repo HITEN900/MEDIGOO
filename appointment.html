@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Appointments - MediBook</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    /* Appointment cards styling */
+    .appointments-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .appointment-card {
+      background: #fff;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 1rem;
+      width: calc(33% - 1rem);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+    .appointment-card h3 {
+      margin-bottom: 0.5rem;
+      color: #0ea5e9;
+    }
+    .appointment-card p {
+      margin: 0.2rem 0;
+      color: #475569;
+    }
+    @media (max-width: 900px) {
+      .appointment-card { width: calc(50% - 1rem); }
+    }
+    @media (max-width: 600px) {
+      .appointment-card { width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <a href="index.html" class="logo">MediGo</a>
+    <ul class="nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="docter.html">Doctors</a></li>
+      <li><a href="appointment.html">Appointments</a></li>
+      <li><a href="contacts.html">Contact</a></li>
+    </ul>
+    <button class="mobile-menu-btn">☰</button>
+    <div class="header-buttons">
+      <button id="loginBtn" class="btn btn-outline">Login</button>
+      <button id="signupBtn" class="btn btn-primary">Sign Up</button>
+    </div>
+  </header>
+
+  <section class="page-header">
+    <h1>My Appointments</h1>
+    <p>View and manage your upcoming appointments</p>
+  </section>
+
+  <section class="section">
+    <div id="appointmentsList" class="appointments-list">
+      <!-- Appointments loaded by JS -->
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2024 MediBook. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Auth Modal -->
+  <div id="authModal" class="modal-overlay">
+    <div class="modal">
+      <button class="modal-close">&times;</button>
+      <h2>Welcome to MediBook</h2>
+      <div class="modal-tabs">
+        <button id="loginTab" class="modal-tab active">Login</button>
+        <button id="signupTab" class="modal-tab">Sign Up</button>
+      </div>
+      <form id="authForm">
+        <div id="loginForm">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="loginEmail" placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="loginPassword" placeholder="••••••••">
+          </div>
+        </div>
+        <div id="signupForm" style="display: none;">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="signupEmail" placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="signupPassword" placeholder="••••••••">
+          </div>
+          <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" id="confirmPassword" placeholder="••••••••">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Continue</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="app.js"></script>
+  <script>
+    // Load appointments from localStorage
+    const appointmentsList = document.getElementById("appointmentsList");
+    const appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+
+    function displayAppointments() {
+      if (appointments.length === 0) {
+        appointmentsList.innerHTML = "<p>No appointments booked yet.</p>";
+        return;
+      }
+
+      appointmentsList.innerHTML = appointments.map(app => `
+        <div class="appointment-card">
+          <h3>Dr. ${app.doctor}</h3>
+          <p><strong>Date:</strong> ${app.date}</p>
+          <p><strong>Time:</strong> ${app.time}</p>
+        </div>
+      `).join("");
+    }
+
+    displayAppointments();
+  </script>
+</body>
+</html>

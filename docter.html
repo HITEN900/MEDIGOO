@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Find Doctors - MediBook</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="header">
+    <a href="index.html" class="logo">MediGo</a>
+    <ul class="nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="docter.html">Doctors</a></li>
+      <li><a href="appointment.html">Appointments</a></li>
+      <li><a href="contacts.html">Contact</a></li>
+    </ul>
+    <button class="mobile-menu-btn">☰</button>
+    <div class="header-buttons">
+      <button id="loginBtn" class="btn btn-outline">Login</button>
+      <button id="signupBtn" class="btn btn-primary">Sign Up</button>
+    </div>
+  </header>
+
+  <section class="page-header">
+    <h1>Find a Doctor</h1>
+    <p>Browse our network of verified healthcare professionals</p>
+  </section>
+
+  <section class="section">
+    <div class="filters">
+      <select id="specialtyFilter" class="filter-select">
+        <option value="">All Specialties</option>
+        <option value="cardiologist">Cardiology</option>
+        <option value="dermatologist">Dermatology</option>
+        <option value="pediatrician">Pediatrics</option>
+        <option value="orthopedic">Orthopedics</option>
+        <option value="neurologist">Neurology</option>
+      </select>
+      <select id="locationFilter" class="filter-select">
+     <option value="">All Locations</option>
+<option value="delhi">Delhi</option>
+<option value="mumbai">Mumbai</option>
+<option value="bengaluru">Bengaluru</option>
+<option value="chennai">Chennai</option>
+<option value="hyderabad">Hyderabad</option>
+<option value="kolkata">Kolkata</option>
+<option value="pune">Pune</option>
+<option value="ahmedabad">Ahmedabad</option>
+<option value="jaipur">Jaipur</option>
+<option value="chandigarh">Chandigarh</option>
+<option value="kochi">Kochi</option>
+<option value="thiruvananthapuram">Thiruvananthapuram</option>
+<option value="coimbatore">Coimbatore</option>
+<option value="indore">Indore</option>
+<option value="bhubaneswar">Bhubaneswar</option>
+<option value="visakhapatnam">Visakhapatnam</option>
+<option value="vijayawada">Vijayawada</option>
+<option value="patna">Patna</option>
+<option value="ranchi">Ranchi</option>
+<option value="guwahati">Guwahati</option>
+<option value="siliguri">Siliguri</option>
+<option value="lucknow">Lucknow</option>
+<option value="kanpur">Kanpur</option>
+<option value="agra">Agra</option>
+<option value="varanasi">Varanasi</option>
+<option value="prayagraj">Prayagraj</option>
+<option value="bhopal">Bhopal</option>
+<option value="raipur">Raipur</option>
+<option value="nagpur">Nagpur</option>
+<option value="aurangabad">Aurangabad</option>
+<option value="nashik">Nashik</option>
+<option value="surat">Surat</option>
+<option value="vadodara">Vadodara</option>
+<option value="rajkot">Rajkot</option>
+<option value="udaipur">Udaipur</option>
+<option value="jodhpur">Jodhpur</option>
+<option value="amritsar">Amritsar</option>
+<option value="ludhiana">Ludhiana</option>
+<option value="jalandhar">Jalandhar</option>
+<option value="dehradun">Dehradun</option>
+<option value="haridwar">Haridwar</option>
+<option value="shimla">Shimla</option>
+<option value="srinagar">Srinagar</option>
+<option value="jammu">Jammu</option>
+<option value="leh">Leh</option>
+
+      </select>
+    </div>
+
+    <div class="doctors-grid">
+      <div class="doctor-card">
+        <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400" alt="Doctor" class="doctor-image">
+        <div class="doctor-info">
+          <h3 class="doctor-name">Dr. Sarah Johnson</h3>
+          <p class="doctor-specialty">Cardiologist</p>
+          <p class="doctor-location">📍 New York, Manhattan</p>
+          <div class="doctor-meta">
+            <span class="rating">★★★★★ 4.9</span>
+            <span class="fee">$150</span>
+          </div>
+          <button class="book-btn">Book Appointment</button>
+        </div>
+      </div>
+      <div class="doctor-card">
+        <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400" alt="Doctor" class="doctor-image">
+        <div class="doctor-info">
+          <h3 class="doctor-name">Dr. Kunal Pnadey</h3>
+          <p class="doctor-specialty">Dermatologist</p>
+          <p class="doctor-location">📍 Delhi</p>
+          <div class="doctor-meta">
+            <span class="rating">★★★★★ 4.8</span>
+            <span class="fee">$120</span>
+          </div>
+          <button class="book-btn">Book Appointment</button>
+        </div>
+      </div>
+      <div class="doctor-card">
+        <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400" alt="Doctor" class="doctor-image">
+        <div class="doctor-info">
+          <h3 class="doctor-name">Dr. Sonali Mohanty</h3>
+          <p class="doctor-specialty">Pediatrician</p>
+          <p class="doctor-location">📍 Bhubaneswar</p>
+          <div class="doctor-meta">
+            <span class="rating">★★★★★ 4.9</span>
+            <span class="fee">$100</span>
+          </div>
+          <button class="book-btn">Book Appointment</button>
+        </div>
+      </div>
+      <div class="doctor-card">
+        <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400" alt="Doctor" class="doctor-image">
+        <div class="doctor-info">
+          <h3 class="doctor-name">Dr. Sudhakar pal</h3>
+          <p class="doctor-specialty">Orthopedic</p>
+          <p class="doctor-location">📍 Mumbai</p>
+          <div class="doctor-meta">
+            <span class="rating">★★★★☆ 4.7</span>
+            <span class="fee">$180</span>
+          </div>
+          <button class="book-btn">Book Appointment</button>
+        </div>
+      </div>
+      <div class="doctor-card">
+        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400" alt="Doctor" class="doctor-image">
+        <div class="doctor-info">
+          <h3 class="doctor-name">Dr. Lisa Reddy</h3>
+          <p class="doctor-specialty">Neurologist</p>
+          <p class="doctor-location">📍 Hyderabad</p>
+          <div class="doctor-meta">
+            <span class="rating">★★★★★ 4.8</span>
+            <span class="fee">$200</span>
+          </div>
+          <button class="book-btn">Book Appointment</button>
+        </div>
+      </div>
+      <div class="doctor-card">
+        <img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400" alt="Doctor" class="doctor-image">
+        <div class="doctor-info">
+          <h3 class="doctor-name">Dr.  SK mishra</h3>
+          <p class="doctor-specialty">Cardiologist</p>
+          <p class="doctor-location">📍 pune</p>
+          <div class="doctor-meta">
+            <span class="rating">★★★★☆ 4.6</span>
+            <span class="fee">$160</span>
+          </div>
+          <button class="book-btn">Book Appointment</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2024 MediBook. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Auth Modal -->
+  <div id="authModal" class="modal-overlay">
+    <div class="modal">
+      <button class="modal-close">&times;</button>
+      <h2>Welcome to MediBook</h2>
+      <div class="modal-tabs">
+        <button id="loginTab" class="modal-tab active">Login</button>
+        <button id="signupTab" class="modal-tab">Sign Up</button>
+      </div>
+      <form id="authForm">
+        <div id="loginForm">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="loginEmail" placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="loginPassword" placeholder="••••••••">
+          </div>
+        </div>
+        <div id="signupForm" style="display: none;">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="signupEmail" placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="signupPassword" placeholder="••••••••">
+          </div>
+          <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" id="confirmPassword" placeholder="••••••••">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Continue</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Booking Modal -->
+  <div id="bookingModal" class="modal-overlay">
+    <div class="modal">
+      <button class="modal-close">&times;</button>
+      <h2>Book Appointment</h2>
+      <p style="color: #64748b; margin-bottom: 1.5rem;">with <strong id="bookingDoctorName">Doctor</strong></p>
+      <form id="bookingForm">
+        <div class="form-group">
+          <label>Select Date</label>
+          <input type="date" id="bookingDate">
+        </div>
+        <div class="form-group">
+          <label>Select Time</label>
+          <select id="bookingTime" class="filter-select" style="width: 100%;">
+            <option value="">Choose a time</option>
+            <option value="09:00">09:00 AM</option>
+            <option value="10:00">10:00 AM</option>
+            <option value="11:00">11:00 AM</option>
+            <option value="14:00">02:00 PM</option>
+            <option value="15:00">03:00 PM</option>
+            <option value="16:00">04:00 PM</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Confirm Booking</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>

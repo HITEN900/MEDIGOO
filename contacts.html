@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Us - MediBook</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="header">
+    <a href="index.html" class="logo">MediGo</a>
+    <ul class="nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="docter.html">Doctors</a></li>
+      <li><a href="appointment.html">Appointments</a></li>
+      <li><a href="contacts.html">Contact</a></li>
+    </ul>
+    <button class="mobile-menu-btn">☰</button>
+    <div class="header-buttons">
+      <button id="loginBtn" class="btn btn-outline">Login</button>
+      <button id="signupBtn" class="btn btn-primary">Sign Up</button>
+    </div>
+  </header>
+
+  <section class="page-header">
+    <h1>Contact Us</h1>
+    <p>We're here to help with any questions</p>
+  </section>
+
+  <section class="section">
+    <div class="contact-grid">
+      <div class="contact-info">
+        <div class="contact-item">
+          <div class="contact-icon">📧</div>
+          <div class="contact-text">
+            <h4>Email</h4>
+            <p>support@medibook.com</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📞</div>
+          <div class="contact-text">
+            <h4>Phone</h4>
+            <p>+1 (555) 123-4567</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div class="contact-text">
+            <h4>Address</h4>
+            <p>123 Medical Plaza, New York, NY 10001</p>
+          </div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">🕐</div>
+          <div class="contact-text">
+            <h4>Hours</h4>
+            <p>Mon - Fri: 8am - 8pm</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="contact-form">
+        <h3 style="margin-bottom: 1.5rem; color: #0f172a;">Send us a Message</h3>
+        <form id="contactForm">
+  <div class="form-group">
+    <label>Your Name</label>
+    <input type="text" id="contactName" required>
+  </div>
+
+  <div class="form-group">
+    <label>Email</label>
+    <input type="email" id="contactEmail" required>
+  </div>
+
+  <div class="form-group">
+    <label>Subject</label>
+    <input type="text" id="contactSubject" required>
+  </div>
+
+  <div class="form-group">
+    <label>Message</label>
+    <textarea id="contactMessage" required></textarea>
+  </div>
+
+  <button type="submit" class="btn btn-primary" style="width:100%">
+    Send Message
+  </button>
+</form>
+
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="footer-bottom">
+      <p>© 2024 MediBook. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Auth Modal -->
+  <div id="authModal" class="modal-overlay">
+    <div class="modal">
+      <button class="modal-close">&times;</button>
+      <h2>Welcome to MediBook</h2>
+      <div class="modal-tabs">
+        <button id="loginTab" class="modal-tab active">Login</button>
+        <button id="signupTab" class="modal-tab">Sign Up</button>
+      </div>
+      <form id="authForm">
+        <div id="loginForm">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="loginEmail" placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="loginPassword" placeholder="••••••••">
+          </div>
+        </div>
+        <div id="signupForm" style="display: none;">
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" id="signupEmail" placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" id="signupPassword" placeholder="••••••••">
+          </div>
+          <div class="form-group">
+            <label>Confirm Password</label>
+            <input type="password" id="confirmPassword" placeholder="••••••••">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Continue</button>
+      </form>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+  <script src="app.js"></script>
+</body>
+</html>

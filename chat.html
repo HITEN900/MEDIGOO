@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customer Support Chat - MediGo</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <style>
+    body {
+      margin: 0;
+      background: #f8fafc;
+      font-family: Arial, sans-serif;
+    }
+
+    .chat-container {
+      max-width: 600px;
+      height: 80vh;
+      margin: 50px auto;
+      background: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      background: #0ea5e9;
+      color: white;
+      padding: 15px;
+      border-radius: 12px 12px 0 0;
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    .chat-messages {
+      flex: 1;
+      padding: 15px;
+      overflow-y: auto;
+    }
+
+    .message {
+      margin-bottom: 10px;
+      padding: 10px 14px;
+      border-radius: 10px;
+      max-width: 75%;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .user {
+      background: #e0f2fe;
+      margin-left: auto;
+    }
+
+    .support {
+      background: #f1f5f9;
+      margin-right: auto;
+    }
+
+    .chat-input {
+      display: flex;
+      padding: 10px;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .chat-input input {
+      flex: 1;
+      padding: 10px;
+      border-radius: 8px;
+      border: 1px solid #cbd5f5;
+      outline: none;
+    }
+
+    .chat-input button {
+      margin-left: 10px;
+      padding: 10px 18px;
+      background: #0ea5e9;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .chat-input button:hover {
+      background: #0284c7;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="header">
+    <a href="index.html" class="logo">MediGo</a>
+    <ul class="nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="docter.html">Doctors</a></li>
+      <li><a href="appointment.html">Appointments</a></li>
+      <li><a href="contacts.html">Contact</a></li>
+    </ul>
+    <button class="mobile-menu-btn">☰</button>
+    <div class="header-buttons">
+      <button id="loginBtn" class="btn btn-outline">Login</button>
+      <button id="signupBtn" class="btn btn-primary">Sign Up</button>
+    </div>
+  </header>
+
+  <div class="chat-container">
+    <div class="chat-header">
+      💬 MediGo Customer Support
+    </div>
+
+    <div class="chat-messages" id="chatMessages">
+      <!-- Messages will appear here -->
+    </div>
+
+    <div class="chat-input">
+      <input type="text" id="chatInput" placeholder="Type your message...">
+      <button onclick="sendMessage()">Send</button>
+    </div>
+  </div>
+
+  <script>
+    const chatMessages = document.getElementById("chatMessages");
+    const chatInput = document.getElementById("chatInput");
+
+    // Get data from contact form
+    const userName = localStorage.getItem("chatUserName");
+    const firstMessage = localStorage.getItem("chatFirstMessage");
+
+    // Show first message automatically
+    if (firstMessage) {
+      chatMessages.innerHTML += `
+        <div class="message user">${firstMessage}</div>
+        <div class="message support">
+          Hello ${userName || ""}! 👋  
+          Thank you for contacting MediGo support.  
+          Our team will reply shortly.
+        </div>
+      `;
+    }
+
+    function sendMessage() {
+      const msg = chatInput.value.trim();
+      if (msg === "") return;
+
+      // User message
+      chatMessages.innerHTML += `
+        <div class="message user">${msg}</div>
+      `;
+      chatInput.value = "";
+
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      // Fake support reply (demo)
+      setTimeout(() => {
+        chatMessages.innerHTML += `
+          <div class="message support">
+            Thanks for your message 👍  
+            Please wait while we check this for you.
+          </div>
+        `;
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }, 1000);
+    }
+  </script>
+
+</body>
+</html>

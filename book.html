@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Book Appointment</title>
+</head>
+<body>
+
+<h2>Book Appointment</h2>
+
+<form id="appointmentForm">
+  <input type="text" id="name" placeholder="Patient Name" required><br><br>
+  <input type="date" id="date" required><br><br>
+  <input type="time" id="time" required><br><br>
+
+  <button type="submit">Book Appointment</button>
+</form>
+
+<script>
+  document.getElementById("appointmentForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    let appointment = {
+      name: document.getElementById("name").value,
+      date: document.getElementById("date").value,
+      time: document.getElementById("time").value
+    };
+
+    let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+    appointments.push(appointment);
+
+    localStorage.setItem("appointments", JSON.stringify(appointments));
+
+    alert("Appointment Booked Successfully ✅");
+    window.location.href = "appointments.html";
+  });
+</script>
+
+</body>
+</html>

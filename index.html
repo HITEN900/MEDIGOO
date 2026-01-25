@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MediBook - Find & Book Doctors</title>
+  <link rel="stylesheet" href="style.css">
+  
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <a href="index.html" class="logo">MediGo</a>
+    <ul class="nav">
+      <li><a href="index.html">Home</a></li>
+      <li><a href="docter.html">Doctors</a></li>
+      <li><a href="appointment.html">Appointments</a></li>
+      <li><a href="contacts.html">Contact</a></li>
+    </ul>
+    <button class="mobile-menu-btn">☰</button>
+    <div class="header-buttons">
+      <button id="loginBtn" class="btn btn-outline">Login</button>
+      <button id="signupBtn" class="btn btn-primary">Sign Up</button>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-container">
+      <div class="hero-content">
+        <h1>Find & Book <span>Trusted Doctors</span> Near You</h1>
+        <p>Book appointments with verified doctors in your area. Get quality healthcare from the comfort of your home or visit the clinic.</p>
+        <div class="search-box">
+          <form id="searchForm">
+            <div class="search-row">
+              <input type="text" id="searchQuery" class="search-input" placeholder="Search doctors, specialties...">
+              <input type="text" id="searchLocation" class="search-input" placeholder="Location">
+            </div>
+            <button type="submit" class="search-btn">Search Doctors</button>
+          </form>
+        </div>
+      </div>
+      <div class="hero-image">
+        <img src="immages/doctor-hero.jpg" alt="Doctor">
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Doctors -->
+  <section class="section">
+    <div class="section-header">
+      <h2>Featured Doctors</h2>
+      <p>Top-rated healthcare professionals ready to help you</p>
+    </div>
+    <div class="doctors-grid">
+      <div class="doctor-card">
+        <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400" alt="Doctor" class="doctor-image">
+        <div class="doctor-info">
+          <h3 class="doctor-name">Dr. Sarah Johnson</h3>
+          <p class="doctor-specialty">Cardiologist</p>
+          <p class="doctor-location">📍 delhi</p>
+          <div class="doctor-meta">
+            <span class="rating">★★★★★ 4.9</span>
+            <span class="fee">$150</span>
+          </div>
+          <button class="book-btn">Book Appointment</button>
+        </div>
+      </div>
+      <div class="doctor-card">
+        <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400" alt="Doctor" class="doctor-image">
+        <div class="doctor-info">
+          <h3 class="doctor-name">Dr. Michael Chen</h3>
+          <p class="doctor-specialty">Dermatologist</p>
+          <p class="doctor-location">Bhubaneswar</p>
+          <div class="doctor-meta">
+            <span class="rating">★★★★★ 4.8</span>
+            <span class="fee">$120</span>
+          </div>
+          <button class="book-btn">Book Appointment</button>
+        </div>
+      </div>
+      <div class="doctor-card">
+        <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400" alt="Doctor" class="doctor-image">
+        <div class="doctor-info">
+          <h3 class="doctor-name">Dr. Emily Davis</h3>
+          <p class="doctor-specialty">Pediatrician</p>
+          <p class="doctor-location">📍 Mumbai</p>
+          <div class="doctor-meta">
+            <span class="rating">★★★★★ 4.9</span>
+            <span class="fee">$100</span>
+          </div>
+          <button class="book-btn">Book Appointment</button>
+        </div>
+      </div>
+      <div class="doctor-card">
+        <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400" alt="Doctor" class="doctor-image">
+        <div class="doctor-info">
+          <h3 class="doctor-name">Dr. James Wilson</h3>
+          <p class="doctor-specialty">Orthopedic</p>
+          <p class="doctor-location">📍 Hyderabad</p>
+          <div class="doctor-meta">
+            <span class="rating">★★★★☆ 4.7</span>
+            <span class="fee">$180</span>
+          </div>
+          <button class="book-btn">Book Appointment</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Specialties -->
+  <section class="section" style="background: #f8fafc;">
+    <div class="section-header">
+      <h2>Browse by Specialty</h2>
+      <p>Find the right specialist for your needs</p>
+    </div>
+    <div class="specialties-grid">
+      <a href="doctors.html?specialty=cardiology" class="specialty-card">
+        <div class="specialty-icon">❤️</div>
+        <h3 class="specialty-name">Cardiology</h3>
+        <p class="specialty-count">24 Doctors</p>
+      </a>
+      <a href="doctors.html?specialty=neurology" class="specialty-card">
+        <div class="specialty-icon">🧠</div>
+        <h3 class="specialty-name">Neurology</h3>
+        <p class="specialty-count">18 Doctors</p>
+      </a>
+      <a href="doctors.html?specialty=orthopedics" class="specialty-card">
+        <div class="specialty-icon">🦴</div>
+        <h3 class="specialty-name">Orthopedics</h3>
+        <p class="specialty-count">32 Doctors</p>
+      </a>
+      <a href="doctors.html?specialty=pediatrics" class="specialty-card">
+        <div class="specialty-icon">👶</div>
+        <h3 class="specialty-name">Pediatrics</h3>
+        <p class="specialty-count">28 Doctors</p>
+      </a>
+      <a href="doctors.html?specialty=general" class="specialty-card">
+        <div class="specialty-icon">🩺</div>
+        <h3 class="specialty-name">General</h3>
+        <p class="specialty-count">45 Doctors</p>
+      </a>
+      <a href="doctors.html?specialty=dermatology" class="specialty-card">
+        <div class="specialty-icon">🧴</div>
+        <h3 class="specialty-name">Dermatology</h3>
+        <p class="specialty-count">20 Doctors</p>
+      </a>
+    </div>
+  </section>
+
+  <!-- How It Works -->
+  <section class="section">
+    <div class="section-header">
+      <h2>How It Works</h2>
+      <p>Book your appointment in 3 simple steps</p>
+    </div>
+    <div class="steps-grid">
+      <div class="step-card">
+        <div class="step-number">1</div>
+        <h3 class="step-title">Search Doctor</h3>
+        <p class="step-desc">Find doctors by specialty, location, or name from our verified network.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">2</div>
+        <h3 class="step-title">Book Appointment</h3>
+        <p class="step-desc">Select a convenient time slot and book your appointment instantly.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-number">3</div>
+        <h3 class="step-title">Get Care</h3>
+        <p class="step-desc">Visit the clinic or get a home visit from your chosen doctor.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta">
+    <h2>Ready to Book Your Appointment?</h2>
+    <p>Join thousands of patients who trust MediGo for their healthcare needs</p>
+    <button id="getStartedBtn" class="btn">Get Started Now</button>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-grid">
+      <div class="footer-section">
+        <h4>MediBook</h4>
+        <p style="color: #94a3b8;">Your trusted partner for finding and booking quality healthcare professionals.</p>
+      </div>
+      <div class="footer-section">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="docter.html">Find Doctors</a></li>
+          <li><a href="docter.html">Specialties</a></li>
+          <li><a href="appointment.html">Appointments</a></li>
+          <li><a href="contacts.html">Contact Us</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>For Doctors</h4>
+        <ul>
+          <li><a href="#">Join Our Network</a></li>
+          <li><a href="docterlogin.html">Doctor Login</a></li>
+          <li><a href="#">Resources</a></li>
+        </ul>
+      </div>
+      <div class="footer-section">
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="mailto:support@medibook.com">support@MediGo.com</a></li>
+          <li><a href="tel:+91 9556227000">+91 9556227000</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>©  MediGo. All rights reserved.</p>
+    </div>
+  </footer>
+
+  <!-- Auth Modal (LOGIN / SIGNUP ONLY) -->
+<div id="authModal" class="modal-overlay">
+  <div class="modal">
+    <button class="modal-close">&times;</button>
+
+    <h2>Welcome to MediBook</h2>
+
+    <div class="modal-tabs">
+      <button id="loginTab" class="modal-tab active">Login</button>
+      <button id="signupTab" class="modal-tab">Sign Up</button>
+    </div>
+
+    <form id="authForm">
+      <div id="loginForm">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="loginEmail" required>
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="loginPassword" required>
+        </div>
+      </div>
+
+      <div id="signupForm" style="display:none">
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="signupEmail">
+        </div>
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="signupPassword">
+        </div>
+        <div class="form-group">
+          <label>Confirm Password</label>
+          <input type="password" id="confirmPassword">
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width:100%">
+        Continue
+      </button>
+    </form>
+  </div>
+</div>
+
+
+
+
+    </div>
+  </div>
+
+  <!-- Booking Modal -->
+  <div id="bookingModal" class="modal-overlay">
+    <div class="modal">
+      <button class="modal-close">&times;</button>
+      <h2>Book Appointment</h2>
+      <p style="color: #64748b; margin-bottom: 1.5rem;">with <strong id="bookingDoctorName">Doctor</strong></p>
+      <form id="bookingForm">
+  <div class="form-group">
+    <label>Select Date</label>
+    <input type="date" id="bookingDate">
+  </div>
+  <div class="form-group">
+    <label>Select Time</label>
+    <select id="bookingTime">
+      <option value="">Choose a time</option>
+      <option value="09:00">09:00 AM</option>
+      <option value="10:00">10:00 AM</option>
+      <option value="11:00">11:00 AM</option>
+      <option value="14:00">02:00 PM</option>
+      <option value="15:00">03:00 PM</option>
+      <option value="16:00">04:00 PM</option>
+    </select>
+  </div>
+  <button type="submit" class="btn btn-primary">Confirm Booking</button>
+</form>
+
+    </div>
+  </div>
+
+  <!-- Toast -->
+  <div id="toast" class="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

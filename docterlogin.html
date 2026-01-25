@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Doctor Registration with Map</title>
+  <style>
+    body { font-family: Arial, sans-serif; background: #f8fafc; margin:0; padding:0; }
+    .container { max-width: 600px; margin: 50px auto; background: #fff; padding: 30px; border-radius:10px; box-shadow:0 5px 20px rgba(0,0,0,0.1);}
+    h2 { text-align:center; color:#0ea5e9; margin-bottom:20px; }
+    .form-group { margin-bottom:15px; }
+    label { display:block; margin-bottom:5px; font-weight:600; }
+    input, select { width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:5px; }
+    .btn-primary, .btn-location { padding:12px; border:none; border-radius:8px; cursor:pointer; font-size:16px; margin-top:10px; width:100%; }
+    .btn-primary { background-color:#0ea5e9; color:white; }
+    .btn-primary:hover { background-color:#0284c7; }
+    .btn-location { background-color:#10b981; color:white; width:auto; margin-top:5px; display:inline-block; }
+    .btn-location:hover { background-color:#059669; }
+    /* Map Modal */
+    #mapModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; }
+    #mapContainer { width:90%; height:80%; margin:50px auto; background:#fff; border-radius:10px; position:relative; }
+    #map { width:100%; height:100%; border-radius:10px; }
+    #addLocationBtn { position:absolute; bottom:10px; left:50%; transform:translateX(-50%); padding:10px 15px; background:#0ea5e9; color:white; border:none; border-radius:5px; cursor:pointer; font-weight:bold; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Doctor Registration</h2>
+  <form id="doctorForm">
+    <div class="form-group">
+      <label>Clinic Name</label>
+      <input type="text" id="clinicName" required>
+    </div>
+    <div class="form-group">
+      <label>Doctor Name</label>
+      <input type="text" id="doctorName" required>
+    </div>
+    <div class="form-group">
+      <label>Category</label>
+      <select id="category" required>
+        <option value="">Select</option>
+        <option value="general">General Physician</option>
+        <option value="cardiologist">Cardiologist</option>
+        <option value="dentist">Dentist</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Years of Experience</label>
+      <input type="number" id="experience" required>
+    </div>
+    <div class="form-group">
+      <label>Age</label>
+      <input type="number" id="age" required>
+    </div>
+    <div class="form-group">
+      <label>Aadhaar Number</label>
+      <input type="text" id="adhar" maxlength="12" required>
+    </div>
+    <div class="form-group">
+      <label>Doctor Photo</label>
+      <input type="file" id="photo" accept=".jpg,.png" required>
+    </div>
+    <div class="form-group">
+      <label>Doctor Certificate</label>
+      <input type="file" id="certificate" accept=".jpg,.png,.pdf" required>
+    </div>
+    <div class="form-group">
+      <label>Clinic Location</label>
+      <input type="text" id="clinicLocation" placeholder="Pick location on map" readonly required>
+      <button type="button" class="btn-location" id="pickLocationBtn">Pick Location</button>
+    </div>
+    <button type="submit" class="btn-primary">Register Doctor</button>
+  </form>
+</div>
+
+<!-- Map Modal -->
+<div id="mapModal">
+  <div id="mapContainer">
+    <div id="map"></div>
+    <button id="addLocationBtn">Add Location</button>
+  </div>
+</div>
+
+<!-- Google Maps API -->
+<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+<script>
+let map, marker;
+const mapModal = document.getElementById('mapModal');
+const clinicLocationInput = document.getElementById('clinicLocation');
+const pickLocationBtn = document.getElementById('pickLocationBtn');
+const addLocationBtn = document.getElementById('addLocationBtn');
+
+pickLocationBtn.addEventListener('click', () => {
+  mapModal.style.display = 'block';
+  initMap();
+});
+
+addLocationBtn.addEventListener('click', () => {
+  if(marker){
+    const position = marker.getPosition();
+    clinicLocationInput.value = `Lat: ${position.lat().toFixed(6)}, Lng: ${position.lng().toFixed(6)}`;
+    mapModal.style.display = 'none';
+  } else {
+    alert('Please click on the map to select location.');
+  }
+});
+
+function initMap() {
+  const defaultLocation = { lat: 20.2961, lng: 85.8245 }; // Example: Bhubaneswar
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: defaultLocation,
+    zoom: 12
+  });
+
+  map.addListener('click', function(e){
+    if(marker) marker.setMap(null);
+    marker = new google.maps.Marker({
+      position: e.latLng,
+      map: map
+    });
+  });
+}
+
+// Form submission
+document.getElementById('doctorForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const adhar = document.getElementById('adhar').value.trim();
+  if(!/^\d{12}$/.test(adhar)){
+    alert('Aadhaar number must be 12 digits');
+    return;
+  }
+  alert('Doctor registered successfully!\nLocation: '+clinicLocationInput.value);
+  this.reset();
+});
+</script>
+
+</body>
+</html>
