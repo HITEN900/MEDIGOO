@@ -131,13 +131,19 @@ function switchAuthTab(tab) {
 // Handle Authentication
 function handleAuth(e) {
   e.preventDefault();
-  
-  const activeTab = loginTab?.classList.contains('active') ? 'login' : 'signup';
-  const emailInput = document.getElementById(activeTab === 'login' ? 'loginEmail' : 'signupEmail');
-  const passwordInput = document.getElementById(activeTab === 'login' ? 'loginPassword' : 'signupPassword');
-  
-  const email = emailInput?.value;
-  const password = passwordInput?.value;
+
+  const activeTab = loginTab.classList.contains('active') ? 'login' : 'signup';
+
+  const emailInput = document.getElementById(
+    activeTab === 'login' ? 'loginEmail' : 'signupEmail'
+  );
+
+  const passwordInput = document.getElementById(
+    activeTab === 'login' ? 'loginPassword' : 'signupPassword'
+  );
+
+  const email = emailInput.value.trim();
+  const password = passwordInput.value.trim();
 
   if (!email || !password) {
     showToast('Please fill in all fields', 'error');
@@ -145,12 +151,29 @@ function handleAuth(e) {
   }
 
   if (activeTab === 'signup') {
-    const confirmPassword = document.getElementById('confirmPassword')?.value;
+    const confirmPassword = document.getElementById('confirmPassword').value.trim();
+
+    if (!confirmPassword) {
+      showToast('Please confirm your password', 'error');
+      return;
+    }
+
     if (password !== confirmPassword) {
       showToast('Passwords do not match', 'error');
       return;
     }
+
+    showToast('Signup successful 🎉', 'success');
+  } else {
+    showToast('Login successful ✅', 'success');
   }
+
+  // Optional: close modal after success
+  setTimeout(() => {
+    document.getElementById("authModal").style.display = "none";
+  }, 1200);
+}
+
 
   // Simulate authentication
   currentUser = {
