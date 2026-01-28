@@ -136,6 +136,8 @@
     <li><a href="appointment.html">Appointments</a></li>
     <li><a href="contacts.html">Contact</a></li>
   </ul>
+      <button class="mobile-menu-btn">☰</button>
+
 </header>
 
 <section class="page-header">
@@ -306,6 +308,15 @@ document.getElementById("bookingForm").onsubmit = e => {
 };
 
 document.querySelector(".modal-close").onclick = () => modal.style.display = "none";
+
+// Mobile menu toggle
+const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+const nav = document.querySelector('.nav');
+
+mobileMenuBtn.addEventListener('click', () => {
+  nav.classList.toggle('active');
+});
+
 </script>
 
 </body>

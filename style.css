@@ -848,6 +848,15 @@ body {
   .nav {
     display: none;
   }
+.mobile-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.mobile-buttons .btn {
+  width: 100%;
+}
 
   .mobile-menu-btn {
     display: block;

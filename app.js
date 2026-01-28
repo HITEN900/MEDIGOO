@@ -201,3 +201,10 @@ function showToast(message, type = 'success') {
   toast.className = `toast active ${type}`;
   setTimeout(() => { toast.classList.remove('active'); }, 3000);
 }
+// Mobile menu toggle
+const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+const nav = document.querySelector('.nav');
+
+mobileMenuBtn.addEventListener('click', () => {
+  nav.classList.toggle('active');
+});

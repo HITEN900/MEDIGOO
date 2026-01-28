@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>My Appointments - MediBook</title>
+  <link rel="stylesheet" href="style.css">
 
   <style>
     * { box-sizing: border-box; }
@@ -16,48 +17,62 @@
     }
 
     /* ================= HEADER ================= */
-    .header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 10px 5%;
-      background: #ffffff;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.06);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
+   /* Header */
+.header {
+  height: 90px;    
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 5%;
+  background: rgb(248, 249, 248);
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
 
-    .logo img {
-      height: 50px;
-      width: auto;
-      object-fit: contain;
-    }
+.logo {
+  display: flex;
+  align-items: center;
+}
 
-    .nav {
-      list-style: none;
-      display: flex;
-      gap: 20px;
-      padding: 0;
-      margin: 0;
-    }
+.logo img {
+  height: 92px;        /* perfect navbar size */
+  width: auto;
+  object-fit: contain;
+}
 
-    .nav li {
-      text-align: center;
-    }
+.logo img {
+  transition: transform 0.2s ease;
+}
 
-    .nav a {
-      text-decoration: none;
-      color: #0f172a;
-      font-weight: 500;
-      font-size: 15px;
-      padding: 6px 8px;
-      display: block;
-    }
+.logo img:hover {
+  transform: scale(1.05);
+}
 
-    .nav a:hover {
-      color: #0ea5e9;
-    }
+
+
+.nav {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav a {
+  text-decoration: none;
+  color: #64748b;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+.nav a:hover, .nav a.active {
+  color: #0ea5e9;
+}
+
+.header-buttons {
+  display: flex;
+  gap: 0.75rem;
+}
 
     /* Hamburger button */
     .hamburger {
