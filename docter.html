@@ -1,251 +1,312 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Find Doctors - MediBook</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+/* ===== BOOK APPOINTMENT MODAL ===== */
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  animation: fadeIn 0.3s ease;
+}
+
+.modal {
+  background: #ffffff;
+  width: 100%;
+  max-width: 420px;
+  padding: 25px 30px;
+  border-radius: 14px;
+  box-shadow: 0 20px 40px rgba(0,0,0,0.25);
+  position: relative;
+  animation: slideUp 0.35s ease;
+}
+
+.modal h2 {
+  margin: 0;
+  color: #0ea5e9;
+  font-size: 24px;
+  text-align: center;
+}
+
+.modal p {
+  text-align: center;
+  margin: 8px 0 20px;
+  color: #475569;
+  font-size: 14px;
+}
+
+.modal strong {
+  color: #020617;
+}
+
+/* CLOSE BUTTON */
+.modal-close {
+  position: absolute;
+  top: 14px;
+  right: 16px;
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #64748b;
+}
+
+.modal-close:hover {
+  color: #ef4444;
+}
+
+/* FORM */
+#bookingForm {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+#bookingForm input,
+#bookingForm select {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #cbd5f5;
+  font-size: 14px;
+  outline: none;
+}
+
+#bookingForm input:focus,
+#bookingForm select:focus {
+  border-color: #0ea5e9;
+  box-shadow: 0 0 0 3px rgba(14,165,233,0.2);
+}
+
+/* BUTTON */
+#bookingForm button {
+  margin-top: 10px;
+  padding: 12px;
+  background: linear-gradient(135deg, #0ea5e9, #0284c7);
+  border: none;
+  color: #fff;
+  font-size: 15px;
+  font-weight: bold;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+#bookingForm button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 20px rgba(14,165,233,0.4);
+}
+
+/* ANIMATIONS */
+@keyframes slideUp {
+  from {
+    transform: translateY(40px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+</style>
+
 </head>
 <body>
 
-  <header class="header">
-<a href="index.html" class="logo">
-  <img src="immages/logoo.png" alt="MediGo Logo">
-</a>    <ul class="nav">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="docter.html">Doctors</a></li>
-      <li><a href="appointment.html">Appointments</a></li>
-      <li><a href="contacts.html">Contact</a></li>
-    </ul>
-    <button class="mobile-menu-btn">☰</button>
-    <div class="header-buttons">
-      <button id="loginBtn" class="btn btn-outline">Login</button>
-      <button id="signupBtn" class="btn btn-primary">Sign Up</button>
-    </div>
-  </header>
+<header class="header">
+  <a href="index.html" class="logo">
+    <img src="immages/logoo.png" alt="MediGo Logo">
+  </a>
+  <ul class="nav">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="docter.html">Doctors</a></li>
+    <li><a href="appointment.html">Appointments</a></li>
+    <li><a href="contacts.html">Contact</a></li>
+  </ul>
+</header>
 
-  <section class="page-header">
-    <h1>Find a Doctor</h1>
-    <p>Browse our network of verified healthcare professionals</p>
-  </section>
+<section class="page-header">
+  <h1>Find a Doctor</h1>
+  <p>Browse our network of verified healthcare professionals</p>
+</section>
 
-  <section class="section">
-    <div class="filters">
-      <select id="specialtyFilter" class="filter-select">
-        <option value="">All Specialties</option>
-        <option value="cardiologist">Cardiology</option>
-        <option value="dermatologist">Dermatology</option>
-        <option value="pediatrician">Pediatrics</option>
-        <option value="orthopedic">Orthopedics</option>
-        <option value="neurologist">Neurology</option>
-      </select>
-      <select id="locationFilter" class="filter-select">
-     <option value="">All Locations</option>
-<option value="delhi">Delhi</option>
-<option value="mumbai">Mumbai</option>
-<option value="bengaluru">Bengaluru</option>
-<option value="chennai">Chennai</option>
-<option value="hyderabad">Hyderabad</option>
-<option value="kolkata">Kolkata</option>
-<option value="pune">Pune</option>
-<option value="ahmedabad">Ahmedabad</option>
-<option value="jaipur">Jaipur</option>
-<option value="chandigarh">Chandigarh</option>
-<option value="kochi">Kochi</option>
-<option value="thiruvananthapuram">Thiruvananthapuram</option>
-<option value="coimbatore">Coimbatore</option>
-<option value="indore">Indore</option>
-<option value="bhubaneswar">Bhubaneswar</option>
-<option value="visakhapatnam">Visakhapatnam</option>
-<option value="vijayawada">Vijayawada</option>
-<option value="patna">Patna</option>
-<option value="ranchi">Ranchi</option>
-<option value="guwahati">Guwahati</option>
-<option value="siliguri">Siliguri</option>
-<option value="lucknow">Lucknow</option>
-<option value="kanpur">Kanpur</option>
-<option value="agra">Agra</option>
-<option value="varanasi">Varanasi</option>
-<option value="prayagraj">Prayagraj</option>
-<option value="bhopal">Bhopal</option>
-<option value="raipur">Raipur</option>
-<option value="nagpur">Nagpur</option>
-<option value="aurangabad">Aurangabad</option>
-<option value="nashik">Nashik</option>
-<option value="surat">Surat</option>
-<option value="vadodara">Vadodara</option>
-<option value="rajkot">Rajkot</option>
-<option value="udaipur">Udaipur</option>
-<option value="jodhpur">Jodhpur</option>
-<option value="amritsar">Amritsar</option>
-<option value="ludhiana">Ludhiana</option>
-<option value="jalandhar">Jalandhar</option>
-<option value="dehradun">Dehradun</option>
-<option value="haridwar">Haridwar</option>
-<option value="shimla">Shimla</option>
-<option value="srinagar">Srinagar</option>
-<option value="jammu">Jammu</option>
-<option value="leh">Leh</option>
+<section class="section">
 
-      </select>
-    </div>
+  <!-- FILTERS -->
+  <div class="filters">
+    <select id="specialtyFilter" class="filter-select">
+      <option value="">All Specialties</option>
+      <option value="cardiologist">Cardiology</option>
+      <option value="dermatologist">Dermatology</option>
+      <option value="pediatrician">Pediatrics</option>
+      <option value="orthopedic">Orthopedics</option>
+      <option value="neurologist">Neurology</option>
+    </select>
 
-    <div class="doctors-grid">
-      <div class="doctor-card">
-        <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400" alt="Doctor" class="doctor-image">
-        <div class="doctor-info">
-          <h3 class="doctor-name">Dr. Sarah Johnson</h3>
-          <p class="doctor-specialty">Cardiologist</p>
-          <p class="doctor-location">📍 New York, Manhattan</p>
-          <div class="doctor-meta">
-            <span class="rating">★★★★★ 4.9</span>
-            <span class="fee">$150</span>
-          </div>
-          <button class="book-btn">Book Appointment</button>
-        </div>
-      </div>
-      <div class="doctor-card">
-        <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400" alt="Doctor" class="doctor-image">
-        <div class="doctor-info">
-          <h3 class="doctor-name">Dr. Kunal Pnadey</h3>
-          <p class="doctor-specialty">Dermatologist</p>
-          <p class="doctor-location">📍 Delhi</p>
-          <div class="doctor-meta">
-            <span class="rating">★★★★★ 4.8</span>
-            <span class="fee">$120</span>
-          </div>
-          <button class="book-btn">Book Appointment</button>
-        </div>
-      </div>
-      <div class="doctor-card">
-        <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400" alt="Doctor" class="doctor-image">
-        <div class="doctor-info">
-          <h3 class="doctor-name">Dr. Sonali Mohanty</h3>
-          <p class="doctor-specialty">Pediatrician</p>
-          <p class="doctor-location">📍 Bhubaneswar</p>
-          <div class="doctor-meta">
-            <span class="rating">★★★★★ 4.9</span>
-            <span class="fee">$100</span>
-          </div>
-          <button class="book-btn">Book Appointment</button>
-        </div>
-      </div>
-      <div class="doctor-card">
-        <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400" alt="Doctor" class="doctor-image">
-        <div class="doctor-info">
-          <h3 class="doctor-name">Dr. Sudhakar pal</h3>
-          <p class="doctor-specialty">Orthopedic</p>
-          <p class="doctor-location">📍 Mumbai</p>
-          <div class="doctor-meta">
-            <span class="rating">★★★★☆ 4.7</span>
-            <span class="fee">$180</span>
-          </div>
-          <button class="book-btn">Book Appointment</button>
-        </div>
-      </div>
-      <div class="doctor-card">
-        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400" alt="Doctor" class="doctor-image">
-        <div class="doctor-info">
-          <h3 class="doctor-name">Dr. Lisa Reddy</h3>
-          <p class="doctor-specialty">Neurologist</p>
-          <p class="doctor-location">📍 Hyderabad</p>
-          <div class="doctor-meta">
-            <span class="rating">★★★★★ 4.8</span>
-            <span class="fee">$200</span>
-          </div>
-          <button class="book-btn">Book Appointment</button>
-        </div>
-      </div>
-      <div class="doctor-card">
-        <img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400" alt="Doctor" class="doctor-image">
-        <div class="doctor-info">
-          <h3 class="doctor-name">Dr.  SK mishra</h3>
-          <p class="doctor-specialty">Cardiologist</p>
-          <p class="doctor-location">📍 pune</p>
-          <div class="doctor-meta">
-            <span class="rating">★★★★☆ 4.6</span>
-            <span class="fee">$160</span>
-          </div>
-          <button class="book-btn">Book Appointment</button>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <footer class="footer">
-    <div class="footer-bottom">
-      <p>© 2024 MediBook. All rights reserved.</p>
-    </div>
-  </footer>
-
-  <!-- Auth Modal -->
-  <div id="authModal" class="modal-overlay">
-    <div class="modal">
-      <button class="modal-close">&times;</button>
-      <h2>Welcome to MediBook</h2>
-      <div class="modal-tabs">
-        <button id="loginTab" class="modal-tab active">Login</button>
-        <button id="signupTab" class="modal-tab">Sign Up</button>
-      </div>
-      <form id="authForm">
-        <div id="loginForm">
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="loginEmail" placeholder="your@email.com">
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <input type="password" id="loginPassword" placeholder="••••••••">
-          </div>
-        </div>
-        <div id="signupForm" style="display: none;">
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="signupEmail" placeholder="your@email.com">
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <input type="password" id="signupPassword" placeholder="••••••••">
-          </div>
-          <div class="form-group">
-            <label>Confirm Password</label>
-            <input type="password" id="confirmPassword" placeholder="••••••••">
-          </div>
-        </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%;">Continue</button>
-      </form>
-    </div>
+    <select id="locationFilter" class="filter-select">
+      <option value="">All Locations</option>
+      <option value="delhi">Delhi</option>
+      <option value="bhubaneswar">Bhubaneswar</option>
+      <option value="mumbai">Mumbai</option>
+      <option value="hyderabad">Hyderabad</option>
+      <option value="pune">Pune</option>
+    </select>
   </div>
 
-  <!-- Booking Modal -->
-  <div id="bookingModal" class="modal-overlay">
-    <div class="modal">
-      <button class="modal-close">&times;</button>
-      <h2>Book Appointment</h2>
-      <p style="color: #64748b; margin-bottom: 1.5rem;">with <strong id="bookingDoctorName">Doctor</strong></p>
-      <form id="bookingForm">
-        <div class="form-group">
-          <label>Select Date</label>
-          <input type="date" id="bookingDate">
-        </div>
-        <div class="form-group">
-          <label>Select Time</label>
-          <select id="bookingTime" class="filter-select" style="width: 100%;">
-            <option value="">Choose a time</option>
-            <option value="09:00">09:00 AM</option>
-            <option value="10:00">10:00 AM</option>
-            <option value="11:00">11:00 AM</option>
-            <option value="14:00">02:00 PM</option>
-            <option value="15:00">03:00 PM</option>
-            <option value="16:00">04:00 PM</option>
-          </select>
-        </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%;">Confirm Booking</button>
-      </form>
-    </div>
-  </div>
+  <!-- DOCTORS -->
+  <div class="doctors-grid">
 
-  <div id="toast" class="toast"></div>
-  <script src="app.js"></script>
+    <div class="doctor-card" data-specialty="cardiologist" data-location="delhi">
+      <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400" class="doctor-image">
+      <div class="doctor-info">
+        <h3 class="doctor-name">Dr. Sarah Johnson</h3>
+        <p class="doctor-specialty">Cardiologist</p>
+        <p class="doctor-location">📍 Delhi</p>
+        <button class="book-btn">Book Appointment</button>
+      </div>
+    </div>
+
+    <div class="doctor-card" data-specialty="dermatologist" data-location="delhi">
+      <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400" class="doctor-image">
+      <div class="doctor-info">
+        <h3 class="doctor-name">Dr. Kunal Pandey</h3>
+        <p class="doctor-specialty">Dermatologist</p>
+        <p class="doctor-location">📍 Delhi</p>
+        <button class="book-btn">Book Appointment</button>
+      </div>
+    </div>
+
+    <div class="doctor-card" data-specialty="pediatrician" data-location="bhubaneswar">
+      <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400" class="doctor-image">
+      <div class="doctor-info">
+        <h3 class="doctor-name">Dr. Sonali Mohanty</h3>
+        <p class="doctor-specialty">Pediatrician</p>
+        <p class="doctor-location">📍 Bhubaneswar</p>
+        <button class="book-btn">Book Appointment</button>
+      </div>
+    </div>
+
+    <div class="doctor-card" data-specialty="orthopedic" data-location="mumbai">
+      <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400" class="doctor-image">
+      <div class="doctor-info">
+        <h3 class="doctor-name">Dr. Sudhakar Pal</h3>
+        <p class="doctor-specialty">Orthopedic</p>
+        <p class="doctor-location">📍 Mumbai</p>
+        <button class="book-btn">Book Appointment</button>
+      </div>
+    </div>
+
+    <div class="doctor-card" data-specialty="neurologist" data-location="hyderabad">
+      <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?w=400" class="doctor-image">
+      <div class="doctor-info">
+        <h3 class="doctor-name">Dr. Lisa Reddy</h3>
+        <p class="doctor-specialty">Neurologist</p>
+        <p class="doctor-location">📍 Hyderabad</p>
+        <button class="book-btn">Book Appointment</button>
+      </div>
+    </div>
+
+    <div class="doctor-card" data-specialty="cardiologist" data-location="pune">
+      <img src="https://images.unsplash.com/photo-1582750433449-648ed127bb54?w=400" class="doctor-image">
+      <div class="doctor-info">
+        <h3 class="doctor-name">Dr. S K Mishra</h3>
+        <p class="doctor-specialty">Cardiologist</p>
+        <p class="doctor-location">📍 Pune</p>
+        <button class="book-btn">Book Appointment</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- BOOKING MODAL -->
+<div id="bookingModal" class="modal-overlay" style="display:none;">
+  <div class="modal">
+    <button class="modal-close">&times;</button>
+    <h2>Book Appointment</h2>
+    <p>with <strong id="bookingDoctorName"></strong></p>
+
+    <form id="bookingForm">
+      <input type="date" id="bookingDate" required>
+      <select id="bookingTime" required>
+        <option value="">Select time</option>
+        <option value="09:00 AM">09:00 AM</option>
+        <option value="10:00 AM">10:00 AM</option>
+        <option value="11:00 AM">11:00 AM</option>
+      </select>
+      <button type="submit">Confirm Booking</button>
+    </form>
+  </div>
+</div>
+
+<script>
+/* FILTER */
+const specialtyFilter = document.getElementById("specialtyFilter");
+const locationFilter = document.getElementById("locationFilter");
+const cards = document.querySelectorAll(".doctor-card");
+
+function filterDoctors() {
+  const s = specialtyFilter.value;
+  const l = locationFilter.value;
+
+  cards.forEach(card => {
+    const ok =
+      (s === "" || card.dataset.specialty === s) &&
+      (l === "" || card.dataset.location === l);
+    card.style.display = ok ? "block" : "none";
+  });
+}
+
+specialtyFilter.addEventListener("change", filterDoctors);
+locationFilter.addEventListener("change", filterDoctors);
+
+/* BOOKING */
+const modal = document.getElementById("bookingModal");
+const bookingDoctorName = document.getElementById("bookingDoctorName");
+let selectedDoctor = {};
+
+document.querySelectorAll(".book-btn").forEach(btn => {
+  btn.onclick = () => {
+    const card = btn.closest(".doctor-card");
+    selectedDoctor = {
+      name: card.querySelector(".doctor-name").innerText,
+      category: card.querySelector(".doctor-specialty").innerText,
+      state: card.querySelector(".doctor-location").innerText.replace("📍","").trim()
+    };
+    bookingDoctorName.innerText = selectedDoctor.name;
+    modal.style.display = "flex";
+  };
+});
+
+document.getElementById("bookingForm").onsubmit = e => {
+  e.preventDefault();
+  const date = bookingDate.value;
+  const time = bookingTime.value;
+
+  const appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+  appointments.push({ ...selectedDoctor, date, time });
+  localStorage.setItem("appointments", JSON.stringify(appointments));
+
+  alert("Appointment Booked!");
+  modal.style.display = "none";
+  e.target.reset();
+};
+
+document.querySelector(".modal-close").onclick = () => modal.style.display = "none";
+</script>
+
 </body>
 </html>

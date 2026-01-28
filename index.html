@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="style.css">
   
 </head>
+
 <body>
 
   <!-- Header -->
@@ -227,7 +228,7 @@
   <div class="modal">
     <button class="modal-close">&times;</button>
 
-    <h2>Welcome to MediBook</h2>
+    <h2>Welcome to MediGo</h2>
 
     <div class="modal-tabs">
       <button id="loginTab" class="modal-tab active">Login</button>
@@ -244,26 +245,43 @@
           <label>Password</label>
           <input type="password" id="loginPassword" required>
         </div>
+<button type="button" id="signupContinue" style="width:100%;padding:8px;margin-top:6px;background-color:hsl(210, 93%, 52%);color:white;">LOG IN</button>
+
+ 
       </div>
 
-      <div id="signupForm" style="display:none">
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="signupEmail">
-        </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="signupPassword">
-        </div>
-        <div class="form-group">
-          <label>Confirm Password</label>
-          <input type="password" id="confirmPassword">
-        </div>
-      </div>
+    <div id="signupForm" style="max-width:400px;margin:auto;padding:10px;font-family:Arial,sans-serif;">
 
-      <button type="submit" class="btn btn-primary" style="width:100%">
-        Continue
-      </button>
+  <!-- Names -->
+  <input type="text" id="firstName" placeholder="First Name *" required style="width:100%;margin:4px 0;padding:6px;">
+  <input type="text" id="lastName" placeholder="Last Name *" required style="width:100%;margin:4px 0;padding:6px;">
+
+  <!-- Emails -->
+  <input type="email" id="signupEmail" placeholder="Primary Email *" required style="width:100%;margin:4px 0;padding:6px;">
+  <input type="email" id="secondaryEmail" placeholder="Secondary Email (Optional)" style="width:100%;margin:4px 0;padding:6px;">
+
+  <!-- DOB & Phone -->
+  <input type="date" id="dob" placeholder="Date of Birth *" required style="width:100%;margin:4px 0;padding:6px;">
+  <input type="tel" id="phone" placeholder="Phone Number *" required style="width:100%;margin:4px 0;padding:6px;">
+
+  <!-- Passwords -->
+  <input type="password" id="signupPassword" placeholder="Password *" required style="width:100%;margin:4px 0;padding:6px;">
+  <input type="password" id="confirmPassword" placeholder="Confirm Password *" required style="width:100%;margin:4px 0;padding:6px;">
+
+  <!-- Continue Button -->
+<!-- Signup Continue Button -->
+<button type="button" id="signupContinue" style="width:100%;padding:8px;margin-top:6px;background-color:hsl(210, 93%, 52%);color:white;">Continue</button>
+
+</div>
+
+<!-- OTP Section (hidden initially) -->
+<div id="otpSection" style="display:none; max-width:400px;margin:auto;padding:10px;font-family:Arial,sans-serif;">
+  <h4>Enter OTP sent to your phone/email</h4>
+  <input type="text" id="otpInput" placeholder="Enter OTP" style="width:100%;margin:4px 0;padding:6px;">
+  <button id="verifyOtpBtn" style="width:100%;padding:8px;margin-top:6px;">Verify OTP</button>
+  <p id="otpMessage" style="color:green;"></p>
+</div>
+
     </form>
   </div>
 </div>

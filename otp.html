@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify OTP - MediGo</title>
+<style>
+  body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background: #f0f0f0; }
+  .otp-container { background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 0 10px rgba(0,0,0,0.2); width: 300px; text-align: center; }
+  input { width: 100%; padding: 10px; margin: 10px 0; border-radius: 5px; border: 1px solid #ccc; }
+  button { width: 100%; padding: 10px; border: none; border-radius: 5px; background-color: #4CAF50; color: #fff; font-weight: bold; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div class="otp-container">
+  <h2>Enter OTP</h2>
+  <p>We have sent a 6-digit OTP to your email/phone</p>
+  <input type="text" id="otpInput" placeholder="Enter OTP">
+  <button id="verifyOtpBtn">Verify OTP</button>
+</div>
+
+<script>
+  const verifyBtn = document.getElementById('verifyOtpBtn');
+  verifyBtn.addEventListener('click', () => {
+    const enteredOtp = document.getElementById('otpInput').value.trim();
+    const savedOtp = localStorage.getItem('signupOTP');
+    const signupData = JSON.parse(localStorage.getItem('signupData'));
+
+    if (!enteredOtp) {
+      alert('Please enter OTP');
+      return;
+    }
+
+    if (enteredOtp === savedOtp) {
+      // Save user as logged in
+      localStorage.setItem('medibook_user', JSON.stringify(signupData));
+      
+      // Clean up
+      localStorage.removeItem('signupData');
+      localStorage.removeItem('signupOTP');
+
+      alert('OTP verified! Welcome ' + signupData.firstName);
+      window.location.href = 'index.html';
+    } else {
+      alert('Invalid OTP! Please try again.');
+    }
+  });
+</script>
+
+</body>
+</html>
