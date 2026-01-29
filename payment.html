@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Payment - MediBook</title>
+  <style>
+    body { font-family: Arial; background:#f1f5f9; color:#0f172a; margin:0; padding:0; }
+    .container { max-width:500px; margin:50px auto; background:white; padding:20px 30px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.1); }
+    h2 { color:#0ea5e9; text-align:center; }
+    p { font-size:14px; color:#475569; margin:8px 0; }
+    .amount { font-weight:bold; font-size:20px; margin:15px 0; }
+    .pay-btn { width:100%; padding:12px; margin-top:10px; background:linear-gradient(135deg, #0ea5e9, #0284c7); color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer; }
+    .pay-btn:hover { transform:translateY(-2px); box-shadow:0 8px 15px rgba(0,0,0,0.3); }
+    .payment-methods { margin:15px 0; }
+    .payment-method { margin:8px 0; padding:10px; border:1px solid #cbd5f5; border-radius:8px; cursor:pointer; }
+    .note { font-size:12px; color:red; margin-top:10px; }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h2>Payment for Appointment</h2>
+  <p>Booking Amount: ₹199</p>
+  <p>Handling Charges: ₹9 + GST (18%)</p>
+  <p class="amount" id="totalAmount">Total: ₹0</p>
+
+  <div class="payment-methods">
+    <div class="payment-method" onclick="selectMethod('UPI')">UPI (ID: 9665227998@axl)</div>
+    <div class="payment-method" onclick="selectMethod('Card')">Credit / Debit Card</div>
+    <div class="payment-method" onclick="selectMethod('NetBanking')">Net Banking</div>
+  </div>
+
+  <button class="pay-btn" id="payBtn">Pay Now</button>
+  <p class="note">* Payment is non-refundable</p>
+</div>
+
+<script>
+let selectedMethod = null;
+const BASE = 199;
+const HANDLING = 9;
+const GST = 0.18;
+
+function calculateTotal() {
+  const total = (BASE + HANDLING) * (1 + GST);
+  document.getElementById("totalAmount").textContent = "Total: ₹" + total.toFixed(2);
+  return total.toFixed(2);
+}
+
+calculateTotal();
+
+function selectMethod(method) {
+  selectedMethod = method;
+  alert("Payment Method Selected: " + method);
+}
+
+document.getElementById("payBtn").onclick = () => {
+  if (!selectedMethod) {
+    alert("Please select a payment method!");
+    return;
+  }
+
+  const total = calculateTotal();
+  const confirmPayment = confirm(`Pay ₹${total} via ${selectedMethod}?`);
+
+  if (confirmPayment) {
+    // Save appointment permanently
+    const pending = JSON.parse(localStorage.getItem("pendingBooking"));
+    const appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+    appointments.push({ ...pending, paymentMethod: selectedMethod, amountPaid: total });
+    localStorage.setItem("appointments", JSON.stringify(appointments));
+
+    // Clear pending
+    localStorage.removeItem("pendingBooking");
+
+    alert("✅ Payment Successful! Appointment Confirmed.");
+    window.location.href = "appointment.html"; // redirect to appointments page
+  }
+}
+</script>
+
+</body>
+</html>

@@ -107,7 +107,7 @@ addLocationBtn.addEventListener('click', () => {
 });
 
 function initMap() {
-  const defaultLocation = { lat: 20.2961, lng: 85.8245 }; // Example: Bhubaneswar
+  const defaultLocation = { lat: 20.2961, lng: 85.8245 }; // Bhubaneswar
   map = new google.maps.Map(document.getElementById('map'), {
     center: defaultLocation,
     zoom: 12
@@ -125,13 +125,51 @@ function initMap() {
 // Form submission
 document.getElementById('doctorForm').addEventListener('submit', function(e){
   e.preventDefault();
+
+  const clinicName = document.getElementById('clinicName').value.trim();
+  const doctorName = document.getElementById('doctorName').value.trim();
+  const category = document.getElementById('category').value;
+  const experience = document.getElementById('experience').value;
+  const age = document.getElementById('age').value;
   const adhar = document.getElementById('adhar').value.trim();
+  const clinicLocation = clinicLocationInput.value;
+
   if(!/^\d{12}$/.test(adhar)){
     alert('Aadhaar number must be 12 digits');
     return;
   }
-  alert('Doctor registered successfully!\nLocation: '+clinicLocationInput.value);
-  this.reset();
+
+  const photoInput = document.getElementById('photo').files[0];
+  const certInput = document.getElementById('certificate').files[0];
+
+  if(!photoInput || !certInput){
+    alert('Please upload both photo and certificate');
+    return;
+  }
+
+  const readerPhoto = new FileReader();
+  readerPhoto.onload = function() {
+    const photoBase64 = readerPhoto.result;
+
+    const readerCert = new FileReader();
+    readerCert.onload = function() {
+      const certBase64 = readerCert.result;
+
+      const doctor = {
+        clinicName, doctorName, category, experience, age, adhar,
+        clinicLocation, photo: photoBase64, certificate: certBase64
+      };
+
+      const doctors = JSON.parse(localStorage.getItem('registeredDoctors')) || [];
+      doctors.push(doctor);
+      localStorage.setItem('registeredDoctors', JSON.stringify(doctors));
+
+      alert('✅ Doctor registered successfully!');
+      document.getElementById('doctorForm').reset();
+    };
+    readerCert.readAsDataURL(certInput);
+  };
+  readerPhoto.readAsDataURL(photoInput);
 });
 </script>
 

@@ -235,51 +235,61 @@
 </section>
 
 <!-- BOOKING MODAL -->
-<div id="bookingModal" class="modal-overlay" style="display:none;">
+<div id="bookingModal" class="modal-overlay">
   <div class="modal">
     <button class="modal-close">&times;</button>
-    <h2>Book Appointment</h2>
-    <p>with <strong id="bookingDoctorName"></strong></p>
+    <h3>Book Appointment</h3>
+    <p>Doctor: <strong id="bookingDoctorName"></strong></p>
 
     <form id="bookingForm">
       <input type="date" id="bookingDate" required>
-      <select id="bookingTime" required>
-        <option value="">Select time</option>
-        <option value="09:00 AM">09:00 AM</option>
-        <option value="10:00 AM">10:00 AM</option>
-        <option value="11:00 AM">11:00 AM</option>
+
+      <select id="timeHalf" required>
+        <option value="">Select Time Half</option>
+        <option value="morning">10:00 AM – 1:30 PM</option>
+        <option value="afternoon">3:00 PM – 6:30 PM</option>
+        <option value="evening">7:00 PM – 9:30 PM</option>
       </select>
+
+      <select id="bookingTime" required>
+        <option value="">Select Slot</option>
+      </select>
+
       <button type="submit">Confirm Booking</button>
     </form>
   </div>
 </div>
 
 <script>
-/* FILTER */
-const specialtyFilter = document.getElementById("specialtyFilter");
-const locationFilter = document.getElementById("locationFilter");
-const cards = document.querySelectorAll(".doctor-card");
-
-function filterDoctors() {
-  const s = specialtyFilter.value;
-  const l = locationFilter.value;
-
-  cards.forEach(card => {
-    const ok =
-      (s === "" || card.dataset.specialty === s) &&
-      (l === "" || card.dataset.location === l);
-    card.style.display = ok ? "block" : "none";
-  });
-}
-
-specialtyFilter.addEventListener("change", filterDoctors);
-locationFilter.addEventListener("change", filterDoctors);
-
-/* BOOKING */
+/* ================= BOOKING ================= */
 const modal = document.getElementById("bookingModal");
 const bookingDoctorName = document.getElementById("bookingDoctorName");
+const bookingDate = document.getElementById("bookingDate");
+const bookingTime = document.getElementById("bookingTime");
+const timeHalf = document.getElementById("timeHalf");
 let selectedDoctor = {};
 
+const MAX_SLOTS = 25;
+
+/* SLOT GENERATOR */
+function generateSlots(start, end) {
+  const slots = [];
+  let current = new Date(`1970-01-01 ${start}`);
+  const endTime = new Date(`1970-01-01 ${end}`);
+  while (current < endTime && slots.length < MAX_SLOTS) {
+    slots.push(current.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }));
+    current.setMinutes(current.getMinutes() + 9); // approx 25 slots
+  }
+  return slots;
+}
+
+const SLOT_MAP = {
+  morning: generateSlots("10:00", "13:30"),
+  afternoon: generateSlots("15:00", "18:30"),
+  evening: generateSlots("19:00", "21:30")
+};
+
+/* OPEN MODAL */
 document.querySelectorAll(".book-btn").forEach(btn => {
   btn.onclick = () => {
     const card = btn.closest(".doctor-card");
@@ -293,31 +303,60 @@ document.querySelectorAll(".book-btn").forEach(btn => {
   };
 });
 
+/* LOAD SLOTS */
+timeHalf.addEventListener("change", () => {
+  bookingTime.innerHTML = `<option value="">Select Slot</option>`;
+  if (!bookingDate.value) {
+    alert("Please select date first");
+    timeHalf.value = "";
+    return;
+  }
+  const appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+  SLOT_MAP[timeHalf.value].forEach(slot => {
+    const isBooked = appointments.some(a =>
+      a.name === selectedDoctor.name &&
+      a.date === bookingDate.value &&
+      a.time === slot
+    );
+    const opt = document.createElement("option");
+    opt.value = slot;
+    opt.textContent = isBooked ? `${slot} (Full)` : slot;
+    opt.disabled = isBooked;
+    bookingTime.appendChild(opt);
+  });
+});
+
+/* CONFIRM BOOKING */
 document.getElementById("bookingForm").onsubmit = e => {
   e.preventDefault();
   const date = bookingDate.value;
   const time = bookingTime.value;
 
-  const appointments = JSON.parse(localStorage.getItem("appointments")) || [];
-  appointments.push({ ...selectedDoctor, date, time });
-  localStorage.setItem("appointments", JSON.stringify(appointments));
+  if (!time) {
+    alert("Please select a slot");
+    return;
+  }
 
-  alert("Appointment Booked!");
-  modal.style.display = "none";
-  e.target.reset();
+  // Save pending booking in localStorage
+  localStorage.setItem("pendingBooking", JSON.stringify({
+    ...selectedDoctor,
+    date,
+    time
+  }));
+
+  // Redirect to payment page
+  window.location.href = "payment.html";
 };
 
+/* CLOSE MODAL */
 document.querySelector(".modal-close").onclick = () => modal.style.display = "none";
 
-// Mobile menu toggle
-const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
-const nav = document.querySelector('.nav');
-
-mobileMenuBtn.addEventListener('click', () => {
-  nav.classList.toggle('active');
-});
-
+/* MOBILE MENU */
+const mobileMenuBtn = document.querySelector(".mobile-menu-btn");
+const nav = document.querySelector(".nav");
+mobileMenuBtn.addEventListener("click", () => nav.classList.toggle("active"));
 </script>
+
 
 </body>
 </html>
