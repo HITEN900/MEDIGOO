@@ -1,167 +1,1488 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Customer Support Chat - MediGo</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Support Chat - MediGo | 24/7 Healthcare Assistance</title>
+    <meta name="description" content="Get instant help from MediGo support team. 24/7 customer service for appointment booking, technical issues, and healthcare queries.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* ================= CSS VARIABLES ================= */
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --secondary: #10b981;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --text-muted: #6b7280;
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
+            --border: #e5e7eb;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
 
-  <link rel="stylesheet" href="style.css">
+        /* ================= RESET & BASE ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
-  <style>
-    body {
-      margin: 0;
-      background: #f8fafc;
-      font-family: Arial, sans-serif;
-    }
+        html {
+            scroll-behavior: smooth;
+        }
 
-    .chat-container {
-      max-width: 600px;
-      height: 80vh;
-      margin: 50px auto;
-      background: #ffffff;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
-      display: flex;
-      flex-direction: column;
-    }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
 
-    .chat-header {
-      background: #0ea5e9;
-      color: white;
-      padding: 15px;
-      border-radius: 12px 12px 0 0;
-      font-size: 18px;
-      font-weight: bold;
-    }
+        /* ================= HEADER ================= */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--bg-white);
+            box-shadow: var(--shadow-sm);
+            padding: 1rem 0;
+        }
 
-    .chat-messages {
-      flex: 1;
-      padding: 15px;
-      overflow-y: auto;
-    }
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
 
-    .message {
-      margin-bottom: 10px;
-      padding: 10px 14px;
-      border-radius: 10px;
-      max-width: 75%;
-      font-size: 14px;
-      line-height: 1.4;
-    }
+        .logo img {
+            height: 45px;
+            width: auto;
+            transition: var(--transition);
+        }
 
-    .user {
-      background: #e0f2fe;
-      margin-left: auto;
-    }
+        .logo img:hover {
+            transform: scale(1.05);
+        }
 
-    .support {
-      background: #f1f5f9;
-      margin-right: auto;
-    }
+        .nav-desktop {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            list-style: none;
+        }
 
-    .chat-input {
-      display: flex;
-      padding: 10px;
-      border-top: 1px solid #e5e7eb;
-    }
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+            position: relative;
+        }
 
-    .chat-input input {
-      flex: 1;
-      padding: 10px;
-      border-radius: 8px;
-      border: 1px solid #cbd5f5;
-      outline: none;
-    }
+        .nav-link:hover {
+            color: var(--primary);
+            background: var(--primary-light);
+        }
 
-    .chat-input button {
-      margin-left: 10px;
-      padding: 10px 18px;
-      background: #0ea5e9;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-    }
+        .nav-link.active {
+            color: var(--primary);
+        }
 
-    .chat-input button:hover {
-      background: #0284c7;
-    }
-  </style>
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        /* ================= MAIN CONTENT ================= */
+        .main-content {
+            flex: 1;
+            padding: 2rem 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* ================= CHAT CONTAINER ================= */
+        .chat-wrapper {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 1.5rem;
+            height: calc(100vh - 160px);
+        }
+
+        /* ================= SIDEBAR ================= */
+        .chat-sidebar {
+            background: var(--bg-white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+        }
+
+        .sidebar-header h2 {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .support-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            background: var(--secondary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .sidebar-content {
+            padding: 1.5rem;
+            flex: 1;
+            overflow-y: auto;
+        }
+
+        .quick-actions {
+            margin-bottom: 2rem;
+        }
+
+        .quick-actions h3 {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .quick-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .quick-btn {
+            padding: 0.75rem 1rem;
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            text-align: left;
+            cursor: pointer;
+            transition: var(--transition);
+            font-size: 0.875rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            color: var(--text-primary);
+        }
+
+        .quick-btn:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+            transform: translateX(4px);
+        }
+
+        .chat-history {
+            border-top: 1px solid var(--border);
+            padding-top: 1.5rem;
+        }
+
+        .chat-history h3 {
+            font-size: 1rem;
+            color: var(--text-secondary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .history-list {
+            list-style: none;
+        }
+
+        .history-item {
+            padding: 0.75rem;
+            border-radius: var(--radius-md);
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border: 1px solid transparent;
+        }
+
+        .history-item:hover {
+            background: var(--bg-light);
+            border-color: var(--border);
+        }
+
+        .history-item.active {
+            background: var(--primary-light);
+            border-color: var(--primary);
+        }
+
+        .history-date {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.25rem;
+        }
+
+        .history-preview {
+            font-size: 0.875rem;
+            color: var(--text-primary);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ================= MAIN CHAT ================= */
+        .chat-main {
+            display: flex;
+            flex-direction: column;
+            background: var(--bg-white);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .chat-header {
+            padding: 1.5rem;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .agent-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .agent-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--secondary), var(--primary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: white;
+            border: 3px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .agent-details h3 {
+            font-size: 1.125rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .agent-role {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .header-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .header-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.1);
+        }
+
+        /* ================= CHAT MESSAGES ================= */
+        .chat-messages {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            background: var(--bg-light);
+        }
+
+        .message-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .message {
+            max-width: 70%;
+            padding: 0.875rem 1.125rem;
+            border-radius: var(--radius-lg);
+            position: relative;
+            animation: messageAppear 0.3s ease;
+            box-shadow: var(--shadow-sm);
+        }
+
+        @keyframes messageAppear {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: var(--primary);
+            color: white;
+            border-bottom-right-radius: var(--radius-sm);
+        }
+
+        .message.agent {
+            align-self: flex-start;
+            background: var(--bg-white);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-bottom-left-radius: var(--radius-sm);
+        }
+
+        .message.typing {
+            align-self: flex-start;
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            width: 80px;
+            padding: 1rem;
+        }
+
+        .message-content {
+            font-size: 0.9375rem;
+            line-height: 1.5;
+        }
+
+        .message-time {
+            font-size: 0.75rem;
+            opacity: 0.7;
+            margin-top: 0.5rem;
+            text-align: right;
+        }
+
+        .message.agent .message-time {
+            text-align: left;
+        }
+
+        .message-status {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Typing indicator */
+        .typing-indicator {
+            display: flex;
+            gap: 0.25rem;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .typing-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            animation: typingAnimation 1.4s infinite;
+        }
+
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes typingAnimation {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-4px); }
+        }
+
+        /* ================= CHAT INPUT ================= */
+        .chat-input-area {
+            padding: 1.5rem;
+            border-top: 1px solid var(--border);
+            background: var(--bg-white);
+            flex-shrink: 0;
+        }
+
+        .input-wrapper {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+
+        .input-container {
+            flex: 1;
+            position: relative;
+        }
+
+        .chat-input {
+            width: 100%;
+            min-height: 56px;
+            max-height: 120px;
+            padding: 1rem 3rem 1rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-lg);
+            font-size: 0.9375rem;
+            resize: none;
+            transition: var(--transition);
+            font-family: inherit;
+            line-height: 1.5;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .input-actions {
+            position: absolute;
+            right: 0.75rem;
+            bottom: 0.75rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .input-action-btn {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.25rem;
+            transition: var(--transition);
+        }
+
+        .input-action-btn:hover {
+            color: var(--primary);
+        }
+
+        .send-btn {
+            width: 56px;
+            height: 56px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-lg);
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .send-btn:hover {
+            background: var(--primary-dark);
+            transform: scale(1.05);
+        }
+
+        .send-btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ================= FOOTER ================= */
+        .footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            padding: 3rem 1rem 1.5rem;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-section h4 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1.125rem;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #1e293b;
+            color: #94a3b8;
+            font-size: 0.875rem;
+        }
+
+        /* ================= RESPONSIVE DESIGN ================= */
+        @media (max-width: 1024px) {
+            .chat-wrapper {
+                grid-template-columns: 250px 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-desktop {
+                position: fixed;
+                top: 73px;
+                left: 0;
+                right: 0;
+                background: var(--bg-white);
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: var(--shadow-lg);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+                z-index: 999;
+            }
+
+            .nav-desktop.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .chat-wrapper {
+                grid-template-columns: 1fr;
+                height: calc(100vh - 130px);
+            }
+
+            .chat-sidebar {
+                display: none;
+            }
+
+            .chat-sidebar.active {
+                display: flex;
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                z-index: 1001;
+                border-radius: 0;
+            }
+
+            .sidebar-toggle {
+                display: block;
+            }
+
+            .message {
+                max-width: 85%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .main-content {
+                padding: 1rem;
+            }
+
+            .chat-header {
+                padding: 1rem;
+            }
+
+            .agent-info {
+                gap: 0.75rem;
+            }
+
+            .agent-avatar {
+                width: 40px;
+                height: 40px;
+                font-size: 1.25rem;
+            }
+
+            .agent-details h3 {
+                font-size: 1rem;
+            }
+
+            .agent-role {
+                font-size: 0.75rem;
+            }
+
+            .chat-messages {
+                padding: 1rem;
+            }
+
+            .chat-input-area {
+                padding: 1rem;
+            }
+
+            .input-wrapper {
+                gap: 0.75rem;
+            }
+
+            .send-btn {
+                width: 48px;
+                height: 48px;
+            }
+
+            .message {
+                max-width: 90%;
+                padding: 0.75rem 1rem;
+            }
+        }
+
+        /* ================= UTILITY CLASSES ================= */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .text-muted {
+            color: var(--text-muted);
+        }
+
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mb-4 { margin-bottom: 2rem; }
+
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mt-3 { margin-top: 1.5rem; }
+        .mt-4 { margin-top: 2rem; }
+
+        /* ================= WELCOME OVERLAY ================= */
+        .welcome-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 1rem;
+        }
+
+        .welcome-modal {
+            background: var(--bg-white);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            max-width: 400px;
+            width: 100%;
+            text-align: center;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .welcome-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .welcome-title {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .welcome-text {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .welcome-btn {
+            padding: 0.75rem 1.5rem;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            width: 100%;
+        }
+
+        .welcome-btn:hover {
+            background: var(--primary-dark);
+        }
+    </style>
 </head>
-
 <body>
-  <header class="header">
-<a href="index.html" class="logo">
-  <img src="immages/logoo.png" alt="MediGo Logo">
-</a>    <ul class="nav">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="docter.html">Doctors</a></li>
-      <li><a href="appointment.html">Appointments</a></li>
-      <li><a href="contacts.html">Contact</a></li>
-    </ul>
-    <button class="mobile-menu-btn">☰</button>
-    
-  </header>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+<h1 style="
+    font-family: 'Arial', sans-serif;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #1e3a8a;
+    margin: 0;
+    padding: 6px 12px;
+    background: white;
+    border-radius: 8px;
+    border-left: 4px solid #10b981;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+">
+    <i class="fas fa-stethoscope" style="color: #ef4444; font-size: 1.1rem;"></i>
+    <span>MediGo</span>
+</h1>            </a>
 
-  <div class="chat-container">
-    <div class="chat-header">
-      💬 MediGo Customer Support
-    </div>
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
 
-    <div class="chat-messages" id="chatMessages">
-      <!-- Messages will appear here -->
-    </div>
-
-    <div class="chat-input">
-      <input type="text" id="chatInput" placeholder="Type your message...">
-      <button onclick="sendMessage()">Send</button>
-    </div>
-  </div>
-
-  <script>
-    const chatMessages = document.getElementById("chatMessages");
-    const chatInput = document.getElementById("chatInput");
-
-    // Get data from contact form
-    const userName = localStorage.getItem("chatUserName");
-    const firstMessage = localStorage.getItem("chatFirstMessage");
-
-    // Show first message automatically
-    if (firstMessage) {
-      chatMessages.innerHTML += `
-        <div class="message user">${firstMessage}</div>
-        <div class="message support">
-          Hello ${userName || ""}! 👋  
-          Thank you for contacting MediGo support.  
-          Our team will reply shortly.
+            <ul class="nav-desktop">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="docter.html" class="nav-link">Doctors</a></li>
+                <li><a href="appointment.html" class="nav-link">Appointments</a></li>
+                <li><a href="contacts.html" class="nav-link active">Contact</a></li>
+                <li><a href="support.html" class="nav-link active">Support Chat</a></li>
+            </ul>
         </div>
-      `;
-    }
+    </header>
 
-    function sendMessage() {
-      const msg = chatInput.value.trim();
-      if (msg === "") return;
+    <!-- WELCOME OVERLAY (First-time visitors) -->
+    <div id="welcomeOverlay" class="welcome-overlay hidden">
+        <div class="welcome-modal">
+            <div class="welcome-icon">💬</div>
+            <h2 class="welcome-title">Welcome to MediGo Support</h2>
+            <p class="welcome-text">
+                Our support team is available 24/7 to assist you with appointment booking, 
+                technical issues, and general healthcare queries. How can we help you today?
+            </p>
+            <button class="welcome-btn" id="startChatBtn">Start Chatting</button>
+        </div>
+    </div>
 
-      // User message
-      chatMessages.innerHTML += `
-        <div class="message user">${msg}</div>
-      `;
-      chatInput.value = "";
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <div class="chat-wrapper">
+            <!-- SIDEBAR -->
+            <div class="chat-sidebar" id="chatSidebar">
+                <div class="sidebar-header">
+                    <h2><i class="fas fa-headset"></i> Support Center</h2>
+                    <div class="support-status">
+                        <span class="status-indicator"></span>
+                        <span>Online • 24/7 Available</span>
+                    </div>
+                </div>
 
-      chatMessages.scrollTop = chatMessages.scrollHeight;
+                <div class="sidebar-content">
+                    <div class="quick-actions">
+                        <h3><i class="fas fa-bolt"></i> Quick Actions</h3>
+                        <div class="quick-buttons">
+                            <button class="quick-btn" data-action="booking">
+                                <i class="fas fa-calendar-plus"></i>
+                                <span>Help with booking</span>
+                            </button>
+                            <button class="quick-btn" data-action="prescription">
+                                <i class="fas fa-prescription"></i>
+                                <span>Prescription issues</span>
+                            </button>
+                            <button class="quick-btn" data-action="technical">
+                                <i class="fas fa-tools"></i>
+                                <span>Technical problem</span>
+                            </button>
+                            <button class="quick-btn" data-action="billing">
+                                <i class="fas fa-credit-card"></i>
+                                <span>Billing inquiry</span>
+                            </button>
+                            <button class="quick-btn" data-action="doctor">
+                                <i class="fas fa-user-md"></i>
+                                <span>Find a doctor</span>
+                            </button>
+                        </div>
+                    </div>
 
-      // Fake support reply (demo)
-      setTimeout(() => {
-        chatMessages.innerHTML += `
-          <div class="message support">
-            Thanks for your message 👍  
-            Please wait while we check this for you.
-          </div>
-        `;
-        chatMessages.scrollTop = chatMessages.scrollHeight;
-      }, 1000);
-    }
-  </script>
+                    <div class="chat-history">
+                        <h3><i class="fas fa-history"></i> Recent Chats</h3>
+                        <ul class="history-list" id="historyList">
+                            <!-- History items will be dynamically added -->
+                        </ul>
+                    </div>
 
+                    <div class="mt-4">
+                        <button class="quick-btn" id="toggleSidebar" style="width: 100%; justify-content: center;">
+                            <i class="fas fa-times"></i>
+                            <span>Close Sidebar</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- MAIN CHAT -->
+            <div class="chat-main">
+                <div class="chat-header">
+                    <div class="agent-info">
+                        <div class="agent-avatar">SR</div>
+                        <div class="agent-details">
+                            <h3>Sophia Rodriguez</h3>
+                            <div class="agent-role">
+                                <i class="fas fa-shield-alt"></i>
+                                <span>Senior Support Specialist</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="header-actions">
+                        <button class="header-btn" id="sidebarToggle" aria-label="Toggle sidebar">
+                            <i class="fas fa-bars"></i>
+                        </button>
+                        <button class="header-btn" id="emailTranscript" aria-label="Email transcript">
+                            <i class="fas fa-envelope"></i>
+                        </button>
+                        <button class="header-btn" id="endChat" aria-label="End chat">
+                            <i class="fas fa-phone-slash"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- CHAT MESSAGES -->
+                <div class="chat-messages" id="chatMessages">
+                    <!-- Messages will be dynamically added here -->
+                </div>
+
+                <!-- CHAT INPUT -->
+                <div class="chat-input-area">
+                    <div class="input-wrapper">
+                        <div class="input-container">
+                            <textarea 
+                                class="chat-input" 
+                                id="chatInput" 
+                                placeholder="Type your message here... (Press Enter to send, Shift+Enter for new line)"
+                                rows="1"
+                            ></textarea>
+                            <div class="input-actions">
+                                <button class="input-action-btn" id="attachFile" aria-label="Attach file">
+                                    <i class="fas fa-paperclip"></i>
+                                </button>
+                                <button class="input-action-btn" id="addEmoji" aria-label="Add emoji">
+                                    <i class="far fa-smile"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <button class="send-btn" id="sendMessage" aria-label="Send message">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>MediGo Support</h4>
+                <p>24/7 customer support for all your healthcare needs. We're here to help you navigate your health journey.</p>
+            </div>
+
+            <div class="footer-section">
+                <h4>Contact Channels</h4>
+                <ul class="footer-links">
+                    <li><i class="fas fa-phone"></i> +91 9556227000</li>
+                    <li><i class="fas fa-envelope"></i> support@medigo.com</li>
+                    <li><i class="fas fa-comments"></i> Live Chat (24/7)</li>
+                    <li><i class="fas fa-fax"></i> Fax: +91 33 1234 5678</li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Quick Help</h4>
+                <ul class="footer-links">
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="troubleshooting.html">Troubleshooting</a></li>
+                    <li><a href="privacy.html">Privacy Policy</a></li>
+                    <li><a href="terms.html">Terms of Service</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Response Times</h4>
+                <ul class="footer-links">
+                    <li>Live Chat: Instant</li>
+                    <li>Email: Within 2 hours</li>
+                    <li>Phone: Within 5 minutes</li>
+                    <li>Emergency: 24/7 Available</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; <span id="currentYear">2024</span> MediGo. All rights reserved. Customer Support available 24/7.</p>
+        </div>
+    </footer>
+
+    <script>
+        // ================= INITIALIZATION =================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set current year
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+            
+            // Initialize chat
+            initializeChat();
+            
+            // Initialize event listeners
+            initializeEventListeners();
+            
+            // Show welcome message for first-time visitors
+            setTimeout(() => {
+                const hasVisited = localStorage.getItem('hasVisitedChat');
+                if (!hasVisited) {
+                    showWelcomeOverlay();
+                }
+            }, 500);
+        });
+
+        // ================= CHAT STATE =================
+        const chatState = {
+            messages: [],
+            isAgentTyping: false,
+            agentTypingTimeout: null,
+            userData: {},
+            chatHistory: []
+        };
+
+        // ================= INITIALIZE CHAT =================
+        function initializeChat() {
+            // Load user data from localStorage or contact form
+            loadUserData();
+            
+            // Load chat history
+            loadChatHistory();
+            
+            // Initialize welcome messages
+            initializeWelcomeMessages();
+            
+            // Set up auto-resize for textarea
+            setupTextareaAutoResize();
+        }
+
+        // ================= USER DATA =================
+        function loadUserData() {
+            // Try to get data from contact form
+            const contactData = localStorage.getItem('contactFormData');
+            if (contactData) {
+                try {
+                    chatState.userData = JSON.parse(contactData);
+                } catch (e) {
+                    console.error('Error parsing contact data:', e);
+                }
+            }
+            
+            // Get any existing chat history for this user
+            const storedHistory = localStorage.getItem('medigoChatHistory');
+            if (storedHistory) {
+                try {
+                    chatState.chatHistory = JSON.parse(storedHistory);
+                } catch (e) {
+                    console.error('Error parsing chat history:', e);
+                }
+            }
+        }
+
+        // ================= WELCOME MESSAGES =================
+        function initializeWelcomeMessages() {
+            const chatMessages = document.getElementById('chatMessages');
+            
+            // Add initial welcome message
+            addMessage({
+                type: 'agent',
+                content: `Hello ${chatState.userData.name || 'there'}! 👋 I'm Sophia, your MediGo support specialist. How can I assist you today?`,
+                timestamp: new Date()
+            });
+            
+            // Add quick help options
+            setTimeout(() => {
+                addMessage({
+                    type: 'agent',
+                    content: `Here are some common things I can help with:\n\n• Booking or rescheduling appointments\n• Technical issues with the platform\n• Prescription and medication queries\n• Billing and payment questions\n• Finding the right specialist\n\nJust let me know what you need help with!`,
+                    timestamp: new Date()
+                });
+            }, 1000);
+        }
+
+        // ================= MESSAGE MANAGEMENT =================
+        function addMessage(message) {
+            // Add to state
+            chatState.messages.push(message);
+            
+            // Render message
+            renderMessage(message);
+            
+            // Save to history
+            saveToHistory();
+            
+            // Auto-scroll to bottom
+            scrollToBottom();
+        }
+
+        function renderMessage(message) {
+            const chatMessages = document.getElementById('chatMessages');
+            
+            // Remove typing indicator if present
+            const typingIndicator = document.querySelector('.message.typing');
+            if (typingIndicator) {
+                typingIndicator.remove();
+            }
+            
+            // Format timestamp
+            const timeString = formatTime(message.timestamp);
+            
+            // Create message element
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message-group ${message.type}-group`;
+            
+            if (message.type === 'typing') {
+                messageDiv.innerHTML = `
+                    <div class="message typing">
+                        <div class="typing-indicator">
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                            <div class="typing-dot"></div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                messageDiv.innerHTML = `
+                    <div class="message ${message.type}">
+                        <div class="message-content">${formatMessageContent(message.content)}</div>
+                        <div class="message-time">${timeString}</div>
+                        ${message.type === 'user' ? '<div class="message-status"><i class="fas fa-check"></i> Delivered</div>' : ''}
+                    </div>
+                `;
+            }
+            
+            chatMessages.appendChild(messageDiv);
+        }
+
+        function formatMessageContent(content) {
+            // Convert newlines to <br>
+            return content.replace(/\n/g, '<br>');
+        }
+
+        function formatTime(date) {
+            return date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        }
+
+        // ================= AGENT RESPONSES =================
+        function simulateAgentResponse(userMessage) {
+            // Show typing indicator
+            showTypingIndicator();
+            
+            // Clear any existing timeout
+            if (chatState.agentTypingTimeout) {
+                clearTimeout(chatState.agentTypingTimeout);
+            }
+            
+            // Simulate typing delay (1-3 seconds)
+            const typingTime = 1000 + Math.random() * 2000;
+            
+            chatState.agentTypingTimeout = setTimeout(() => {
+                // Remove typing indicator
+                const typingIndicator = document.querySelector('.message.typing');
+                if (typingIndicator) {
+                    typingIndicator.remove();
+                }
+                
+                // Generate response based on user message
+                const response = generateResponse(userMessage.toLowerCase());
+                
+                // Add agent response
+                addMessage({
+                    type: 'agent',
+                    content: response,
+                    timestamp: new Date()
+                });
+                
+                chatState.isAgentTyping = false;
+            }, typingTime);
+        }
+
+        function showTypingIndicator() {
+            chatState.isAgentTyping = true;
+            
+            const chatMessages = document.getElementById('chatMessages');
+            const typingDiv = document.createElement('div');
+            typingDiv.className = 'message-group agent-group';
+            typingDiv.innerHTML = `
+                <div class="message typing">
+                    <div class="typing-indicator">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(typingDiv);
+            scrollToBottom();
+        }
+
+        function generateResponse(userMessage) {
+            const responses = {
+                greetings: [
+                    "I'm doing well, thank you! How can I assist you with your healthcare needs today?",
+                    "Hello! I'm here to help you with anything related to MediGo. What's on your mind?",
+                    "Hi there! Ready to help you navigate your health journey. What do you need assistance with?"
+                ],
+                booking: [
+                    "I can definitely help with appointment booking! Are you looking to book a new appointment or reschedule an existing one?",
+                    "For booking appointments, you can visit our 'Find Doctors' page or I can guide you through the process. Would you like me to help you find a suitable doctor?",
+                    "Appointment booking is easy! You can book directly from the doctor's profile. Need help finding a specific specialist?"
+                ],
+                technical: [
+                    "I'm sorry you're experiencing technical issues. Could you describe what's happening? This will help me provide better assistance.",
+                    "Technical issues can be frustrating. Let me help you troubleshoot. What specifically isn't working?",
+                    "For technical support, please try clearing your browser cache first. If the issue persists, let me know the exact error message you're seeing."
+                ],
+                prescription: [
+                    "For prescription-related queries, you'll need to contact your doctor directly through their profile. I can help you find their contact information.",
+                    "Prescription renewals are handled by your doctor. Would you like me to help you connect with them?",
+                    "For medication queries, it's best to consult with your prescribing doctor. I can help you schedule a follow-up appointment if needed."
+                ],
+                billing: [
+                    "For billing inquiries, please check your email for the invoice or visit the 'My Appointments' section. What specific billing question do you have?",
+                    "I can help with billing questions. Are you looking for a receipt, having payment issues, or need clarification on charges?",
+                    "Billing matters are important. Please provide your appointment ID and I'll look into it for you."
+                ],
+                default: [
+                    "I understand. Let me connect you with the right information. Could you provide more details so I can assist you better?",
+                    "Thanks for sharing. I'll do my best to help you with this. Let me check our resources for the best solution.",
+                    "I appreciate you reaching out about this. Let me gather the information you need to resolve this matter."
+                ]
+            };
+
+            // Determine response category
+            let category = 'default';
+            
+            if (userMessage.includes('hello') || userMessage.includes('hi') || userMessage.includes('hey')) {
+                category = 'greetings';
+            } else if (userMessage.includes('book') || userMessage.includes('appointment') || userMessage.includes('schedule')) {
+                category = 'booking';
+            } else if (userMessage.includes('error') || userMessage.includes('not working') || userMessage.includes('bug') || userMessage.includes('technical')) {
+                category = 'technical';
+            } else if (userMessage.includes('prescription') || userMessage.includes('medication') || userMessage.includes('medicine')) {
+                category = 'prescription';
+            } else if (userMessage.includes('bill') || userMessage.includes('payment') || userMessage.includes('charge') || userMessage.includes('invoice')) {
+                category = 'billing';
+            }
+            
+            // Select random response from category
+            const categoryResponses = responses[category];
+            return categoryResponses[Math.floor(Math.random() * categoryResponses.length)];
+        }
+
+        // ================= TEXTAREA AUTO-RESIZE =================
+        function setupTextareaAutoResize() {
+            const textarea = document.getElementById('chatInput');
+            
+            textarea.addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+            });
+            
+            // Handle Enter key (send on Enter, new line on Shift+Enter)
+            textarea.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendUserMessage();
+                }
+            });
+        }
+
+        // ================= SEND MESSAGE =================
+        function sendUserMessage() {
+            const textarea = document.getElementById('chatInput');
+            const message = textarea.value.trim();
+            
+            if (!message) return;
+            
+            // Add user message
+            addMessage({
+                type: 'user',
+                content: message,
+                timestamp: new Date()
+            });
+            
+            // Clear input and reset height
+            textarea.value = '';
+            textarea.style.height = 'auto';
+            
+            // Disable send button temporarily
+            const sendBtn = document.getElementById('sendMessage');
+            sendBtn.disabled = true;
+            setTimeout(() => sendBtn.disabled = false, 1000);
+            
+            // Simulate agent response
+            simulateAgentResponse(message);
+        }
+
+        // ================= CHAT HISTORY =================
+        function loadChatHistory() {
+            const historyList = document.getElementById('historyList');
+            
+            // Add sample history items
+            const sampleHistory = [
+                { id: 1, date: 'Today, 10:30 AM', preview: 'Help with appointment booking...' },
+                { id: 2, date: 'Yesterday, 3:45 PM', preview: 'Technical issue with login...' },
+                { id: 3, date: 'Dec 15, 2024', preview: 'Prescription renewal question...' },
+                { id: 4, date: 'Dec 10, 2024', preview: 'Billing inquiry for appointment...' }
+            ];
+            
+            sampleHistory.forEach(item => {
+                const li = document.createElement('li');
+                li.className = 'history-item';
+                li.innerHTML = `
+                    <div class="history-date">${item.date}</div>
+                    <div class="history-preview">${item.preview}</div>
+                `;
+                historyList.appendChild(li);
+            });
+        }
+
+        function saveToHistory() {
+            // Save only the last 50 messages
+            const recentMessages = chatState.messages.slice(-50);
+            localStorage.setItem('medigoChatHistory', JSON.stringify(recentMessages));
+        }
+
+        // ================= EVENT LISTENERS =================
+        function initializeEventListeners() {
+            // Mobile menu toggle
+            document.querySelector('.mobile-menu-btn').addEventListener('click', () => {
+                document.querySelector('.nav-desktop').classList.toggle('active');
+            });
+            
+            // Send button
+            document.getElementById('sendMessage').addEventListener('click', sendUserMessage);
+            
+            // Quick action buttons
+            document.querySelectorAll('.quick-btn[data-action]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const action = this.dataset.action;
+                    handleQuickAction(action);
+                });
+            });
+            
+            // Sidebar toggle
+            document.getElementById('sidebarToggle').addEventListener('click', toggleSidebar);
+            document.getElementById('toggleSidebar').addEventListener('click', toggleSidebar);
+            
+            // Email transcript
+            document.getElementById('emailTranscript').addEventListener('click', () => {
+                alert('Transcript email feature would be implemented here in a production environment.');
+            });
+            
+            // End chat
+            document.getElementById('endChat').addEventListener('click', () => {
+                if (confirm('Are you sure you want to end this chat?')) {
+                    addMessage({
+                        type: 'agent',
+                        content: 'Thank you for chatting with MediGo Support! If you need further assistance, please don\'t hesitate to reach out again. Have a great day! 👋',
+                        timestamp: new Date()
+                    });
+                    document.getElementById('chatInput').disabled = true;
+                    document.getElementById('sendMessage').disabled = true;
+                }
+            });
+            
+            // Welcome overlay
+            document.getElementById('startChatBtn').addEventListener('click', () => {
+                document.getElementById('welcomeOverlay').classList.add('hidden');
+                localStorage.setItem('hasVisitedChat', 'true');
+            });
+            
+            // Attach file
+            document.getElementById('attachFile').addEventListener('click', () => {
+                alert('File attachment feature would be implemented here in a production environment.');
+            });
+            
+            // Add emoji
+            document.getElementById('addEmoji').addEventListener('click', () => {
+                alert('Emoji picker would open here in a production environment.');
+            });
+            
+            // Close mobile menu on link click
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    document.querySelector('.nav-desktop').classList.remove('active');
+                });
+            });
+        }
+
+        function handleQuickAction(action) {
+            const messages = {
+                booking: "I need help with booking an appointment.",
+                prescription: "I have a question about my prescription.",
+                technical: "I'm facing a technical issue with the platform.",
+                billing: "I have a billing inquiry.",
+                doctor: "Can you help me find a doctor?"
+            };
+            
+            const message = messages[action] || "I need assistance with something.";
+            
+            // Add as user message
+            addMessage({
+                type: 'user',
+                content: message,
+                timestamp: new Date()
+            });
+            
+            // Simulate agent response
+            simulateAgentResponse(message);
+            
+            // Close sidebar on mobile
+            if (window.innerWidth <= 768) {
+                toggleSidebar();
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('chatSidebar');
+            const isMobile = window.innerWidth <= 768;
+            
+            if (isMobile) {
+                sidebar.classList.toggle('active');
+            } else {
+                sidebar.classList.toggle('hidden');
+            }
+        }
+
+        function showWelcomeOverlay() {
+            document.getElementById('welcomeOverlay').classList.remove('hidden');
+        }
+
+        // ================= UTILITY FUNCTIONS =================
+        function scrollToBottom() {
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        // ================= RESPONSIVE BEHAVIOR =================
+        window.addEventListener('resize', () => {
+            const sidebar = document.getElementById('chatSidebar');
+            const isMobile = window.innerWidth <= 768;
+            
+            if (!isMobile && sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 </html>

@@ -3,81 +3,1279 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Payment - MediBook</title>
+  <title>Secure Payment | MediBook</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { font-family: Arial; background:#f1f5f9; color:#0f172a; margin:0; padding:0; }
-    .container { max-width:500px; margin:50px auto; background:white; padding:20px 30px; border-radius:12px; box-shadow:0 10px 25px rgba(0,0,0,0.1); }
-    h2 { color:#0ea5e9; text-align:center; }
-    p { font-size:14px; color:#475569; margin:8px 0; }
-    .amount { font-weight:bold; font-size:20px; margin:15px 0; }
-    .pay-btn { width:100%; padding:12px; margin-top:10px; background:linear-gradient(135deg, #0ea5e9, #0284c7); color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer; }
-    .pay-btn:hover { transform:translateY(-2px); box-shadow:0 8px 15px rgba(0,0,0,0.3); }
-    .payment-methods { margin:15px 0; }
-    .payment-method { margin:8px 0; padding:10px; border:1px solid #cbd5f5; border-radius:8px; cursor:pointer; }
-    .note { font-size:12px; color:red; margin-top:10px; }
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #dbeafe;
+      --secondary: #10b981;
+      --secondary-dark: #059669;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --success: #10b981;
+      --text-primary: #1f2937;
+      --text-secondary: #4b5563;
+      --text-muted: #6b7280;
+      --bg-light: #f8fafc;
+      --bg-white: #ffffff;
+      --border: #e5e7eb;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      --radius-sm: 0.375rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: var(--bg-light);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ================= NAVIGATION BAR ================= */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--bg-white);
+      box-shadow: var(--shadow-sm);
+      padding: 0.75rem 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      font-size: 2rem;
+      color: var(--primary);
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-subtitle {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-top: -2px;
+    }
+
+    .nav-desktop {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      list-style: none;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-md);
+      transition: all 0.3s ease;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .nav-link.active {
+      color: var(--primary);
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    /* ================= MAIN CONTENT ================= */
+    .main-content {
+      flex: 1;
+      padding: 2rem 0;
+    }
+
+    .payment-container {
+      max-width: 500px;
+      margin: 0 auto;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .page-title {
+      font-size: 2rem;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .page-subtitle {
+      color: var(--text-secondary);
+      font-size: 1rem;
+    }
+
+    /* ================= PAYMENT CARD ================= */
+    .payment-card {
+      background: var(--bg-white);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+
+    .payment-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .payment-icon {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.5rem;
+    }
+
+    .payment-info h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .payment-info p {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+    }
+
+    /* ================= AMOUNT BREAKDOWN ================= */
+    .amount-breakdown {
+      background: var(--bg-light);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .breakdown-item {
+      display: flex;
+      justify-content: space-between;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .breakdown-item:last-child {
+      border-bottom: none;
+    }
+
+    .breakdown-label {
+      color: var(--text-secondary);
+    }
+
+    .breakdown-value {
+      font-weight: 500;
+    }
+
+    .breakdown-total {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem 0;
+      margin-top: 1rem;
+      border-top: 2px solid var(--border);
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    /* ================= PAYMENT METHODS ================= */
+    .payment-methods {
+      margin-bottom: 2rem;
+    }
+
+    .methods-title {
+      font-size: 1.125rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .method-options {
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .method-option {
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .method-option:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .method-option.selected {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .method-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--bg-light);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--primary);
+      font-size: 1.25rem;
+    }
+
+    .method-info {
+      flex: 1;
+    }
+
+    .method-name {
+      font-weight: 500;
+      margin-bottom: 0.25rem;
+    }
+
+    .method-desc {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .method-radio {
+      width: 20px;
+      height: 20px;
+      border: 2px solid var(--border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .method-radio::after {
+      content: '';
+      width: 10px;
+      height: 10px;
+      background: var(--primary);
+      border-radius: 50%;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    .method-option.selected .method-radio::after {
+      opacity: 1;
+    }
+
+    /* ================= PAYMENT FORM ================= */
+    .payment-form {
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+      display: none;
+    }
+
+    .form-group.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .input-with-icon {
+      position: relative;
+    }
+
+    .input-icon {
+      position: absolute;
+      right: 1rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-muted);
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    /* ================= SECURITY BADGE ================= */
+    .security-badge {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem;
+      background: var(--bg-light);
+      border-radius: var(--radius-md);
+      margin-bottom: 2rem;
+    }
+
+    .security-icon {
+      color: var(--success);
+      font-size: 1.5rem;
+    }
+
+    .security-text {
+      flex: 1;
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+    }
+
+    /* ================= PAYMENT BUTTON ================= */
+    .payment-actions {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .btn {
+      padding: 1rem 2rem;
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      border: none;
+      flex: 1;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-secondary {
+      background: var(--bg-light);
+      color: var(--text-primary);
+      border: 1px solid var(--border);
+    }
+
+    .btn-secondary:hover {
+      background: #e5e7eb;
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    /* ================= TERMS ================= */
+    .terms {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 1.5rem;
+      line-height: 1.4;
+    }
+
+    .terms a {
+      color: var(--primary);
+      text-decoration: none;
+    }
+
+    .terms a:hover {
+      text-decoration: underline;
+    }
+
+    /* ================= FOOTER ================= */
+    .footer {
+      background: #0f172a;
+      color: #cbd5e1;
+      padding: 2rem 1rem 1rem;
+      margin-top: auto;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 1.5rem;
+      margin-top: 1.5rem;
+      border-top: 1px solid #1e293b;
+      color: #94a3b8;
+      font-size: 0.875rem;
+    }
+
+    .footer-bottom a {
+      color: #94a3b8;
+      text-decoration: none;
+      margin: 0 0.5rem;
+    }
+
+    .footer-bottom a:hover {
+      color: white;
+      text-decoration: underline;
+    }
+
+    /* ================= LOADING MODAL ================= */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: var(--bg-white);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      max-width: 400px;
+      width: 90%;
+      text-align: center;
+      animation: modalSlideIn 0.3s ease;
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .loading-spinner {
+      width: 50px;
+      height: 50px;
+      border: 4px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ================= SUCCESS MODAL ================= */
+    .success-modal .modal {
+      padding: 3rem 2rem;
+    }
+
+    .success-icon {
+      font-size: 4rem;
+      color: var(--success);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ================= RESPONSIVE ================= */
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .nav-desktop {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--bg-white);
+        flex-direction: column;
+        padding: 1rem;
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 999;
+      }
+
+      .nav-desktop.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .payment-card {
+        padding: 1.5rem;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .payment-actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .payment-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 0.75rem;
+      }
+
+      .method-option {
+        padding: 0.75rem;
+      }
+
+      .modal {
+        padding: 1.5rem;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-user-md"></i>
+        </div>
+        <div class="logo-text">
+          <span>MediBook</span>
+          <span class="logo-subtitle">Secure Payment</span>
+        </div>
+      </a>
 
-<div class="container">
-  <h2>Payment for Appointment</h2>
-  <p>Booking Amount: ₹199</p>
-  <p>Handling Charges: ₹9 + GST (18%)</p>
-  <p class="amount" id="totalAmount">Total: ₹0</p>
+      <button class="mobile-menu-btn" aria-label="Toggle menu">
+        <i class="fas fa-bars"></i>
+      </button>
 
-  <div class="payment-methods">
-    <div class="payment-method" onclick="selectMethod('UPI')">UPI (ID: 9665227998@axl)</div>
-    <div class="payment-method" onclick="selectMethod('Card')">Credit / Debit Card</div>
-    <div class="payment-method" onclick="selectMethod('NetBanking')">Net Banking</div>
+      <ul class="nav-desktop">
+        <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="doctor.html" class="nav-link"><i class="fas fa-search"></i> Find Doctors</a></li>
+        <li><a href="appointment.html" class="nav-link"><i class="fas fa-calendar-check"></i> Appointments</a></li>
+        <li><a href="doctor-register.html" class="nav-link"><i class="fas fa-user-plus"></i> For Doctors</a></li>
+        <li><a href="contact.html" class="nav-link"><i class="fas fa-headset"></i> Contact</a></li>
+      </ul>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="container">
+      <div class="payment-container">
+        <!-- PAGE HEADER -->
+        <div class="page-header">
+          <h1 class="page-title">Secure Payment</h1>
+          <p class="page-subtitle">Complete your appointment booking with secure payment</p>
+        </div>
+
+        <!-- PAYMENT CARD -->
+        <div class="payment-card">
+          <!-- PAYMENT HEADER -->
+          <div class="payment-header">
+            <div class="payment-icon">
+              <i class="fas fa-credit-card"></i>
+            </div>
+            <div class="payment-info">
+              <h3>Appointment Payment</h3>
+              <p id="appointmentDetails">Payment for your medical appointment</p>
+            </div>
+          </div>
+
+          <!-- AMOUNT BREAKDOWN -->
+          <div class="amount-breakdown">
+            <div class="breakdown-item">
+              <span class="breakdown-label">Appointment Fee</span>
+              <span class="breakdown-value" id="appointmentFee">₹199</span>
+            </div>
+            <div class="breakdown-item">
+              <span class="breakdown-label">Platform Fee</span>
+              <span class="breakdown-value" id="platformFee">₹9</span>
+            </div>
+            <div class="breakdown-item">
+              <span class="breakdown-label">GST (18%)</span>
+              <span class="breakdown-value" id="gstAmount">₹37.44</span>
+            </div>
+            <div class="breakdown-total">
+              <span>Total Amount</span>
+              <span id="totalAmount">₹245.44</span>
+            </div>
+          </div>
+
+          <!-- PAYMENT METHODS -->
+          <div class="payment-methods">
+            <h3 class="methods-title">
+              <i class="fas fa-wallet"></i> Select Payment Method
+            </h3>
+            <div class="method-options">
+              <!-- UPI Option -->
+              <div class="method-option" data-method="upi" onclick="selectPaymentMethod('upi')">
+                <div class="method-icon">
+                  <i class="fas fa-mobile-alt"></i>
+                </div>
+                <div class="method-info">
+                  <div class="method-name">UPI Payment</div>
+                  <div class="method-desc">Google Pay, PhonePe, Paytm, etc.</div>
+                </div>
+                <div class="method-radio"></div>
+              </div>
+
+              <!-- Card Option -->
+              <div class="method-option" data-method="card" onclick="selectPaymentMethod('card')">
+                <div class="method-icon">
+                  <i class="far fa-credit-card"></i>
+                </div>
+                <div class="method-info">
+                  <div class="method-name">Credit/Debit Card</div>
+                  <div class="method-desc">Visa, Mastercard, RuPay</div>
+                </div>
+                <div class="method-radio"></div>
+              </div>
+
+              <!-- Net Banking Option -->
+              <div class="method-option" data-method="netbanking" onclick="selectPaymentMethod('netbanking')">
+                <div class="method-icon">
+                  <i class="fas fa-university"></i>
+                </div>
+                <div class="method-info">
+                  <div class="method-name">Net Banking</div>
+                  <div class="method-desc">All major Indian banks</div>
+                </div>
+                <div class="method-radio"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- PAYMENT FORMS -->
+          <div class="payment-form">
+            <!-- UPI Form -->
+            <div class="form-group" id="upiForm">
+              <label class="form-label">UPI ID</label>
+              <div class="input-with-icon">
+                <input type="text" class="form-input" id="upiId" placeholder="yourname@upi" 
+                       pattern="^[\w.-]+@[\w.-]+$" required>
+                <span class="input-icon">
+                  <i class="fas fa-user-circle"></i>
+                </span>
+              </div>
+              <small style="color: var(--text-muted); font-size: 0.875rem; display: block; margin-top: 0.5rem;">
+                Example: 9665227998@axl, yourname@okicici, etc.
+              </small>
+            </div>
+
+            <!-- Card Form -->
+            <div class="form-group" id="cardForm">
+              <label class="form-label">Card Number</label>
+              <div class="input-with-icon">
+                <input type="text" class="form-input" id="cardNumber" placeholder="1234 5678 9012 3456" 
+                       pattern="\d{16}" maxlength="16" required>
+                <span class="input-icon">
+                  <i class="far fa-credit-card"></i>
+                </span>
+              </div>
+
+              <div class="form-row">
+                <div>
+                  <label class="form-label">Expiry Date</label>
+                  <input type="text" class="form-input" id="cardExpiry" placeholder="MM/YY" 
+                         pattern="\d{2}/\d{2}" maxlength="5" required>
+                </div>
+                <div>
+                  <label class="form-label">CVV</label>
+                  <div class="input-with-icon">
+                    <input type="password" class="form-input" id="cardCvv" placeholder="123" 
+                           pattern="\d{3}" maxlength="3" required>
+                    <span class="input-icon">
+                      <i class="fas fa-lock"></i>
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              <label class="form-label">Cardholder Name</label>
+              <input type="text" class="form-input" id="cardName" placeholder="John Doe" required>
+            </div>
+
+            <!-- Net Banking Form -->
+            <div class="form-group" id="netbankingForm">
+              <label class="form-label">Select Bank</label>
+              <select class="form-input" id="bankSelect" required>
+                <option value="">Choose your bank</option>
+                <option value="sbi">State Bank of India</option>
+                <option value="hdfc">HDFC Bank</option>
+                <option value="icici">ICICI Bank</option>
+                <option value="axis">Axis Bank</option>
+                <option value="kotak">Kotak Mahindra Bank</option>
+                <option value="pnb">Punjab National Bank</option>
+                <option value="boi">Bank of India</option>
+                <option value="bob">Bank of Baroda</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- SECURITY BADGE -->
+          <div class="security-badge">
+            <div class="security-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="security-text">
+              <strong>100% Secure Payment</strong><br>
+              Your payment information is encrypted and secure. We never store your card details.
+            </div>
+          </div>
+
+          <!-- PAYMENT BUTTONS -->
+          <div class="payment-actions">
+            <button class="btn btn-secondary" onclick="goBack()">
+              <i class="fas fa-arrow-left"></i> Back
+            </button>
+            <button class="btn btn-primary" id="payButton" onclick="processPayment()" disabled>
+              <i class="fas fa-lock"></i> Pay Now
+            </button>
+          </div>
+
+          <!-- TERMS -->
+          <div class="terms">
+            By proceeding, you agree to our <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a>. 
+            Payments are secured with 256-bit SSL encryption.
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>&copy; <span id="currentYear">2024</span> MediBook. All rights reserved. | 
+          <a href="privacy.html">Privacy Policy</a> | 
+          <a href="terms.html">Terms of Service</a> | 
+          <a href="refund.html">Refund Policy</a>
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- LOADING MODAL -->
+  <div class="modal-overlay" id="loadingModal">
+    <div class="modal">
+      <div class="loading-spinner"></div>
+      <h3>Processing Payment</h3>
+      <p>Please wait while we process your payment...</p>
+    </div>
   </div>
 
-  <button class="pay-btn" id="payBtn">Pay Now</button>
-  <p class="note">* Payment is non-refundable</p>
-</div>
+  <!-- SUCCESS MODAL -->
+  <div class="modal-overlay success-modal" id="successModal">
+    <div class="modal">
+      <div class="success-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+      <h3>Payment Successful!</h3>
+      <p>Your appointment has been confirmed.</p>
+      <div style="margin-top: 1.5rem;">
+        <button class="btn btn-primary" onclick="goToAppointments()">
+          <i class="fas fa-calendar-check"></i> View Appointments
+        </button>
+      </div>
+    </div>
+  </div>
 
-<script>
-let selectedMethod = null;
-const BASE = 199;
-const HANDLING = 9;
-const GST = 0.18;
+  <script>
+    // ================= INITIALIZATION =================
+    let selectedMethod = null;
+    let appointmentData = null;
+    const appointmentFee = 199;
+    const platformFee = 9;
+    const gstRate = 0.18;
 
-function calculateTotal() {
-  const total = (BASE + HANDLING) * (1 + GST);
-  document.getElementById("totalAmount").textContent = "Total: ₹" + total.toFixed(2);
-  return total.toFixed(2);
-}
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set current year
+      document.getElementById('currentYear').textContent = new Date().getFullYear();
+      
+      // Mobile menu toggle
+      const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+      const navDesktop = document.querySelector('.nav-desktop');
+      
+      mobileMenuBtn.addEventListener('click', function() {
+        navDesktop.classList.toggle('active');
+      });
+      
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(event) {
+        if (!navDesktop.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
+          navDesktop.classList.remove('active');
+        }
+      });
+      
+      // Load appointment data
+      loadAppointmentData();
+      calculateTotal();
+      
+      // Input formatting
+      document.getElementById('cardNumber')?.addEventListener('input', formatCardNumber);
+      document.getElementById('cardExpiry')?.addEventListener('input', formatCardExpiry);
+      document.getElementById('upiId')?.addEventListener('input', validateUPI);
+    });
 
-calculateTotal();
+    // ================= APPOINTMENT DATA =================
+    function loadAppointmentData() {
+      const pendingBooking = JSON.parse(localStorage.getItem('pendingBooking'));
+      
+      if (!pendingBooking) {
+        // Redirect to doctors page if no pending booking
+        window.location.href = 'doctor.html';
+        return;
+      }
+      
+      appointmentData = pendingBooking;
+      
+      // Display appointment details
+      const detailsElement = document.getElementById('appointmentDetails');
+      if (appointmentData) {
+        detailsElement.textContent = `Appointment with ${appointmentData.doctorName} - ${appointmentData.date} at ${appointmentData.displayTime}`;
+      }
+    }
 
-function selectMethod(method) {
-  selectedMethod = method;
-  alert("Payment Method Selected: " + method);
-}
+    // ================= CALCULATIONS =================
+    function calculateTotal() {
+      const gstAmount = (appointmentFee + platformFee) * gstRate;
+      const totalAmount = appointmentFee + platformFee + gstAmount;
+      
+      document.getElementById('appointmentFee').textContent = `₹${appointmentFee}`;
+      document.getElementById('platformFee').textContent = `₹${platformFee}`;
+      document.getElementById('gstAmount').textContent = `₹${gstAmount.toFixed(2)}`;
+      document.getElementById('totalAmount').textContent = `₹${totalAmount.toFixed(2)}`;
+      
+      return {
+        appointmentFee,
+        platformFee,
+        gstAmount: parseFloat(gstAmount.toFixed(2)),
+        totalAmount: parseFloat(totalAmount.toFixed(2))
+      };
+    }
 
-document.getElementById("payBtn").onclick = () => {
-  if (!selectedMethod) {
-    alert("Please select a payment method!");
-    return;
-  }
+    // ================= PAYMENT METHODS =================
+    function selectPaymentMethod(method) {
+      selectedMethod = method;
+      
+      // Update UI
+      document.querySelectorAll('.method-option').forEach(option => {
+        option.classList.remove('selected');
+      });
+      document.querySelector(`.method-option[data-method="${method}"]`).classList.add('selected');
+      
+      // Show relevant form
+      document.querySelectorAll('.form-group').forEach(form => {
+        form.classList.remove('active');
+      });
+      
+      if (method === 'upi') {
+        document.getElementById('upiForm').classList.add('active');
+      } else if (method === 'card') {
+        document.getElementById('cardForm').classList.add('active');
+      } else if (method === 'netbanking') {
+        document.getElementById('netbankingForm').classList.add('active');
+      }
+      
+      // Enable pay button
+      document.getElementById('payButton').disabled = false;
+    }
 
-  const total = calculateTotal();
-  const confirmPayment = confirm(`Pay ₹${total} via ${selectedMethod}?`);
+    // ================= INPUT FORMATTING =================
+    function formatCardNumber() {
+      let input = document.getElementById('cardNumber');
+      let value = input.value.replace(/\D/g, '');
+      
+      // Format with spaces every 4 digits
+      value = value.replace(/(\d{4})/g, '$1 ').trim();
+      input.value = value;
+    }
 
-  if (confirmPayment) {
-    // Save appointment permanently
-    const pending = JSON.parse(localStorage.getItem("pendingBooking"));
-    const appointments = JSON.parse(localStorage.getItem("appointments")) || [];
-    appointments.push({ ...pending, paymentMethod: selectedMethod, amountPaid: total });
-    localStorage.setItem("appointments", JSON.stringify(appointments));
+    function formatCardExpiry() {
+      let input = document.getElementById('cardExpiry');
+      let value = input.value.replace(/\D/g, '');
+      
+      if (value.length >= 2) {
+        value = value.substring(0, 2) + '/' + value.substring(2, 4);
+      }
+      input.value = value;
+    }
 
-    // Clear pending
-    localStorage.removeItem("pendingBooking");
+    function validateUPI() {
+      const upiInput = document.getElementById('upiId');
+      const upiRegex = /^[\w.-]+@[\w.-]+$/;
+      
+      if (upiInput.value && !upiRegex.test(upiInput.value)) {
+        upiInput.style.borderColor = 'var(--danger)';
+      } else {
+        upiInput.style.borderColor = '';
+      }
+    }
 
-    alert("✅ Payment Successful! Appointment Confirmed.");
-    window.location.href = "appointment.html"; // redirect to appointments page
-  }
-}
-</script>
+    // ================= PAYMENT PROCESSING =================
+    function processPayment() {
+      // Validate form based on selected method
+      if (!validatePaymentForm()) {
+        return;
+      }
+      
+      // Show loading modal
+      document.getElementById('loadingModal').classList.add('active');
+      document.body.style.overflow = 'hidden';
+      
+      // Simulate payment processing delay
+      setTimeout(() => {
+        // Hide loading modal
+        document.getElementById('loadingModal').classList.remove('active');
+        
+        // Get payment details
+        const paymentDetails = getPaymentDetails();
+        const total = calculateTotal();
+        
+        // Complete the payment
+        completePayment(paymentDetails, total);
+      }, 2000);
+    }
 
+    function validatePaymentForm() {
+      if (!selectedMethod) {
+        showToast('Please select a payment method', 'error');
+        return false;
+      }
+      
+      if (selectedMethod === 'upi') {
+        const upiId = document.getElementById('upiId').value.trim();
+        const upiRegex = /^[\w.-]+@[\w.-]+$/;
+        
+        if (!upiId) {
+          showToast('Please enter UPI ID', 'error');
+          return false;
+        }
+        
+        if (!upiRegex.test(upiId)) {
+          showToast('Please enter a valid UPI ID', 'error');
+          return false;
+        }
+      }
+      
+      if (selectedMethod === 'card') {
+        const cardNumber = document.getElementById('cardNumber').value.replace(/\s/g, '');
+        const cardExpiry = document.getElementById('cardExpiry').value;
+        const cardCvv = document.getElementById('cardCvv').value;
+        const cardName = document.getElementById('cardName').value.trim();
+        
+        if (!cardNumber || cardNumber.length !== 16) {
+          showToast('Please enter a valid 16-digit card number', 'error');
+          return false;
+        }
+        
+        if (!cardExpiry || !/\d{2}\/\d{2}/.test(cardExpiry)) {
+          showToast('Please enter a valid expiry date (MM/YY)', 'error');
+          return false;
+        }
+        
+        if (!cardCvv || cardCvv.length !== 3) {
+          showToast('Please enter a valid 3-digit CVV', 'error');
+          return false;
+        }
+        
+        if (!cardName) {
+          showToast('Please enter cardholder name', 'error');
+          return false;
+        }
+      }
+      
+      if (selectedMethod === 'netbanking') {
+        const bankSelect = document.getElementById('bankSelect').value;
+        if (!bankSelect) {
+          showToast('Please select a bank', 'error');
+          return false;
+        }
+      }
+      
+      return true;
+    }
+
+    function getPaymentDetails() {
+      const details = {
+        method: selectedMethod,
+        timestamp: new Date().toISOString(),
+        transactionId: 'TXN' + Date.now() + Math.random().toString(36).substr(2, 9).toUpperCase()
+      };
+      
+      if (selectedMethod === 'upi') {
+        details.upiId = document.getElementById('upiId').value.trim();
+      } else if (selectedMethod === 'card') {
+        details.cardLast4 = document.getElementById('cardNumber').value.slice(-4);
+        details.cardType = getCardType(document.getElementById('cardNumber').value);
+      } else if (selectedMethod === 'netbanking') {
+        details.bank = document.getElementById('bankSelect').options[document.getElementById('bankSelect').selectedIndex].text;
+      }
+      
+      return details;
+    }
+
+    function getCardType(cardNumber) {
+      const cleanNumber = cardNumber.replace(/\s/g, '');
+      if (/^4/.test(cleanNumber)) return 'Visa';
+      if (/^5[1-5]/.test(cleanNumber)) return 'Mastercard';
+      if (/^6(?:011|5)/.test(cleanNumber)) return 'Discover';
+      if (/^3[47]/.test(cleanNumber)) return 'American Express';
+      if (/^6(?:0(?:21|3[0-9])|2(?:1[2-9]|2[0-5])|4[4-6]|5[4-9])/.test(cleanNumber)) return 'RuPay';
+      return 'Card';
+    }
+
+    function completePayment(paymentDetails, total) {
+      // Update appointment data with payment info
+      appointmentData.payment = {
+        ...paymentDetails,
+        amount: total.totalAmount,
+        status: 'completed',
+        date: new Date().toISOString()
+      };
+      
+      appointmentData.status = 'confirmed';
+      
+      // Save to appointments
+      let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
+      appointments.push(appointmentData);
+      localStorage.setItem('appointments', JSON.stringify(appointments));
+      
+      // Clear pending booking
+      localStorage.removeItem('pendingBooking');
+      
+      // Generate receipt
+      generateReceipt(appointmentData, paymentDetails, total);
+      
+      // Show success modal
+      setTimeout(() => {
+        document.getElementById('successModal').classList.add('active');
+      }, 500);
+    }
+
+    function generateReceipt(appointment, payment, total) {
+      const receipt = {
+        id: payment.transactionId,
+        date: new Date().toISOString(),
+        appointmentId: appointment.id || 'APP' + Date.now(),
+        doctorName: appointment.doctorName,
+        doctorSpecialty: appointment.doctorSpecialty,
+        appointmentDate: appointment.date,
+        appointmentTime: appointment.displayTime,
+        patientName: appointment.patientName,
+        phoneNumber: appointment.patientPhone,
+        breakdown: {
+          appointmentFee: total.appointmentFee,
+          platformFee: total.platformFee,
+          gst: total.gstAmount,
+          total: total.totalAmount
+        },
+        paymentMethod: payment.method,
+        status: 'completed'
+      };
+      
+      // Save receipt
+      let receipts = JSON.parse(localStorage.getItem('receipts')) || [];
+      receipts.push(receipt);
+      localStorage.setItem('receipts', JSON.stringify(receipts));
+      
+      // Also save to transaction history
+      let transactions = JSON.parse(localStorage.getItem('transactions')) || [];
+      transactions.push(receipt);
+      localStorage.setItem('transactions', JSON.stringify(transactions));
+      
+      console.log('Receipt Generated:', receipt);
+    }
+
+    // ================= NAVIGATION =================
+    function goBack() {
+      if (confirm('Are you sure? Your payment details will be lost.')) {
+        window.history.back();
+      }
+    }
+
+    function goToAppointments() {
+      document.getElementById('successModal').classList.remove('active');
+      document.body.style.overflow = '';
+      window.location.href = 'appointment.html';
+    }
+
+    // ================= UTILITY FUNCTIONS =================
+    function showToast(message, type = 'info') {
+      // Create toast element
+      const toast = document.createElement('div');
+      toast.className = `toast ${type}`;
+      toast.textContent = message;
+      toast.style.cssText = `
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: ${type === 'error' ? 'var(--danger)' : 'var(--text-primary)'};
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: var(--radius-md);
+        box-shadow: var(--shadow-lg);
+        z-index: 3000;
+        animation: slideIn 0.3s ease;
+      `;
+      
+      document.body.appendChild(toast);
+      
+      // Remove after 3 seconds
+      setTimeout(() => {
+        toast.style.animation = 'slideOut 0.3s ease';
+        setTimeout(() => {
+          document.body.removeChild(toast);
+        }, 300);
+      }, 3000);
+    }
+
+    // Add animation styles
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+      @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // ================= KEYBOARD SHORTCUTS =================
+    document.addEventListener('keydown', function(e) {
+      // Submit with Ctrl+Enter
+      if (e.ctrlKey && e.key === 'Enter') {
+        processPayment();
+      }
+      
+      // Escape to go back
+      if (e.key === 'Escape') {
+        goBack();
+      }
+    });
+  </script>
 </body>
 </html>

@@ -3,334 +3,697 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MediBook - Find & Book Doctors</title>
+  <title>MediBook - Find & Book Doctors | Healthcare Appointment Platform</title>
+  <meta name="description" content="Book appointments with verified doctors near you. Quality healthcare from home or clinic visits.">
+  <meta name="keywords" content="doctor appointment, healthcare, medical booking, find doctors">
   <link rel="stylesheet" href="style.css">
-  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <!-- Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 
 <body>
+  <!-- Skip to Main Content for Accessibility -->
+  <a href="#main-content" class="skip-to-main">Skip to main content</a>
 
   <!-- Header -->
   <header class="header">
-  <a href="index.html" class="logo">
-    <img src="immages/logoo.png" alt="MediGo Logo">
-  </a>
+    <nav class="nav-container" aria-label="Main navigation">
+      <a href="index.html" class="logo" aria-label="MediGo Home">
+<h1 style="
+    font-family: 'Arial', sans-serif;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #1e3a8a;
+    margin: 0;
+    padding: 6px 12px;
+    background: white;
+    border-radius: 8px;
+    border-left: 4px solid #10b981;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+">
+    <i class="fas fa-stethoscope" style="color: #ef4444; font-size: 1.1rem;"></i>
+    <span>MediGo</span>
+</h1>      </a>
 
-  <!-- Mobile Menu -->
-  <ul class="nav">
-    <li><a href="index.html">Home</a></li>
-    <li><a href="docter.html">Doctors</a></li>
-    <li><a href="appointment.html">Appointments</a></li>
-    <li><a href="contacts.html">Contact</a></li>
-    
-    <!-- Login / Sign Up inside menu -->
-    <li class="mobile-buttons">
-      <button id="loginBtn" class="btn btn-outline">Login</button>
-      <button id="signupBtn" class="btn btn-primary">Sign Up</button>
-    </li>
-  </ul>
+      <button class="mobile-menu-btn" aria-label="Toggle mobile menu" aria-expanded="false">
+        <span class="hamburger-icon">☰</span>
+      </button>
 
-  <!-- Hamburger icon -->
-  <button class="mobile-menu-btn">☰</button>
-</header>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link active" aria-current="page">Home</a></li>
+        <li><a href="docter.html" class="nav-link">Doctors</a></li>
+        <li><a href="appointment.html" class="nav-link">Appointments</a></li>
+        <li><a href="contacts.html" class="nav-link">Contact</a></li>
+        <li class="nav-actions">
+          <button id="loginBtn" class="btn btn-outline" aria-label="Open login form">Login</button>
+          <button id="signupBtn" class="btn btn-primary" aria-label="Open signup form">Sign Up</button>
+        </li>
+      </ul>
+    </nav>
+  </header>
 
-
-  <!-- Hero -->
-  <section class="hero">
-    <div class="hero-container">
-      <div class="hero-content">
-        <h1>Find & Book <span>Trusted Doctors</span> Near You</h1>
-        <p>Book appointments with verified doctors in your area. Get quality healthcare from the comfort of your home or visit the clinic.</p>
-        <div class="search-box">
-          <form id="searchForm">
-            <div class="search-row">
-              <input type="text" id="searchQuery" class="search-input" placeholder="Search doctors, specialties...">
-              <input type="text" id="searchLocation" class="search-input" placeholder="Location">
+  <!-- Hero Section -->
+  <main id="main-content">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="hero-container">
+        <div class="hero-content">
+          <h1 id="hero-title">Find & Book <span class="highlight">Trusted Doctors</span> Near You</h1>
+          <p class="hero-description">Book appointments with verified doctors in your area. Get quality healthcare from the comfort of your home or visit the clinic.</p>
+          
+          <div class="search-box">
+            <form id="searchForm" role="search">
+              <div class="search-fields">
+                <div class="input-group">
+                  <label for="searchQuery" class="visually-hidden">Search doctors or specialties</label>
+                  <div class="input-with-icon">
+                    <i class="fas fa-search" aria-hidden="true"></i>
+                    <input type="text" id="searchQuery" class="search-input" 
+                           placeholder="Search doctors, specialties, symptoms..." 
+                           aria-label="Search for doctors or medical specialties">
+                  </div>
+                </div>
+                
+                <div class="input-group">
+                  <label for="searchLocation" class="visually-hidden">Location</label>
+                  <div class="input-with-icon">
+                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                    <input type="text" id="searchLocation" class="search-input" 
+                           placeholder="City, State, or ZIP" 
+                           aria-label="Enter your location">
+                  </div>
+                </div>
+              </div>
+              
+              <a href="docter.html" class="search-action">
+                <button type="button" class="search-btn" aria-label="Search doctors">
+                  <i class="fas fa-search" aria-hidden="true"></i> Search Doctors
+                </button>
+              </a>
+            </form>
+          </div>
+          
+          <div class="hero-stats">
+            <div class="stat">
+              <span class="stat-number">5000+</span>
+              <span class="stat-label">Verified Doctors</span>
             </div>
-<a href="docter.html">
-    <button type="button" class="search-btn">Search Doctors</button>
-</a>
-          </form>
-        </div>
-      </div>
-      <div class="hero-image">
-        <img src="immages/doctor-hero.jpg" alt="Doctor">
-      </div>
-    </div>
-  </section>
-
-  <!-- Featured Doctors -->
-  <section class="section">
-    <div class="section-header">
-      <h2>Featured Doctors</h2>
-      <p>Top-rated healthcare professionals ready to help you</p>
-    </div>
-    <div class="doctors-grid">
-      <div class="doctor-card">
-        <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400" alt="Doctor" class="doctor-image">
-        <div class="doctor-info">
-          <h3 class="doctor-name">Dr. Sarah Johnson</h3>
-          <p class="doctor-specialty">Cardiologist</p>
-          <p class="doctor-location">📍 delhi</p>
-          <div class="doctor-meta">
-            <span class="rating">★★★★★ 4.9</span>
-            <div> CLICK THE DOCTOR AND BOOK YOUR SLOT </div>
+            <div class="stat">
+              <span class="stat-number">98%</span>
+              <span class="stat-label">Patient Satisfaction</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">24/7</span>
+              <span class="stat-label">Support Available</span>
+            </div>
           </div>
-          <!-- <button class="book-btn">Book Appointment</button> -->
+        </div>
+        
+        <div class="hero-image" aria-hidden="true">
+          <img src="immages/doctor-hero.jpg" alt="Friendly doctor consulting with a patient" width="600" height="500">
         </div>
       </div>
-      <div class="doctor-card">
-        <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400" alt="Doctor" class="doctor-image">
-        <div class="doctor-info">
-          <h3 class="doctor-name">Dr. Michael Chen</h3>
-          <p class="doctor-specialty">Dermatologist</p>
-          <p class="doctor-location">Bhubaneswar</p>
-          <div class="doctor-meta">
-            <span class="rating">★★★★★ 4.8</span>
-            <div> CLICK THE DOCTOR AND BOOK YOUR SLOT </div>
-          </div>
-          <!-- <button class="book-btn">Book Appointment</button> -->
-        </div>
-      </div>
-      <div class="doctor-card">
-        <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400" alt="Doctor" class="doctor-image">
-        <div class="doctor-info">
-          <h3 class="doctor-name">Dr. Emily Davis</h3>
-          <p class="doctor-specialty">Pediatrician</p>
-          <p class="doctor-location">📍 Mumbai</p>
-          <div class="doctor-meta">
-            <span class="rating">★★★★★ 4.9</span>
-            <div> CLICK THE DOCTOR AND BOOK YOUR SLOT </div>
-          </div>
-          <!-- <button class="book-btn">Book Appointment</button> -->
-        </div>
-      </div>
-      <div class="doctor-card">
-        <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400" alt="Doctor" class="doctor-image">
-        <div class="doctor-info">
-          <h3 class="doctor-name">Dr. James Wilson</h3>
-          <p class="doctor-specialty">Orthopedic</p>
-          <p class="doctor-location">📍 Hyderabad</p>
-          <div class="doctor-meta">
-            <span class="rating">★★★★☆ 4.7</span>
-            <div> CLICK THE DOCTOR AND BOOK YOUR SLOT </div>
-          </div>
-          <!-- <button class="book-btn">Book Appointment</button> -->
-        </div>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- Specialties -->
-  <section class="section" style="background: #f8fafc;">
-    <div class="section-header">
-      <h2>Browse by Specialty</h2>
-      <p>Find the right specialist for your needs</p>
-    </div>
-    <div class="specialties-grid">
-      <a href="docter.html?specialty=cardiology" class="specialty-card">
-        <div class="specialty-icon">❤️</div>
-        <h3 class="specialty-name">Cardiology</h3>
-        <p class="specialty-count">24 Doctors</p>
-      </a>
-      <a href="docter.html?specialty=neurology" class="specialty-card">
-        <div class="specialty-icon">🧠</div>
-        <h3 class="specialty-name">Neurology</h3>
-        <p class="specialty-count">18 Doctors</p>
-      </a>
-      <a href="docter.html?specialty=orthopedics" class="specialty-card">
-        <div class="specialty-icon">🦴</div>
-        <h3 class="specialty-name">Orthopedics</h3>
-        <p class="specialty-count">32 Doctors</p>
-      </a>
-      <a href="docter.html?specialty=pediatrics" class="specialty-card">
-        <div class="specialty-icon">👶</div>
-        <h3 class="specialty-name">Pediatrics</h3>
-        <p class="specialty-count">28 Doctors</p>
-      </a>
-      <a href="docter.html?specialty=general" class="specialty-card">
-        <div class="specialty-icon">🩺</div>
-        <h3 class="specialty-name">General</h3>
-        <p class="specialty-count">45 Doctors</p>
-      </a>
-      <a href="docter.html?specialty=dermatology" class="specialty-card">
-        <div class="specialty-icon">🧴</div>
-        <h3 class="specialty-name">Dermatology</h3>
-        <p class="specialty-count">20 Doctors</p>
-      </a>
-    </div>
-  </section>
+    <!-- Featured Doctors -->
+    <section class="section featured-doctors" aria-labelledby="featured-doctors-title">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="featured-doctors-title">Featured Doctors</h2>
+          <p class="section-subtitle">Top-rated healthcare professionals ready to help you</p>
+          <a href="docter.html" class="view-all-link">View All Doctors <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+        </div>
+        
+        <div class="doctors-grid" role="list">
+          <!-- Doctor 1 -->
+          <article class="doctor-card" role="listitem" tabindex="0">
+            <div class="doctor-image-container">
+              <img src="https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&auto=format&fit=crop" 
+                   alt="Dr. Sarah Johnson, Cardiologist" class="doctor-image" width="300" height="300">
+              <div class="doctor-status online" aria-label="Available for appointments"></div>
+            </div>
+            <div class="doctor-info">
+              <h3 class="doctor-name">Dr. Sarah Johnson</h3>
+              <p class="doctor-specialty"><i class="fas fa-stethoscope" aria-hidden="true"></i> Cardiologist</p>
+              <p class="doctor-location"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> New Delhi, India</p>
+              <div class="doctor-meta">
+                <div class="rating">
+                  <i class="fas fa-star" aria-hidden="true"></i>
+                  <span>4.9</span>
+                  <span class="rating-count">(1284 reviews)</span>
+                </div>
+                <div class="experience">
+                  <i class="fas fa-award" aria-hidden="true"></i>
+                  15+ years experience
+                </div>
+              </div>
+              <p class="doctor-description">Specializes in heart disease prevention and treatment. Available for in-person and virtual consultations.</p>
+              <div class="doctor-actions">
+                <a href="docter.html?doctor=sarah-johnson" class="btn btn-outline" aria-label="View profile of Dr. Sarah Johnson">View Profile</a>
+                <button class="book-btn" data-doctor="Dr. Sarah Johnson" aria-label="Book appointment with Dr. Sarah Johnson">
+                  <i class="fas fa-calendar-check" aria-hidden="true"></i> Book Now
+                </button>
+              </div>
+            </div>
+          </article>
+          
+          <!-- Doctor 2 -->
+          <article class="doctor-card" role="listitem" tabindex="0">
+            <div class="doctor-image-container">
+              <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&auto=format&fit=crop" 
+                   alt="Dr. Michael Chen, Dermatologist" class="doctor-image" width="300" height="300">
+              <div class="doctor-status online" aria-label="Available for appointments"></div>
+            </div>
+            <div class="doctor-info">
+              <h3 class="doctor-name">Dr. Michael Chen</h3>
+              <p class="doctor-specialty"><i class="fas fa-stethoscope" aria-hidden="true"></i> Dermatologist</p>
+              <p class="doctor-location"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Bhubaneswar, India</p>
+              <div class="doctor-meta">
+                <div class="rating">
+                  <i class="fas fa-star" aria-hidden="true"></i>
+                  <span>4.8</span>
+                  <span class="rating-count">(932 reviews)</span>
+                </div>
+                <div class="experience">
+                  <i class="fas fa-award" aria-hidden="true"></i>
+                  12+ years experience
+                </div>
+              </div>
+              <p class="doctor-description">Skin care specialist with expertise in cosmetic dermatology and skin cancer screening.</p>
+              <div class="doctor-actions">
+                <a href="docter.html?doctor=michael-chen" class="btn btn-outline" aria-label="View profile of Dr. Michael Chen">View Profile</a>
+                <button class="book-btn" data-doctor="Dr. Michael Chen" aria-label="Book appointment with Dr. Michael Chen">
+                  <i class="fas fa-calendar-check" aria-hidden="true"></i> Book Now
+                </button>
+              </div>
+            </div>
+          </article>
+          
+          <!-- Doctor 3 -->
+          <article class="doctor-card" role="listitem" tabindex="0">
+            <div class="doctor-image-container">
+              <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?w=400&auto=format&fit=crop" 
+                   alt="Dr. Emily Davis, Pediatrician" class="doctor-image" width="300" height="300">
+              <div class="doctor-status busy" aria-label="Limited availability"></div>
+            </div>
+            <div class="doctor-info">
+              <h3 class="doctor-name">Dr. Emily Davis</h3>
+              <p class="doctor-specialty"><i class="fas fa-stethoscope" aria-hidden="true"></i> Pediatrician</p>
+              <p class="doctor-location"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Mumbai, India</p>
+              <div class="doctor-meta">
+                <div class="rating">
+                  <i class="fas fa-star" aria-hidden="true"></i>
+                  <span>4.9</span>
+                  <span class="rating-count">(1567 reviews)</span>
+                </div>
+                <div class="experience">
+                  <i class="fas fa-award" aria-hidden="true"></i>
+                  18+ years experience
+                </div>
+              </div>
+              <p class="doctor-description">Child healthcare specialist with a gentle approach. Accepts patients from newborns to teenagers.</p>
+              <div class="doctor-actions">
+                <a href="docter.html?doctor=emily-davis" class="btn btn-outline" aria-label="View profile of Dr. Emily Davis">View Profile</a>
+                <button class="book-btn" data-doctor="Dr. Emily Davis" aria-label="Book appointment with Dr. Emily Davis">
+                  <i class="fas fa-calendar-check" aria-hidden="true"></i> Book Now
+                </button>
+              </div>
+            </div>
+          </article>
+          
+          <!-- Doctor 4 -->
+          <article class="doctor-card" role="listitem" tabindex="0">
+            <div class="doctor-image-container">
+              <img src="https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=400&auto=format&fit=crop" 
+                   alt="Dr. James Wilson, Orthopedic Surgeon" class="doctor-image" width="300" height="300">
+              <div class="doctor-status online" aria-label="Available for appointments"></div>
+            </div>
+            <div class="doctor-info">
+              <h3 class="doctor-name">Dr. James Wilson</h3>
+              <p class="doctor-specialty"><i class="fas fa-stethoscope" aria-hidden="true"></i> Orthopedic Surgeon</p>
+              <p class="doctor-location"><i class="fas fa-map-marker-alt" aria-hidden="true"></i> Hyderabad, India</p>
+              <div class="doctor-meta">
+                <div class="rating">
+                  <i class="fas fa-star" aria-hidden="true"></i>
+                  <span>4.7</span>
+                  <span class="rating-count">(845 reviews)</span>
+                </div>
+                <div class="experience">
+                  <i class="fas fa-award" aria-hidden="true"></i>
+                  20+ years experience
+                </div>
+              </div>
+              <p class="doctor-description">Specializes in joint replacement, sports injuries, and orthopedic trauma surgery.</p>
+              <div class="doctor-actions">
+                <a href="docter.html?doctor=james-wilson" class="btn btn-outline" aria-label="View profile of Dr. James Wilson">View Profile</a>
+                <button class="book-btn" data-doctor="Dr. James Wilson" aria-label="Book appointment with Dr. James Wilson">
+                  <i class="fas fa-calendar-check" aria-hidden="true"></i> Book Now
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
 
-  <!-- How It Works -->
-  <section class="section">
-    <div class="section-header">
-      <h2>How It Works</h2>
-      <p>Book your appointment in 3 simple steps</p>
-    </div>
-    <div class="steps-grid">
-      <div class="step-card">
-        <div class="step-number">1</div>
-        <h3 class="step-title">Search Doctor</h3>
-        <p class="step-desc">Find doctors by specialty, location, or name from our verified network.</p>
+    <!-- Specialties -->
+    <section class="section specialties" aria-labelledby="specialties-title" style="background: #f8fafc;">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="specialties-title">Browse by Specialty</h2>
+          <p class="section-subtitle">Find the right specialist for your needs</p>
+        </div>
+        
+        <div class="specialties-grid" role="list">
+          <a href="docter.html?specialty=cardiology" class="specialty-card" role="listitem" aria-label="Browse Cardiology specialists">
+            <div class="specialty-icon" aria-hidden="true">
+              <i class="fas fa-heartbeat"></i>
+            </div>
+            <h3 class="specialty-name">Cardiology</h3>
+            <p class="specialty-count">24 Doctors</p>
+            <span class="specialty-link">View Specialists <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+          </a>
+          
+          <a href="docter.html?specialty=neurology" class="specialty-card" role="listitem" aria-label="Browse Neurology specialists">
+            <div class="specialty-icon" aria-hidden="true">
+              <i class="fas fa-brain"></i>
+            </div>
+            <h3 class="specialty-name">Neurology</h3>
+            <p class="specialty-count">18 Doctors</p>
+            <span class="specialty-link">View Specialists <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+          </a>
+          
+          <a href="docter.html?specialty=orthopedics" class="specialty-card" role="listitem" aria-label="Browse Orthopedics specialists">
+            <div class="specialty-icon" aria-hidden="true">
+              <i class="fas fa-bone"></i>
+            </div>
+            <h3 class="specialty-name">Orthopedics</h3>
+            <p class="specialty-count">32 Doctors</p>
+            <span class="specialty-link">View Specialists <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+          </a>
+          
+          <a href="docter.html?specialty=pediatrics" class="specialty-card" role="listitem" aria-label="Browse Pediatrics specialists">
+            <div class="specialty-icon" aria-hidden="true">
+              <i class="fas fa-baby"></i>
+            </div>
+            <h3 class="specialty-name">Pediatrics</h3>
+            <p class="specialty-count">28 Doctors</p>
+            <span class="specialty-link">View Specialists <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+          </a>
+          
+          <a href="docter.html?specialty=general" class="specialty-card" role="listitem" aria-label="Browse General Medicine specialists">
+            <div class="specialty-icon" aria-hidden="true">
+              <i class="fas fa-user-md"></i>
+            </div>
+            <h3 class="specialty-name">General Medicine</h3>
+            <p class="specialty-count">45 Doctors</p>
+            <span class="specialty-link">View Specialists <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+          </a>
+          
+          <a href="docter.html?specialty=dermatology" class="specialty-card" role="listitem" aria-label="Browse Dermatology specialists">
+            <div class="specialty-icon" aria-hidden="true">
+              <i class="fas fa-allergies"></i>
+            </div>
+            <h3 class="specialty-name">Dermatology</h3>
+            <p class="specialty-count">20 Doctors</p>
+            <span class="specialty-link">View Specialists <i class="fas fa-arrow-right" aria-hidden="true"></i></span>
+          </a>
+        </div>
+        
+        <div class="text-center">
+          <a href="docter.html" class="btn btn-outline">View All Specialties</a>
+        </div>
       </div>
-      <div class="step-card">
-        <div class="step-number">2</div>
-        <h3 class="step-title">Book Appointment</h3>
-        <p class="step-desc">Select a convenient time slot and book your appointment instantly.</p>
-      </div>
-      <div class="step-card">
-        <div class="step-number">3</div>
-        <h3 class="step-title">Get Care</h3>
-        <p class="step-desc">Visit the clinic or get a home visit from your chosen doctor.</p>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <!-- CTA -->
-  <section class="cta">
-    <h2>Ready to Book Your Appointment?</h2>
-    <p>Join thousands of patients who trust MediGo for their healthcare needs</p>
-    <button id="getStartedBtn" class="btn">Get Started Now</button>
-  </section>
+    <!-- How It Works -->
+    <section class="section process" aria-labelledby="process-title">
+      <div class="container">
+        <div class="section-header">
+          <h2 id="process-title">How It Works</h2>
+          <p class="section-subtitle">Book your appointment in 3 simple steps</p>
+        </div>
+        
+        <div class="steps-grid" role="list">
+          <div class="step-card" role="listitem">
+            <div class="step-number" aria-hidden="true">1</div>
+            <div class="step-icon">
+              <i class="fas fa-search" aria-hidden="true"></i>
+            </div>
+            <h3 class="step-title">Search Doctor</h3>
+            <p class="step-desc">Find doctors by specialty, location, or name from our verified network of healthcare professionals.</p>
+          </div>
+          
+          <div class="step-card" role="listitem">
+            <div class="step-number" aria-hidden="true">2</div>
+            <div class="step-icon">
+              <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+            </div>
+            <h3 class="step-title">Book Appointment</h3>
+            <p class="step-desc">Select a convenient time slot and book your appointment instantly with secure payment options.</p>
+          </div>
+          
+          <div class="step-card" role="listitem">
+            <div class="step-number" aria-hidden="true">3</div>
+            <div class="step-icon">
+              <i class="fas fa-stethoscope" aria-hidden="true"></i>
+            </div>
+            <h3 class="step-title">Get Care</h3>
+            <p class="step-desc">Visit the clinic or get a virtual consultation from your chosen doctor. Follow-up care included.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta" aria-labelledby="cta-title">
+      <div class="container">
+        <div class="cta-content">
+          <h2 id="cta-title">Ready to Book Your Appointment?</h2>
+          <p>Join thousands of patients who trust MediGo for their healthcare needs</p>
+          <div class="cta-buttons">
+            <button id="getStartedBtn" class="btn btn-primary btn-large" aria-label="Get started with MediGo">
+              Get Started Now
+            </button>
+            <a href="docter.html" class="btn btn-outline btn-large" aria-label="Browse our doctors">
+              Browse Doctors
+            </a>
+          </div>
+          <p class="cta-note">
+            <i class="fas fa-shield-alt" aria-hidden="true"></i> 100% Secure | Verified Doctors | 24/7 Support
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-grid">
-      <div class="footer-section">
-        <h4>MediBook</h4>
-        <p style="color: #94a3b8;">Your trusted partner for finding and booking quality healthcare professionals.</p>
+  <footer class="footer" role="contentinfo">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-section">
+          <a href="index.html" class="footer-logo" aria-label="MediGo Home">
+            <img src="immages/logoo.png" alt="MediGo Logo" width="150" height="50">
+          </a>
+          <p class="footer-description">Your trusted partner for finding and booking quality healthcare professionals.</p>
+          <div class="social-links">
+            <a href="#" aria-label="Follow us on Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Follow us on Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Follow us on Instagram"><i class="fab fa-instagram"></i></a>
+            <a href="#" aria-label="Follow us on LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+          </div>
+        </div>
+        
+        <div class="footer-section">
+          <h4 class="footer-heading">Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="docter.html">Find Doctors</a></li>
+            <li><a href="docter.html?specialty=all">Specialties</a></li>
+            <li><a href="appointment.html">Appointments</a></li>
+            <li><a href="contacts.html">Contact Us</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4 class="footer-heading">For Doctors</h4>
+          <ul class="footer-links">
+            <li><a href="doctor-register.html">Join Our Network</a></li>
+            <li><a href="docterlogin.html">Doctor Login</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="pricing.html">Pricing</a></li>
+            <li><a href="support.html">Support Center</a></li>
+          </ul>
+        </div>
+        
+        <div class="footer-section">
+          <h4 class="footer-heading">Contact Info</h4>
+          <ul class="footer-contact">
+            <li>
+              <i class="fas fa-envelope" aria-hidden="true"></i>
+              <a href="mailto:support@medibook.com">support@MediGo.com</a>
+            </li>
+            <li>
+              <i class="fas fa-phone" aria-hidden="true"></i>
+              <a href="tel:+919556227000">+91 9556227000</a>
+            </li>
+            <li>
+              <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+              <span>123 Healthcare Street, Medical District, Mumbai, India 400001</span>
+            </li>
+          </ul>
+          
+          <div class="newsletter">
+            <h5>Stay Updated</h5>
+            <form class="newsletter-form">
+              <input type="email" placeholder="Your email" aria-label="Subscribe to newsletter">
+              <button type="submit" aria-label="Subscribe">Subscribe</button>
+            </form>
+          </div>
+        </div>
       </div>
-      <div class="footer-section">
-        <h4>Quick Links</h4>
-        <ul>
-          <li><a href="docter.html">Find Doctors</a></li>
-          <li><a href="docter.html">Specialties</a></li>
-          <li><a href="appointment.html">Appointments</a></li>
-          <li><a href="contacts.html">Contact Us</a></li>
-        </ul>
+      
+      <div class="footer-bottom">
+        <div class="footer-bottom-content">
+          <p>&copy; <span id="currentYear">2024</span> MediGo. All rights reserved.</p>
+          <div class="footer-legal">
+            <a href="privacy.html">Privacy Policy</a>
+            <a href="terms.html">Terms of Service</a>
+            <a href="cookies.html">Cookie Policy</a>
+          </div>
+        </div>
       </div>
-      <div class="footer-section">
-        <h4>For Doctors</h4>
-        <ul>
-          <li><a href="#">Join Our Network</a></li>
-          <li><a href="docterlogin.html">Doctor Login</a></li>
-    <li><a href="resources.html">Resources</a></li> <!-- Add this -->
-        </ul>
-      </div>
-      <div class="footer-section">
-        <h4>Contact</h4>
-        <ul>
-          <li><a href="mailto:support@medibook.com">support@MediGo.com</a></li>
-          <li><a href="tel:+91 9556227000">+91 9556227000</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <p>©  MediGo. All rights reserved.</p>
     </div>
   </footer>
 
-  <!-- Auth Modal (LOGIN / SIGNUP ONLY) -->
-<div id="authModal" class="modal-overlay">
-  <div class="modal">
-    <button class="modal-close">&times;</button>
-
-    <h2>Welcome to MediGo</h2>
-
-    <div class="modal-tabs">
-      <button id="loginTab" class="modal-tab active">Login</button>
-      <button id="signupTab" class="modal-tab">Sign Up</button>
-    </div>
-
-    <form id="authForm">
-      <div id="loginForm">
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" id="loginEmail" required>
-        </div>
-        <div class="form-group">
-          <label>Password</label>
-          <input type="password" id="loginPassword" required>
-        </div>
-<button type="button" id="signupContinue" style="width:100%;padding:8px;margin-top:6px;background-color:hsl(210, 93%, 52%);color:white;">LOG IN</button>
-
- 
+  <!-- Auth Modal -->
+  <div id="authModal" class="modal-overlay" role="dialog" aria-labelledby="authModalTitle" aria-hidden="true">
+    <div class="modal" role="document">
+      <button class="modal-close" aria-label="Close authentication modal">&times;</button>
+      
+      <h2 id="authModalTitle">Welcome to MediGo</h2>
+      
+      <div class="modal-tabs" role="tablist">
+        <button id="loginTab" class="modal-tab active" role="tab" aria-selected="true" aria-controls="loginForm">Login</button>
+        <button id="signupTab" class="modal-tab" role="tab" aria-selected="false" aria-controls="signupForm">Sign Up</button>
       </div>
-
-    <div id="signupForm" style="max-width:400px;margin:auto;padding:10px;font-family:Arial,sans-serif;">
-
-  <!-- Names -->
-  <input type="text" id="firstName" placeholder="First Name *" required style="width:100%;margin:4px 0;padding:6px;">
-  <input type="text" id="lastName" placeholder="Last Name *" required style="width:100%;margin:4px 0;padding:6px;">
-
-  <!-- Emails -->
-  <input type="email" id="signupEmail" placeholder="Primary Email *" required style="width:100%;margin:4px 0;padding:6px;">
-  <input type="email" id="secondaryEmail" placeholder="Secondary Email (Optional)" style="width:100%;margin:4px 0;padding:6px;">
-
-  <!-- DOB & Phone -->
-  <input type="date" id="dob" placeholder="Date of Birth *" required style="width:100%;margin:4px 0;padding:6px;">
-  <input type="tel" id="phone" placeholder="Phone Number *" required style="width:100%;margin:4px 0;padding:6px;">
-
-  <!-- Passwords -->
-  <input type="password" id="signupPassword" placeholder="Password *" required style="width:100%;margin:4px 0;padding:6px;">
-  <input type="password" id="confirmPassword" placeholder="Confirm Password *" required style="width:100%;margin:4px 0;padding:6px;">
-
-  <!-- Continue Button -->
-<!-- Signup Continue Button -->
-<button type="button" id="signupContinue" style="width:100%;padding:8px;margin-top:6px;background-color:hsl(210, 93%, 52%);color:white;">Continue</button>
-
-</div>
-
-<!-- OTP Section (hidden initially) -->
-<div id="otpSection" style="display:none; max-width:400px;margin:auto;padding:10px;font-family:Arial,sans-serif;">
-  <h4>Enter OTP sent to your phone/email</h4>
-  <input type="text" id="otpInput" placeholder="Enter OTP" style="width:100%;margin:4px 0;padding:6px;">
-  <button id="verifyOtpBtn" style="width:100%;padding:8px;margin-top:6px;">Verify OTP</button>
-  <p id="otpMessage" style="color:green;"></p>
-</div>
-
-    </form>
-  </div>
-</div>
-
-
-
-
+      
+      <!-- Login Form -->
+      <div id="loginForm" class="tab-content active" role="tabpanel" tabindex="0">
+        <form id="loginFormElement">
+          <div class="form-group">
+            <label for="loginEmail">Email Address</label>
+            <div class="input-with-icon">
+              <i class="fas fa-envelope" aria-hidden="true"></i>
+              <input type="email" id="loginEmail" required placeholder="you@example.com">
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="loginPassword">Password</label>
+            <div class="input-with-icon">
+              <i class="fas fa-lock" aria-hidden="true"></i>
+              <input type="password" id="loginPassword" required placeholder="Enter your password">
+              <button type="button" class="password-toggle" aria-label="Show password">
+                <i class="fas fa-eye" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="form-options">
+              <label class="checkbox">
+                <input type="checkbox" id="rememberMe"> Remember me
+              </label>
+              <a href="forgot-password.html" class="forgot-link">Forgot Password?</a>
+            </div>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-block">Log In</button>
+          
+          <div class="divider">
+            <span>Or continue with</span>
+          </div>
+          
+          <div class="social-login">
+            <button type="button" class="social-btn google" aria-label="Sign in with Google">
+              <i class="fab fa-google" aria-hidden="true"></i> Google
+            </button>
+            <button type="button" class="social-btn facebook" aria-label="Sign in with Facebook">
+              <i class="fab fa-facebook-f" aria-hidden="true"></i> Facebook
+            </button>
+          </div>
+          
+          <p class="switch-form">
+            Don't have an account? <button type="button" class="switch-to-signup" aria-label="Switch to sign up form">Sign up</button>
+          </p>
+        </form>
+      </div>
+      
+      <!-- Signup Form -->
+      <div id="signupForm" class="tab-content" role="tabpanel" tabindex="0" hidden>
+        <form id="signupFormElement">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="firstName">First Name</label>
+              <input type="text" id="firstName" required>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Last Name</label>
+              <input type="text" id="lastName" required>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="signupEmail">Email Address</label>
+            <input type="email" id="signupEmail" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" required>
+          </div>
+          
+          <div class="form-group">
+            <label for="signupPassword">Password</label>
+            <div class="input-with-icon">
+              <i class="fas fa-lock" aria-hidden="true"></i>
+              <input type="password" id="signupPassword" required>
+              <button type="button" class="password-toggle" aria-label="Show password">
+                <i class="fas fa-eye" aria-hidden="true"></i>
+              </button>
+            </div>
+            <div class="password-strength">
+              <div class="strength-bar"></div>
+              <span class="strength-text">Password strength</span>
+            </div>
+          </div>
+          
+          <div class="form-group">
+            <label for="confirmPassword">Confirm Password</label>
+            <input type="password" id="confirmPassword" required>
+          </div>
+          
+          <div class="form-group">
+            <label class="checkbox">
+              <input type="checkbox" id="acceptTerms" required>
+              I agree to the <a href="terms.html">Terms of Service</a> and <a href="privacy.html">Privacy Policy</a>
+            </label>
+            <label class="checkbox">
+              <input type="checkbox" id="newsletterOptIn">
+              Subscribe to our newsletter for health tips and updates
+            </label>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-block">Create Account</button>
+          
+          <p class="switch-form">
+            Already have an account? <button type="button" class="switch-to-login" aria-label="Switch to login form">Log in</button>
+          </p>
+        </form>
+      </div>
     </div>
   </div>
 
   <!-- Booking Modal -->
-  <div id="bookingModal" class="modal-overlay">
-    <div class="modal">
-      <button class="modal-close">&times;</button>
-      <h2>Book Appointment</h2>
-      <p style="color: #64748b; margin-bottom: 1.5rem;">with <strong id="bookingDoctorName">Doctor</strong></p>
+  <div id="bookingModal" class="modal-overlay" role="dialog" aria-labelledby="bookingModalTitle" aria-hidden="true">
+    <div class="modal" role="document">
+      <button class="modal-close" aria-label="Close booking modal">&times;</button>
+      
+      <h2 id="bookingModalTitle">Book Appointment</h2>
+      <div class="booking-doctor-info">
+        <div class="doctor-avatar">
+          <img src="" alt="" id="bookingDoctorImage" width="60" height="60">
+        </div>
+        <div>
+          <h3 id="bookingDoctorName">Doctor Name</h3>
+          <p id="bookingDoctorSpecialty" class="text-muted">Specialty</p>
+        </div>
+      </div>
+      
       <form id="bookingForm">
-  <div class="form-group">
-    <label>Select Date</label>
-    <input type="date" id="bookingDate">
-  </div>
-  <div class="form-group">
-    <label>Select Time</label>
-    <select id="bookingTime">
-      <option value="">Choose a time</option>
-      <option value="09:00">09:00 AM</option>
-      <option value="10:00">10:00 AM</option>
-      <option value="11:00">11:00 AM</option>
-      <option value="14:00">02:00 PM</option>
-      <option value="15:00">03:00 PM</option>
-      <option value="16:00">04:00 PM</option>
-    </select>
-  </div>
-  <button type="submit" class="btn btn-primary">Confirm Booking</button>
-</form>
-
+        <div class="form-group">
+          <label for="appointmentType">Appointment Type</label>
+          <select id="appointmentType">
+            <option value="clinic">Clinic Visit</option>
+            <option value="video">Video Consultation</option>
+            <option value="home">Home Visit</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="bookingDate">Select Date</label>
+          <div class="input-with-icon">
+            <i class="fas fa-calendar-alt" aria-hidden="true"></i>
+            <input type="date" id="bookingDate" required min="">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="bookingTime">Select Time Slot</label>
+          <select id="bookingTime" required>
+            <option value="">Choose a time</option>
+            <!-- Time slots will be populated dynamically -->
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="patientName">Patient Name</label>
+          <input type="text" id="patientName" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="patientPhone">Phone Number</label>
+          <input type="tel" id="patientPhone" required>
+        </div>
+        
+        <div class="form-group">
+          <label for="symptoms">Symptoms/Reason for Visit</label>
+          <textarea id="symptoms" rows="3" placeholder="Briefly describe your symptoms or reason for the appointment"></textarea>
+        </div>
+        
+        <div class="booking-summary">
+          <div class="summary-item">
+            <span>Consultation Fee</span>
+            <span id="consultationFee">₹500</span>
+          </div>
+          <div class="summary-item total">
+            <span>Total Amount</span>
+            <span id="totalAmount">₹500</span>
+          </div>
+        </div>
+        
+        <button type="submit" class="btn btn-primary btn-block">
+          <i class="fas fa-lock" aria-hidden="true"></i> Confirm & Pay Securely
+        </button>
+        
+        <p class="booking-note">
+          <i class="fas fa-shield-alt" aria-hidden="true"></i> Your appointment is confirmed only after payment
+        </p>
+      </form>
     </div>
   </div>
 
-  <!-- Toast -->
-  <div id="toast" class="toast"></div>
+  <!-- Toast Notification -->
+  <div id="toast" class="toast" role="alert" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- Loading Overlay -->
+  <div id="loadingOverlay" class="loading-overlay" aria-hidden="true">
+    <div class="loading-spinner"></div>
+    <p class="loading-text">Loading...</p>
+  </div>
 
   <script src="app.js"></script>
+  <script>
+    // Set current year in footer
+    document.getElementById('currentYear').textContent = new Date().getFullYear();
+    
+    // Set min date for booking to today
+    const today = new Date().toISOString().split('T')[0];
+    const dateInput = document.getElementById('bookingDate');
+    if (dateInput) {
+      dateInput.min = today;
+    }
+  </script>
 </body>
 </html>

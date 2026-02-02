@@ -1,150 +1,1466 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Contact Us - MediBook</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - MediBook | Get in Touch with Healthcare Support</title>
+    <meta name="description" content="Contact MediBook for healthcare support, appointment booking assistance, or general inquiries. 24/7 customer service available.">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* ================= CSS VARIABLES ================= */
+        :root {
+            --primary: #2563eb;
+            --primary-dark: #1d4ed8;
+            --primary-light: #dbeafe;
+            --secondary: #10b981;
+            --secondary-light: #d1fae5;
+            --danger: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+            --text-primary: #1f2937;
+            --text-secondary: #4b5563;
+            --text-muted: #6b7280;
+            --bg-light: #f8fafc;
+            --bg-white: #ffffff;
+            --border: #e5e7eb;
+            --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --radius-sm: 0.375rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ================= RESET & BASE ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+            background: var(--bg-light);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        /* ================= HEADER ================= */
+        .header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--bg-white);
+            box-shadow: var(--shadow-sm);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+        }
+
+        .logo img {
+            height: 45px;
+            width: auto;
+            transition: var(--transition);
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-desktop {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-link {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: var(--radius-md);
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+            background: var(--primary-light);
+        }
+
+        .nav-link.active {
+            color: var(--primary);
+        }
+
+        .nav-link.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 6px;
+            height: 6px;
+            background: var(--primary);
+            border-radius: 50%;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md);
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--primary);
+            border: 2px solid var(--primary);
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-light);
+        }
+
+        .mobile-menu-btn {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-primary);
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        /* ================= PAGE HEADER ================= */
+        .page-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 4rem 1rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="M0,0 L100,0 L100,100 Z" fill="rgba(255,255,255,0.1)"/></svg>');
+            background-size: cover;
+        }
+
+        .page-header-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .page-subtitle {
+            font-size: 1.125rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+
+        .header-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 0.25rem;
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            opacity: 0.8;
+        }
+
+        /* ================= MAIN CONTENT ================= */
+        .main-content {
+            flex: 1;
+            padding: 3rem 1rem;
+        }
+
+        .section {
+            margin-bottom: 4rem;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+
+        .section-subtitle {
+            color: var(--text-secondary);
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* ================= CONTACT GRID ================= */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            margin-bottom: 4rem;
+        }
+
+        /* Contact Info Side */
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-card {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .contact-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--primary);
+        }
+
+        .contact-card-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-icon {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-light);
+            border-radius: var(--radius-md);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: var(--primary);
+        }
+
+        .contact-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .contact-content {
+            margin-left: 66px;
+        }
+
+        .contact-text {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .contact-text a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .contact-text a:hover {
+            text-decoration: underline;
+        }
+
+        .contact-hours {
+            margin-top: 0.5rem;
+        }
+
+        .hour-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.25rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .hour-item:last-child {
+            border-bottom: none;
+        }
+
+        /* Contact Form Side */
+        .contact-form {
+            background: var(--bg-white);
+            border-radius: var(--radius-xl);
+            padding: 2rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+        }
+
+        .form-header {
+            margin-bottom: 2rem;
+        }
+
+        .form-header h2 {
+            font-size: 1.75rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .form-header p {
+            color: var(--text-secondary);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text-primary);
+        }
+
+        .form-label .required {
+            color: var(--danger);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.875rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 1rem;
+            transition: var(--transition);
+            background: var(--bg-white);
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .form-control.has-error {
+            border-color: var(--danger);
+        }
+
+        .error-message {
+            color: var(--danger);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        textarea.form-control {
+            min-height: 150px;
+            resize: vertical;
+            font-family: inherit;
+        }
+
+        .form-note {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-top: 1rem;
+            text-align: center;
+        }
+
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+
+        /* ================= FAQ SECTION ================= */
+        .faq-section {
+            background: var(--bg-white);
+            border-radius: var(--radius-xl);
+            padding: 3rem;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+        }
+
+        .faq-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .faq-item {
+            padding: 1.5rem;
+            background: var(--bg-light);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--border);
+            transition: var(--transition);
+        }
+
+        .faq-item:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+
+        .faq-item h4 {
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .faq-item h4::before {
+            content: '❓';
+            font-size: 1rem;
+        }
+
+        .faq-item p {
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+
+        /* ================= MAP SECTION ================= */
+        .map-section {
+            margin-top: 4rem;
+        }
+
+        .map-container {
+            height: 400px;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+            border: 1px solid var(--border);
+        }
+
+        .map-placeholder {
+            height: 100%;
+            background: linear-gradient(135deg, var(--primary-light), var(--secondary-light));
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-primary);
+        }
+
+        .map-placeholder i {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        /* ================= FOOTER ================= */
+        .footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            padding: 3rem 1rem 1.5rem;
+            margin-top: auto;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-section h4 {
+            color: white;
+            margin-bottom: 1rem;
+            font-size: 1.125rem;
+        }
+
+        .footer-section p {
+            color: #94a3b8;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .footer-links {
+            list-style: none;
+        }
+
+        .footer-links li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(4px);
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding-top: 2rem;
+            margin-top: 2rem;
+            border-top: 1px solid #1e293b;
+            color: #94a3b8;
+            font-size: 0.875rem;
+        }
+
+        .footer-bottom a {
+            color: #94a3b8;
+            text-decoration: none;
+            margin: 0 0.5rem;
+        }
+
+        .footer-bottom a:hover {
+            color: white;
+            text-decoration: underline;
+        }
+
+        /* ================= MODALS ================= */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            padding: 1rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            width: 100%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            padding: 0.25rem;
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+        }
+
+        /* ================= TOAST ================= */
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--text-primary);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            transform: translateY(100px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+            z-index: 3000;
+            max-width: 300px;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast.success {
+            background: var(--success);
+        }
+
+        .toast.error {
+            background: var(--danger);
+        }
+
+        .toast.info {
+            background: var(--primary);
+        }
+
+        /* ================= RESPONSIVE DESIGN ================= */
+        @media (max-width: 1024px) {
+            .contact-grid {
+                gap: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .mobile-menu-btn {
+                display: block;
+            }
+
+            .nav-desktop {
+                position: fixed;
+                top: 73px;
+                left: 0;
+                right: 0;
+                background: var(--bg-white);
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: var(--shadow-lg);
+                transform: translateY(-100%);
+                opacity: 0;
+                visibility: hidden;
+                transition: transform 0.3s ease, opacity 0.3s ease, visibility 0.3s ease;
+                z-index: 999;
+            }
+
+            .nav-desktop.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .header-actions {
+                display: none;
+            }
+
+            .nav-desktop .header-actions {
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                margin-top: 1rem;
+            }
+
+            .page-title {
+                font-size: 2rem;
+            }
+
+            .contact-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .faq-section {
+                padding: 2rem;
+            }
+
+            .faq-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .page-header {
+                padding: 3rem 1rem;
+            }
+
+            .header-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+
+            .contact-form {
+                padding: 1.5rem;
+            }
+
+            .faq-section {
+                padding: 1.5rem;
+            }
+
+            .map-container {
+                height: 300px;
+            }
+        }
+
+        /* ================= UTILITY CLASSES ================= */
+        .hidden {
+            display: none !important;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-1 { margin-bottom: 0.5rem; }
+        .mb-2 { margin-bottom: 1rem; }
+        .mb-3 { margin-bottom: 1.5rem; }
+        .mb-4 { margin-bottom: 2rem; }
+
+        .mt-1 { margin-top: 0.5rem; }
+        .mt-2 { margin-top: 1rem; }
+        .mt-3 { margin-top: 1.5rem; }
+        .mt-4 { margin-top: 2rem; }
+    </style>
 </head>
 <body>
+    <!-- HEADER -->
+    <header class="header">
+        <div class="container nav-container">
+            <a href="index.html" class="logo">
+<h1 style="
+    font-family: 'Arial', sans-serif;
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: #1e3a8a;
+    margin: 0;
+    padding: 6px 12px;
+    background: white;
+    border-radius: 8px;
+    border-left: 4px solid #10b981;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+">
+    <i class="fas fa-stethoscope" style="color: #ef4444; font-size: 1.1rem;"></i>
+    <span>MediGo</span>
+</h1>            </a>
 
-  <header class="header">
-<a href="index.html" class="logo">
-  <img src="immages/logoo.png" alt="MediGo Logo">
-</a>    <ul class="nav">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="docter.html">Doctors</a></li>
-      <li><a href="appointment.html">Appointments</a></li>
-      <li><a href="contacts.html">Contact</a></li>
-    </ul>
-    <button class="mobile-menu-btn">☰</button>
-    <div class="header-buttons">
-      <button id="loginBtn" class="btn btn-outline">Login</button>
-      <button id="signupBtn" class="btn btn-primary">Sign Up</button>
+            <button class="mobile-menu-btn" aria-label="Toggle menu">
+                <i class="fas fa-bars"></i>
+            </button>
+
+            <ul class="nav-desktop">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="doctor.html" class="nav-link">Doctors</a></li>
+                <li><a href="appointment.html" class="nav-link">Appointments</a></li>
+                <li><a href="contact.html" class="nav-link active">Contact</a></li>
+                
+                <div class="header-actions">
+                    <button id="loginBtn" class="btn btn-outline">Login</button>
+                    <button id="signupBtn" class="btn btn-primary">Sign Up</button>
+                </div>
+            </ul>
+        </div>
+    </header>
+
+    <!-- PAGE HEADER -->
+    <section class="page-header">
+        <div class="page-header-content">
+            <h1 class="page-title">Contact Us</h1>
+            <p class="page-subtitle">We're here to help with any questions about appointments, doctors, or your healthcare journey</p>
+            
+            <div class="header-stats">
+                <div class="stat-item">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">Support Available</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">15min</span>
+                    <span class="stat-label">Average Response Time</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">98%</span>
+                    <span class="stat-label">Satisfaction Rate</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
+        <div class="container">
+            <!-- CONTACT SECTION -->
+            <section class="section">
+                <div class="contact-grid">
+                    <!-- Contact Information -->
+                    <div class="contact-info">
+                        <div class="contact-card">
+                            <div class="contact-card-header">
+                                <div class="contact-icon">
+                                    <i class="fas fa-envelope"></i>
+                                </div>
+                                <h3 class="contact-title">Email</h3>
+                            </div>
+                            <div class="contact-content">
+                                <p class="contact-text">
+                                    <a href="mailto:support@MediBook.com">support@MediBook.com</a>
+                                </p>
+                                <p class="contact-text text-muted">For general inquiries and support</p>
+                            </div>
+                        </div>
+
+                        <div class="contact-card">
+                            <div class="contact-card-header">
+                                <div class="contact-icon">
+                                    <i class="fas fa-phone"></i>
+                                </div>
+                                <h3 class="contact-title">Phone</h3>
+                            </div>
+                            <div class="contact-content">
+                                <p class="contact-text">
+                                    <a href="tel:+919556227777">+91 95562 27777</a>
+                                </p>
+                                <p class="contact-text text-muted">24/7 customer support line</p>
+                                <p class="contact-text mt-2">
+                                    <strong>Emergency:</strong> 
+                                    <a href="tel:108">108</a> or 
+                                    <a href="tel:102">102</a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="contact-card">
+                            <div class="contact-card-header">
+                                <div class="contact-icon">
+                                    <i class="fas fa-map-marker-alt"></i>
+                                </div>
+                                <h3 class="contact-title">Address</h3>
+                            </div>
+                            <div class="contact-content">
+                                <p class="contact-text">
+                                    <strong>MediBook Headquarters</strong><br>
+                                    123 Medical Plaza, Health Street<br>
+                                    Bhubaneswar, Odisha 751024<br>
+                                    India
+                                </p>
+                                <p class="contact-text mt-2">
+                                    <a href="#map" class="btn btn-outline" style="padding: 0.5rem 1rem; font-size: 0.875rem;">
+                                        <i class="fas fa-directions"></i> Get Directions
+                                    </a>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="contact-card">
+                            <div class="contact-card-header">
+                                <div class="contact-icon">
+                                    <i class="fas fa-clock"></i>
+                                </div>
+                                <h3 class="contact-title">Business Hours</h3>
+                            </div>
+                            <div class="contact-content">
+                                <div class="contact-hours">
+                                    <div class="hour-item">
+                                        <span>Monday - Friday</span>
+                                        <span>8:00 AM - 8:00 PM</span>
+                                    </div>
+                                    <div class="hour-item">
+                                        <span>Saturday</span>
+                                        <span>9:00 AM - 6:00 PM</span>
+                                    </div>
+                                    <div class="hour-item">
+                                        <span>Sunday</span>
+                                        <span>10:00 AM - 4:00 PM</span>
+                                    </div>
+                                    <div class="hour-item">
+                                        <span>Emergency Support</span>
+                                        <span>24/7</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Contact Form -->
+                    <div class="contact-form">
+                        <div class="form-header">
+                            <h2>Send us a Message</h2>
+                            <p>Fill out the form below and our team will get back to you within 24 hours.</p>
+                        </div>
+
+                        <form id="contactForm" novalidate>
+                            <div class="form-group">
+                                <label for="contactName" class="form-label">
+                                    Your Name <span class="required">*</span>
+                                </label>
+                                <input type="text" 
+                                       id="contactName" 
+                                       class="form-control" 
+                                       placeholder="Enter your full name"
+                                       required>
+                                <div class="error-message" id="nameError"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactEmail" class="form-label">
+                                    Email Address <span class="required">*</span>
+                                </label>
+                                <input type="email" 
+                                       id="contactEmail" 
+                                       class="form-control" 
+                                       placeholder="your.email@example.com"
+                                       required>
+                                <div class="error-message" id="emailError"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactPhone" class="form-label">
+                                    Phone Number
+                                </label>
+                                <input type="tel" 
+                                       id="contactPhone" 
+                                       class="form-control" 
+                                       placeholder="+91 98765 43210">
+                                <div class="error-message" id="phoneError"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactSubject" class="form-label">
+                                    Subject <span class="required">*</span>
+                                </label>
+                                <select id="contactSubject" class="form-control" required>
+                                    <option value="">Select a subject</option>
+                                    <option value="appointment">Appointment Booking</option>
+                                    <option value="technical">Technical Support</option>
+                                    <option value="billing">Billing Inquiry</option>
+                                    <option value="doctor">Doctor Information</option>
+                                    <option value="feedback">Feedback & Suggestions</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                <div class="error-message" id="subjectError"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="contactMessage" class="form-label">
+                                    Message <span class="required">*</span>
+                                </label>
+                                <textarea id="contactMessage" 
+                                          class="form-control" 
+                                          placeholder="Please describe your inquiry in detail..."
+                                          rows="6"
+                                          required></textarea>
+                                <div class="error-message" id="messageError"></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-checkbox">
+                                    <input type="checkbox" id="contactConsent" required>
+                                    <span>I agree to the <a href="privacy.html">Privacy Policy</a> and consent to MediBook contacting me regarding my inquiry.</span>
+                                </label>
+                                <div class="error-message" id="consentError"></div>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary btn-block">
+                                <i class="fas fa-paper-plane"></i> Send Message
+                            </button>
+
+                            <p class="form-note">
+                                <i class="fas fa-info-circle"></i> Fields marked with <span class="required">*</span> are required.
+                            </p>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- MAP SECTION -->
+            <section class="section map-section" id="map">
+                <div class="section-header">
+                    <h2 class="section-title">Find Our Office</h2>
+                    <p class="section-subtitle">Visit us at our headquarters in Bhubaneswar</p>
+                </div>
+                
+                <div class="map-container">
+                    <div class="map-placeholder">
+                        <i class="fas fa-map-marked-alt"></i>
+                        <h3>MediBook Headquarters</h3>
+                        <p>123 Medical Plaza, Health Street, Bhubaneswar</p>
+                        <a href="https://maps.google.com/?q=123+Medical+Plaza,+Health+Street,+Bhubaneswar,+Odisha+751024" 
+                           target="_blank" 
+                           class="btn btn-outline mt-2">
+                            <i class="fas fa-external-link-alt"></i> Open in Google Maps
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- FAQ SECTION -->
+            <section class="section">
+                <div class="faq-section">
+                    <div class="section-header">
+                        <h2 class="section-title">Frequently Asked Questions</h2>
+                        <p class="section-subtitle">Quick answers to common questions</p>
+                    </div>
+
+                    <div class="faq-grid">
+                        <div class="faq-item">
+                            <h4>How do I book an appointment?</h4>
+                            <p>You can book appointments through our website, mobile app, or by calling our support line at +91 95562 27777.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Can I reschedule or cancel my appointment?</h4>
+                            <p>Yes, appointments can be rescheduled or cancelled up to 24 hours before the scheduled time through your account dashboard.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Do you offer emergency services?</h4>
+                            <p>We provide urgent care during business hours. For life-threatening emergencies, please call 108 or visit the nearest hospital emergency room.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>What insurance providers do you accept?</h4>
+                            <p>We accept most major insurance providers including Aetna, Blue Cross, Cigna, and UnitedHealthcare. Please contact us for specific coverage details.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>How do I access my medical records?</h4>
+                            <p>You can access your medical records through your patient portal. For assistance, contact our medical records department at records@medibook.com.</p>
+                        </div>
+                        <div class="faq-item">
+                            <h4>Do you offer virtual consultations?</h4>
+                            <p>Yes, we offer telehealth services for many specialties. You can schedule a virtual consultation through our platform.</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>MediBook</h4>
+                    <p>Your trusted partner in healthcare management and appointment scheduling. Providing quality care since 2010.</p>
+                    <div class="social-links mt-2">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                        <a href="#" aria-label="Twitter" style="margin-left: 1rem;"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram" style="margin-left: 1rem;"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn" style="margin-left: 1rem;"><i class="fab fa-linkedin"></i></a>
+                    </div>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul class="footer-links">
+                        <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+                        <li><a href="doctor.html"><i class="fas fa-user-md"></i> Find a Doctor</a></li>
+                        <li><a href="appointment.html"><i class="fas fa-calendar-check"></i> Book Appointment</a></li>
+                        <li><a href="contact.html"><i class="fas fa-headset"></i> Contact Support</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <ul class="footer-links">
+                        <li><a href="mailto:support@MediBook.com"><i class="fas fa-envelope"></i> support@MediBook.com</a></li>
+                        <li><a href="tel:+919556227777"><i class="fas fa-phone"></i> +91 95562 27777</a></li>
+                        <li><a href="#map"><i class="fas fa-map-marker-alt"></i> Bhubaneswar, Odisha</a></li>
+                        <li><a href="emergency.html"><i class="fas fa-ambulance"></i> Emergency: 108</a></li>
+                    </ul>
+                </div>
+
+                <div class="footer-section">
+                    <h4>Newsletter</h4>
+                    <p>Subscribe to get health tips and updates</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your email" aria-label="Email for newsletter">
+                        <button type="submit" class="btn btn-primary mt-1">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; <span id="currentYear">2024</span> MediBook. All rights reserved. | 
+                    <a href="privacy.html">Privacy Policy</a> | 
+                    <a href="terms.html">Terms of Service</a> | 
+                    <a href="cookies.html">Cookie Policy</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- AUTH MODAL -->
+    <div id="authModal" class="modal-overlay" aria-hidden="true">
+        <div class="modal" role="dialog" aria-labelledby="modalTitle">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modalTitle">Welcome to MediBook</h3>
+                <button class="modal-close" aria-label="Close modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="modal-tabs" role="tablist">
+                    <button id="loginTab" class="modal-tab active" role="tab" aria-selected="true">Login</button>
+                    <button id="signupTab" class="modal-tab" role="tab" aria-selected="false">Sign Up</button>
+                </div>
+                
+                <form id="authForm">
+                    <div id="loginForm" role="tabpanel">
+                        <div class="form-group">
+                            <label for="loginEmail">Email</label>
+                            <input type="email" id="loginEmail" placeholder="your@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="loginPassword">Password</label>
+                            <input type="password" id="loginPassword" placeholder="••••••••" required>
+                            <a href="forgot-password.html" class="forgot-password">Forgot password?</a>
+                        </div>
+                    </div>
+                    
+                    <div id="signupForm" role="tabpanel" style="display: none;">
+                        <div class="form-group">
+                            <label for="signupEmail">Email</label>
+                            <input type="email" id="signupEmail" placeholder="your@email.com" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="signupPassword">Password</label>
+                            <input type="password" id="signupPassword" placeholder="••••••••" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="confirmPassword">Confirm Password</label>
+                            <input type="password" id="confirmPassword" placeholder="••••••••" required>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary btn-block">Continue</button>
+                </form>
+            </div>
+        </div>
     </div>
-  </header>
 
-  <section class="page-header">
-    <h1>Contact Us</h1>
-    <p>We're here to help with any questions</p>
-  </section>
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="toast" role="alert" aria-live="polite"></div>
 
-  <section class="section">
-    <div class="contact-grid">
-      <div class="contact-info">
-        <div class="contact-item">
-          <div class="contact-icon">📧</div>
-          <div class="contact-text">
-            <h4>Email</h4>
-            <p>support@MediGo.com</p>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">📞</div>
-          <div class="contact-text">
-            <h4>Phone</h4>
-            <p>+91 9556227777</p>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">📍</div>
-          <div class="contact-text">
-            <h4>Address</h4>
-            <p>123 Medical Plaza, Bhubaneswar</p>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-icon">🕐</div>
-          <div class="contact-text">
-            <h4>Hours</h4>
-            <p>Mon - Sat: 8am - 8pm</p>
-          </div>
-        </div>
-      </div>
-      
-      <div class="contact-form">
-        <h3 style="margin-bottom: 1.5rem; color: #0f172a;">Send us a Message</h3>
-        <form id="contactForm">
-  <div class="form-group">
-    <label>Your Name</label>
-    <input type="text" id="contactName" required>
-  </div>
+    <script>
+        // ================= INITIALIZATION =================
+        document.addEventListener('DOMContentLoaded', () => {
+            // Set current year in footer
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+            
+            // Initialize event listeners
+            initializeEventListeners();
+            
+            // Initialize form validation
+            initializeFormValidation();
+        });
 
-  <div class="form-group">
-    <label>Email</label>
-    <input type="email" id="contactEmail" required>
-  </div>
+        // ================= EVENT LISTENERS =================
+        function initializeEventListeners() {
+            // Mobile menu toggle
+            document.querySelector('.mobile-menu-btn').addEventListener('click', () => {
+                document.querySelector('.nav-desktop').classList.toggle('active');
+            });
+            
+            // Auth modal buttons
+            document.getElementById('loginBtn').addEventListener('click', openAuthModal);
+            document.getElementById('signupBtn').addEventListener('click', openAuthModal);
+            
+            // Modal close buttons
+            document.querySelector('.modal-close').addEventListener('click', closeAuthModal);
+            
+            // Modal tab switching
+            document.getElementById('loginTab').addEventListener('click', () => switchAuthTab('login'));
+            document.getElementById('signupTab').addEventListener('click', () => switchAuthTab('signup'));
+            
+            // Close modal when clicking outside
+            document.getElementById('authModal').addEventListener('click', (e) => {
+                if (e.target === document.getElementById('authModal')) {
+                    closeAuthModal();
+                }
+            });
+            
+            // Close mobile menu on link click
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.addEventListener('click', () => {
+                    document.querySelector('.nav-desktop').classList.remove('active');
+                });
+            });
+            
+            // Contact form submission
+            document.getElementById('contactForm').addEventListener('submit', handleContactFormSubmit);
+        }
 
-  <div class="form-group">
-    <label>Subject</label>
-    <input type="text" id="contactSubject" required>
-  </div>
+        // ================= AUTH MODAL FUNCTIONS =================
+        function openAuthModal() {
+            document.getElementById('authModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
 
-  <div class="form-group">
-    <label>Message</label>
-    <textarea id="contactMessage" required></textarea>
-  </div>
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.remove('active');
+            document.body.style.overflow = '';
+        }
 
-  <button 
-  type="button"
-  onclick="window.location.href='chat.html'"
-  class="btn btn-primary"
-  style="width:100%; padding:12px; border-radius:8px; font-size:16px;">
-  Send Message
-</button>
+        function switchAuthTab(tab) {
+            // Update tabs
+            document.getElementById('loginTab').classList.toggle('active', tab === 'login');
+            document.getElementById('signupTab').classList.toggle('active', tab === 'signup');
+            
+            // Update forms
+            document.getElementById('loginForm').style.display = tab === 'login' ? 'block' : 'none';
+            document.getElementById('signupForm').style.display = tab === 'signup' ? 'block' : 'none';
+        }
 
-</form>
+        // ================= FORM VALIDATION =================
+        function initializeFormValidation() {
+            // Real-time validation for contact form
+            const contactForm = document.getElementById('contactForm');
+            const inputs = contactForm.querySelectorAll('input, select, textarea');
+            
+            inputs.forEach(input => {
+                input.addEventListener('blur', validateField);
+                input.addEventListener('input', clearError);
+            });
+        }
 
-      </div>
-    </div>
-  </section>
+        function validateField(e) {
+            const field = e.target;
+            const errorId = field.id + 'Error';
+            const errorElement = document.getElementById(errorId);
+            
+            // Clear previous error
+            clearError(e);
+            
+            // Required field validation
+            if (field.hasAttribute('required') && !field.value.trim()) {
+                showError(field, errorElement, 'This field is required');
+                return false;
+            }
+            
+            // Email validation
+            if (field.type === 'email' && field.value) {
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!emailRegex.test(field.value)) {
+                    showError(field, errorElement, 'Please enter a valid email address');
+                    return false;
+                }
+            }
+            
+            // Phone validation
+            if (field.id === 'contactPhone' && field.value) {
+                const phoneRegex = /^[0-9+\-\s]{10,15}$/;
+                if (!phoneRegex.test(field.value)) {
+                    showError(field, errorElement, 'Please enter a valid phone number');
+                    return false;
+                }
+            }
+            
+            // Message length validation
+            if (field.id === 'contactMessage' && field.value.length < 10) {
+                showError(field, errorElement, 'Message must be at least 10 characters');
+                return false;
+            }
+            
+            return true;
+        }
 
-  <footer class="footer">
-    <div class="footer-bottom">
-      <p>© 2024 MediBook. All rights reserved.</p>
-    </div>
-  </footer>
+        function showError(field, errorElement, message) {
+            field.classList.add('has-error');
+            if (errorElement) {
+                errorElement.innerHTML = `<i class="fas fa-exclamation-circle"></i> ${message}`;
+            }
+        }
 
-  <!-- Auth Modal -->
-  <div id="authModal" class="modal-overlay">
-    <div class="modal">
-      <button class="modal-close">&times;</button>
-      <h2>Welcome to MediBook</h2>
-      <div class="modal-tabs">
-        <button id="loginTab" class="modal-tab active">Login</button>
-        <button id="signupTab" class="modal-tab">Sign Up</button>
-      </div>
-      <form id="authForm">
-        <div id="loginForm">
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="loginEmail" placeholder="your@email.com">
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <input type="password" id="loginPassword" placeholder="••••••••">
-          </div>
-        </div>
-        <div id="signupForm" style="display: none;">
-          <div class="form-group">
-            <label>Email</label>
-            <input type="email" id="signupEmail" placeholder="your@email.com">
-          </div>
-          <div class="form-group">
-            <label>Password</label>
-            <input type="password" id="signupPassword" placeholder="••••••••">
-          </div>
-          <div class="form-group">
-            <label>Confirm Password</label>
-            <input type="password" id="confirmPassword" placeholder="••••••••">
-          </div>
-        </div>
-        <button type="submit" class="btn btn-primary" style="width: 100%;">Continue</button>
-      </form>
-    </div>
-  </div>
+        function clearError(e) {
+            const field = e.target;
+            const errorId = field.id + 'Error';
+            const errorElement = document.getElementById(errorId);
+            
+            field.classList.remove('has-error');
+            if (errorElement) {
+                errorElement.textContent = '';
+            }
+        }
 
-  <div id="toast" class="toast"></div>
-  <script src="app.js"></script>
+        // ================= CONTACT FORM SUBMISSION =================
+        async function handleContactFormSubmit(e) {
+            e.preventDefault();
+            
+            // Validate all fields
+            const fields = [
+                'contactName',
+                'contactEmail',
+                'contactSubject',
+                'contactMessage',
+                'contactConsent'
+            ];
+            
+            let isValid = true;
+            fields.forEach(fieldId => {
+                const field = document.getElementById(fieldId);
+                const event = { target: field };
+                if (!validateField(event)) {
+                    isValid = false;
+                }
+            });
+            
+            if (!isValid) {
+                showToast('Please fix the errors in the form', 'error');
+                return;
+            }
+            
+            // Disable submit button
+            const submitBtn = e.target.querySelector('button[type="submit"]');
+            const originalText = submitBtn.innerHTML;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Sending...';
+            submitBtn.disabled = true;
+            
+            try {
+                // Simulate API call
+                await simulateApiCall();
+                
+                // Show success message
+                showToast('Your message has been sent successfully! We\'ll get back to you soon.', 'success');
+                
+                // Reset form
+                e.target.reset();
+                
+                // Save to localStorage for chat page
+                const contactData = {
+                    name: document.getElementById('contactName').value,
+                    email: document.getElementById('contactEmail').value,
+                    subject: document.getElementById('contactSubject').value,
+                    message: document.getElementById('contactMessage').value,
+                    timestamp: new Date().toISOString()
+                };
+                
+                localStorage.setItem('contactFormData', JSON.stringify(contactData));
+                localStorage.setItem('chatFirstMessage', contactData.message);
+                localStorage.setItem('chatUserName', contactData.name);
+                
+            } catch (error) {
+                showToast('Failed to send message. Please try again.', 'error');
+            } finally {
+                // Re-enable submit button
+                submitBtn.innerHTML = originalText;
+                submitBtn.disabled = false;
+            }
+        }
+
+        function simulateApiCall() {
+            return new Promise((resolve) => {
+                setTimeout(resolve, 1500);
+            });
+        }
+
+        // ================= TOAST NOTIFICATION =================
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type}`;
+            
+            // Clear existing timeout
+            if (window.toastTimeout) {
+                clearTimeout(window.toastTimeout);
+            }
+            
+            // Show toast
+            setTimeout(() => {
+                toast.classList.add('show');
+            }, 10);
+            
+            // Hide after 5 seconds
+            window.toastTimeout = setTimeout(() => {
+                toast.classList.remove('show');
+            }, 5000);
+        }
+
+        // ================= UTILITY FUNCTIONS =================
+        function validateEmail(email) {
+            const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            return re.test(email);
+        }
+
+        function validatePhone(phone) {
+            const re = /^[0-9+\-\s]{10,15}$/;
+            return re.test(phone);
+        }
+    </script>
 </body>
 </html>

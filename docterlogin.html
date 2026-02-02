@@ -3,175 +3,1865 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Doctor Registration with Map</title>
+  <title>Doctor Registration | MediBook</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
-    body { font-family: Arial, sans-serif; background: #f8fafc; margin:0; padding:0; }
-    .container { max-width: 600px; margin: 50px auto; background: #fff; padding: 30px; border-radius:10px; box-shadow:0 5px 20px rgba(0,0,0,0.1);}
-    h2 { text-align:center; color:#0ea5e9; margin-bottom:20px; }
-    .form-group { margin-bottom:15px; }
-    label { display:block; margin-bottom:5px; font-weight:600; }
-    input, select { width:100%; padding:10px; border:1px solid #cbd5e1; border-radius:5px; }
-    .btn-primary, .btn-location { padding:12px; border:none; border-radius:8px; cursor:pointer; font-size:16px; margin-top:10px; width:100%; }
-    .btn-primary { background-color:#0ea5e9; color:white; }
-    .btn-primary:hover { background-color:#0284c7; }
-    .btn-location { background-color:#10b981; color:white; width:auto; margin-top:5px; display:inline-block; }
-    .btn-location:hover { background-color:#059669; }
-    /* Map Modal */
-    #mapModal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:9999; }
-    #mapContainer { width:90%; height:80%; margin:50px auto; background:#fff; border-radius:10px; position:relative; }
-    #map { width:100%; height:100%; border-radius:10px; }
-    #addLocationBtn { position:absolute; bottom:10px; left:50%; transform:translateX(-50%); padding:10px 15px; background:#0ea5e9; color:white; border:none; border-radius:5px; cursor:pointer; font-weight:bold; }
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-light: #dbeafe;
+      --secondary: #10b981;
+      --secondary-dark: #059669;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --success: #10b981;
+      --text-primary: #1f2937;
+      --text-secondary: #4b5563;
+      --text-muted: #6b7280;
+      --bg-light: #f8fafc;
+      --bg-white: #ffffff;
+      --border: #e5e7eb;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      --radius-sm: 0.375rem;
+      --radius-md: 0.5rem;
+      --radius-lg: 0.75rem;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: var(--bg-light);
+      color: var(--text-primary);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ================= NAVIGATION BAR ================= */
+    .header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: var(--bg-white);
+      box-shadow: var(--shadow-sm);
+      padding: 0.75rem 0;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 1rem;
+    }
+
+    .nav-container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+
+    .logo-icon {
+      font-size: 2rem;
+      color: var(--primary);
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--primary);
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-subtitle {
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--text-secondary);
+      margin-top: -2px;
+    }
+
+    .nav-desktop {
+      display: flex;
+      gap: 1.5rem;
+      align-items: center;
+      list-style: none;
+    }
+
+    .nav-link {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-weight: 500;
+      padding: 0.5rem 1rem;
+      border-radius: var(--radius-md);
+      transition: all 0.3s ease;
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .nav-link:hover {
+      color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .nav-link.active {
+      color: var(--primary);
+    }
+
+    .nav-link.active::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 6px;
+      background: var(--primary);
+      border-radius: 50%;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .btn {
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--radius-md);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: none;
+      font-size: 1rem;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+    }
+
+    .btn-outline {
+      background: transparent;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .btn-outline:hover {
+      background: var(--primary-light);
+    }
+
+    .btn-sm {
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: var(--text-primary);
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+
+    /* ================= MAIN CONTENT ================= */
+    .main-content {
+      flex: 1;
+      padding: 2rem 0;
+    }
+
+    .page-header {
+      text-align: center;
+      margin-bottom: 2rem;
+      padding: 0 1rem;
+    }
+
+    .page-title {
+      font-size: 2.5rem;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .page-subtitle {
+      color: var(--text-secondary);
+      font-size: 1.125rem;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .form-container {
+      background: var(--bg-white);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border);
+      margin-bottom: 2rem;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group.full-width {
+      grid-column: 1 / -1;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .required::after {
+      content: " *";
+      color: var(--danger);
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: var(--radius-md);
+      font-size: 1rem;
+      transition: all 0.3s ease;
+      background: var(--bg-white);
+    }
+
+    input:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    input[readonly] {
+      background: #f9fafb;
+      cursor: not-allowed;
+    }
+
+    .file-input-container {
+      border: 2px dashed var(--border);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .file-input-container:hover {
+      border-color: var(--primary);
+      background: var(--primary-light);
+    }
+
+    .file-input-container input {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0;
+      cursor: pointer;
+    }
+
+    .file-preview {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-top: 1rem;
+      padding: 1rem;
+      background: var(--bg-light);
+      border-radius: var(--radius-md);
+      display: none;
+    }
+
+    .file-preview img {
+      width: 60px;
+      height: 60px;
+      object-fit: cover;
+      border-radius: var(--radius-sm);
+    }
+
+    .file-info {
+      flex: 1;
+    }
+
+    .file-name {
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .file-size {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+    }
+
+    .remove-file {
+      background: none;
+      border: none;
+      color: var(--danger);
+      cursor: pointer;
+      font-size: 1.25rem;
+    }
+
+    .location-input-group {
+      position: relative;
+    }
+
+    .location-input-group input {
+      padding-right: 140px;
+    }
+
+    .location-btn {
+      position: absolute;
+      right: 0;
+      top: 0;
+      height: 100%;
+      padding: 0 1.5rem;
+      background: var(--secondary);
+      color: white;
+      border: none;
+      border-radius: 0 var(--radius-md) var(--radius-md) 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .location-btn:hover {
+      background: var(--secondary-dark);
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    /* ================= REGISTERED DOCTORS PREVIEW ================= */
+    .doctors-preview {
+      margin-top: 3rem;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .section-title {
+      font-size: 1.75rem;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .doctors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+
+    .doctor-card {
+      background: var(--bg-white);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow-md);
+      transition: all 0.3s ease;
+      border: 1px solid var(--border);
+    }
+
+    .doctor-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .doctor-status {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      z-index: 1;
+    }
+
+    .status-pending {
+      background: #fef3c7;
+      color: var(--warning);
+    }
+
+    .status-approved {
+      background: var(--secondary-light);
+      color: var(--success);
+    }
+
+    .doctor-image-container {
+      position: relative;
+      height: 200px;
+      overflow: hidden;
+    }
+
+    .doctor-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .doctor-info {
+      padding: 1.5rem;
+    }
+
+    .doctor-name {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .doctor-specialty {
+      color: var(--primary);
+      font-weight: 500;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .doctor-meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin: 1rem 0;
+      padding: 1rem 0;
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .meta-item {
+      text-align: center;
+    }
+
+    .meta-value {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .meta-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .doctor-actions {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1rem;
+    }
+
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      background: var(--bg-white);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border);
+    }
+
+    .empty-icon {
+      font-size: 4rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      opacity: 0.5;
+    }
+
+    /* ================= FOOTER ================= */
+    .footer {
+      background: #0f172a;
+      color: #cbd5e1;
+      padding: 3rem 1rem 1.5rem;
+      margin-top: auto;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-section h4 {
+      color: white;
+      margin-bottom: 1rem;
+      font-size: 1.125rem;
+    }
+
+    .footer-section p {
+      color: #94a3b8;
+      margin-bottom: 1rem;
+      line-height: 1.6;
+    }
+
+    .footer-links {
+      list-style: none;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-links a {
+      color: #94a3b8;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .footer-links a:hover {
+      color: white;
+      transform: translateX(4px);
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 2rem;
+      margin-top: 2rem;
+      border-top: 1px solid #1e293b;
+      color: #94a3b8;
+      font-size: 0.875rem;
+      max-width: 1200px;
+      margin: 2rem auto 0;
+    }
+
+    .footer-bottom a {
+      color: #94a3b8;
+      text-decoration: none;
+      margin: 0 0.5rem;
+    }
+
+    .footer-bottom a:hover {
+      color: white;
+      text-decoration: underline;
+    }
+
+    /* ================= MODAL ================= */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 2000;
+      padding: 1rem;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .modal {
+      background: var(--bg-white);
+      border-radius: var(--radius-lg);
+      width: 100%;
+      max-width: 500px;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: modalSlideIn 0.3s ease;
+      box-shadow: var(--shadow-lg);
+    }
+
+    @keyframes modalSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+    }
+
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .modal-close {
+      background: rgba(255, 255, 255, 0.1);
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      color: white;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+    }
+
+    .modal-close:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    .modal-body {
+      padding: 1.5rem;
+    }
+
+    /* ================= Map Modal ================= */
+    .map-instructions {
+      position: absolute;
+      top: 1rem;
+      left: 1rem;
+      background: white;
+      padding: 0.75rem 1rem;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      z-index: 10;
+      font-size: 0.875rem;
+      max-width: 300px;
+    }
+
+    .selected-location {
+      position: absolute;
+      bottom: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background: white;
+      padding: 1rem;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-md);
+      z-index: 10;
+      text-align: center;
+      min-width: 300px;
+    }
+
+    .selected-location .coordinates {
+      font-family: monospace;
+      background: var(--bg-light);
+      padding: 0.5rem;
+      border-radius: var(--radius-sm);
+      margin-bottom: 1rem;
+    }
+
+    #map {
+      width: 100%;
+      height: 400px;
+      border-radius: var(--radius-md);
+    }
+
+    /* ================= Toast ================= */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      background: var(--text-primary);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      transform: translateY(100px);
+      opacity: 0;
+      transition: all 0.3s ease;
+      z-index: 3000;
+      max-width: 300px;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .toast.success {
+      background: var(--success);
+    }
+
+    .toast.error {
+      background: var(--danger);
+    }
+
+    /* ================= Loading State ================= */
+    .loading {
+      display: none;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .loading.active {
+      display: block;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid var(--border);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin: 0 auto 1rem;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* ================= Success Message ================= */
+    .success-message {
+      text-align: center;
+      padding: 3rem 1rem;
+      display: none;
+    }
+
+    .success-message.active {
+      display: block;
+    }
+
+    .success-icon {
+      font-size: 4rem;
+      color: var(--success);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ================= Responsive ================= */
+    @media (max-width: 768px) {
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .nav-desktop {
+        position: fixed;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: var(--bg-white);
+        flex-direction: column;
+        padding: 1rem;
+        box-shadow: var(--shadow-lg);
+        transform: translateY(-100%);
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+        z-index: 999;
+      }
+
+      .nav-desktop.active {
+        transform: translateY(0);
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .header-actions {
+        display: none;
+      }
+
+      .nav-desktop .header-actions {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-top: 1rem;
+      }
+
+      .page-title {
+        font-size: 2rem;
+      }
+
+      .form-container {
+        padding: 1.5rem;
+      }
+
+      .form-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-actions {
+        flex-direction: column;
+      }
+
+      .doctors-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .location-input-group input {
+        padding-right: 120px;
+      }
+
+      .location-btn {
+        padding: 0 1rem;
+        font-size: 0.875rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .page-header {
+        padding: 1rem;
+      }
+
+      .doctor-actions {
+        flex-direction: column;
+      }
+
+      .doctor-actions .btn {
+        width: 100%;
+      }
+
+      .modal {
+        max-width: 95%;
+      }
+    }
   </style>
 </head>
 <body>
+  <!-- HEADER -->
+  <header class="header">
+    <div class="container nav-container">
+      <a href="index.html" class="logo">
+        <div class="logo-icon">
+          <i class="fas fa-user-md"></i>
+        </div>
+        <div class="logo-text">
+          <span>MediGo</span>
+          <span class="logo-subtitle">Healthcare Platform</span>
+        </div>
+      </a>
 
-<div class="container">
-  <h2>Doctor Registration</h2>
-  <form id="doctorForm">
-    <div class="form-group">
-      <label>Clinic Name</label>
-      <input type="text" id="clinicName" required>
-    </div>
-    <div class="form-group">
-      <label>Doctor Name</label>
-      <input type="text" id="doctorName" required>
-    </div>
-    <div class="form-group">
-      <label>Category</label>
-      <select id="category" required>
-        <option value="">Select</option>
-        <option value="general">General Physician</option>
-        <option value="cardiologist">Cardiologist</option>
-        <option value="dentist">Dentist</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label>Years of Experience</label>
-      <input type="number" id="experience" required>
-    </div>
-    <div class="form-group">
-      <label>Age</label>
-      <input type="number" id="age" required>
-    </div>
-    <div class="form-group">
-      <label>Aadhaar Number</label>
-      <input type="text" id="adhar" maxlength="12" required>
-    </div>
-    <div class="form-group">
-      <label>Doctor Photo</label>
-      <input type="file" id="photo" accept=".jpg,.png" required>
-    </div>
-    <div class="form-group">
-      <label>Doctor Certificate</label>
-      <input type="file" id="certificate" accept=".jpg,.png,.pdf" required>
-    </div>
-    <div class="form-group">
-      <label>Clinic Location</label>
-      <input type="text" id="clinicLocation" placeholder="Pick location on map" readonly required>
-      <button type="button" class="btn-location" id="pickLocationBtn">Pick Location</button>
-    </div>
-    <button type="submit" class="btn-primary">Register Doctor</button>
-  </form>
-</div>
+      <button class="mobile-menu-btn" aria-label="Toggle menu">
+        <i class="fas fa-bars"></i>
+      </button>
 
-<!-- Map Modal -->
-<div id="mapModal">
-  <div id="mapContainer">
-    <div id="map"></div>
-    <button id="addLocationBtn">Add Location</button>
+      <ul class="nav-desktop">
+        <li><a href="index.html" class="nav-link"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="doctor.html" class="nav-link"><i class="fas fa-search"></i> Find Doctors</a></li>
+        <li><a href="doctor-register.html" class="nav-link active"><i class="fas fa-user-plus"></i> Doctor Registration</a></li>
+        <li><a href="appointment.html" class="nav-link"><i class="fas fa-calendar-check"></i> Appointments</a></li>
+        <li><a href="contact.html" class="nav-link"><i class="fas fa-headset"></i> Contact</a></li>
+        
+        <div class="header-actions">
+          <button id="loginBtn" class="btn btn-outline btn-sm"><i class="fas fa-sign-in-alt"></i> Login</button>
+          <button id="signupBtn" class="btn btn-primary btn-sm"><i class="fas fa-user-plus"></i> Sign Up</button>
+        </div>
+      </ul>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+    <div class="container">
+      <!-- PAGE HEADER -->
+      <div class="page-header">
+        <h1 class="page-title">Doctor Registration</h1>
+        <p class="page-subtitle">Join our network of trusted healthcare professionals. Register once and appear on our doctors page.</p>
+      </div>
+
+      <!-- REGISTRATION FORM -->
+      <div class="form-container">
+        <form id="doctorForm">
+          <div class="form-grid">
+            <div class="form-group">
+              <label class="required">
+                <i class="fas fa-hospital"></i> Clinic Name
+              </label>
+              <input type="text" id="clinicName" placeholder="Enter clinic/hospital name" required>
+            </div>
+
+            <div class="form-group">
+              <label class="required">
+                <i class="fas fa-user-md"></i> Doctor Name
+              </label>
+              <input type="text" id="doctorName" placeholder="Enter full name" required>
+            </div>
+
+            <div class="form-group">
+              <label class="required">
+                <i class="fas fa-stethoscope"></i> Specialization
+              </label>
+              <select id="specialization" required>
+                <option value="">Select specialization</option>
+                <option value="cardiologist">Cardiologist</option>
+                <option value="dermatologist">Dermatologist</option>
+                <option value="pediatrician">Pediatrician</option>
+                <option value="orthopedic">Orthopedic Surgeon</option>
+                <option value="neurologist">Neurologist</option>
+                <option value="gynecologist">Gynecologist</option>
+                <option value="psychiatrist">Psychiatrist</option>
+                <option value="dentist">Dentist</option>
+                <option value="general">General Physician</option>
+                <option value="ophthalmologist">Ophthalmologist</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="required">
+                <i class="fas fa-briefcase"></i> Years of Experience
+              </label>
+              <input type="number" id="experience" min="0" max="50" placeholder="e.g., 10" required>
+            </div>
+
+            <div class="form-group">
+              <label class="required">
+                <i class="fas fa-user"></i> Age
+              </label>
+              <input type="number" id="age" min="25" max="80" placeholder="e.g., 35" required>
+            </div>
+
+            <div class="form-group">
+              <label class="required">
+                <i class="fas fa-id-card"></i> Aadhaar Number
+              </label>
+              <input type="text" id="adhar" maxlength="12" placeholder="12-digit Aadhaar number" required>
+              <small style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.25rem; display: block;">
+                Enter 12-digit Aadhaar number without spaces
+              </small>
+            </div>
+
+            <div class="form-group">
+              <label class="required">
+                <i class="fas fa-phone"></i> Contact Number
+              </label>
+              <input type="tel" id="contactNumber" maxlength="10" placeholder="10-digit mobile number" required>
+            </div>
+
+            <div class="form-group">
+              <label class="required">
+                <i class="fas fa-envelope"></i> Email Address
+              </label>
+              <input type="email" id="email" placeholder="doctor@example.com" required>
+            </div>
+
+            <div class="form-group">
+              <label class="required">
+                <i class="fas fa-money-bill-wave"></i> Consultation Fee (₹)
+              </label>
+              <input type="number" id="consultationFee" min="0" placeholder="e.g., 500" required>
+            </div>
+
+            <div class="form-group full-width">
+              <label class="required">
+                <i class="fas fa-image"></i> Doctor Photo
+              </label>
+              <div class="file-input-container">
+                <input type="file" id="photo" accept=".jpg,.jpeg,.png" required>
+                <div>
+                  <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--primary); margin-bottom: 0.5rem;"></i>
+                  <p style="margin-bottom: 0.25rem; font-weight: 500;">Click to upload photo</p>
+                  <p style="color: var(--text-muted); font-size: 0.875rem;">JPEG or PNG, max 5MB</p>
+                </div>
+              </div>
+              <div class="file-preview" id="photoPreview">
+                <img id="photoPreviewImage" src="" alt="Photo preview">
+                <div class="file-info">
+                  <div class="file-name" id="photoFileName"></div>
+                  <div class="file-size" id="photoFileSize"></div>
+                </div>
+                <button type="button" class="remove-file" onclick="removeFile('photo')">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group full-width">
+              <label class="required">
+                <i class="fas fa-file-certificate"></i> Medical Certificate
+              </label>
+              <div class="file-input-container">
+                <input type="file" id="certificate" accept=".jpg,.jpeg,.png,.pdf" required>
+                <div>
+                  <i class="fas fa-file-medical" style="font-size: 2rem; color: var(--primary); margin-bottom: 0.5rem;"></i>
+                  <p style="margin-bottom: 0.25rem; font-weight: 500;">Click to upload certificate</p>
+                  <p style="color: var(--text-muted); font-size: 0.875rem;">JPEG, PNG or PDF, max 10MB</p>
+                </div>
+              </div>
+              <div class="file-preview" id="certificatePreview">
+                <img id="certificatePreviewImage" src="" alt="Certificate preview">
+                <div class="file-info">
+                  <div class="file-name" id="certificateFileName"></div>
+                  <div class="file-size" id="certificateFileSize"></div>
+                </div>
+                <button type="button" class="remove-file" onclick="removeFile('certificate')">
+                  <i class="fas fa-times"></i>
+                </button>
+              </div>
+            </div>
+
+            <div class="form-group full-width">
+              <label class="required">
+                <i class="fas fa-map-marker-alt"></i> Clinic Location
+              </label>
+              <div class="location-input-group">
+                <input type="text" id="clinicLocation" placeholder="Select location on map" readonly required>
+                <button type="button" class="location-btn" id="pickLocationBtn">
+                  <i class="fas fa-map-pin"></i> Select on Map
+                </button>
+              </div>
+              <small style="color: var(--text-muted); font-size: 0.875rem; margin-top: 0.25rem; display: block;">
+                Click the button to select your clinic location on the map
+              </small>
+            </div>
+
+            <div class="form-group full-width">
+              <label>
+                <i class="fas fa-file-medical-alt"></i> Additional Information
+              </label>
+              <textarea id="notes" rows="4" placeholder="Tell us about your qualifications, experience, specialties, languages spoken, availability, etc..."></textarea>
+            </div>
+          </div>
+
+          <div class="form-actions">
+            <button type="button" class="btn btn-outline" onclick="resetForm()">
+              <i class="fas fa-redo"></i> Reset Form
+            </button>
+            <button type="submit" class="btn btn-primary" id="submitBtn">
+              <i class="fas fa-user-plus"></i> Register Doctor
+            </button>
+          </div>
+        </form>
+
+        <div class="loading" id="loading">
+          <div class="loading-spinner"></div>
+          <p>Registering doctor...</p>
+        </div>
+
+        <div class="success-message" id="successMessage">
+          <div class="success-icon">
+            <i class="fas fa-check-circle"></i>
+          </div>
+          <h2>Registration Successful!</h2>
+          <p style="color: var(--text-secondary); margin-bottom: 1.5rem;">
+            Doctor has been registered successfully and will appear on the doctors page.
+          </p>
+          <button type="button" class="btn btn-primary" onclick="registerAnother()">
+            <i class="fas fa-user-plus"></i> Register Another Doctor
+          </button>
+          <a href="doctor.html" class="btn btn-outline" style="margin-top: 1rem;">
+            <i class="fas fa-search"></i> View Doctors Page
+          </a>
+        </div>
+      </div>
+
+      <!-- REGISTERED DOCTORS PREVIEW -->
+      <section class="doctors-preview" id="doctorsPreview">
+        <div class="section-header">
+          <h2 class="section-title">
+            <i class="fas fa-user-md"></i> Registered Doctors
+          </h2>
+          <span class="results-count" id="registeredCount">0 doctors registered</span>
+        </div>
+
+        <div class="doctors-grid" id="doctorsGrid">
+          <!-- Doctors will be loaded here -->
+        </div>
+
+        <div class="empty-state" id="noDoctors">
+          <div class="empty-icon">
+            <i class="fas fa-user-md"></i>
+          </div>
+          <h3 class="no-results-title">No Doctors Registered Yet</h3>
+          <p class="no-results-description">
+            Register a doctor above to see them appear here and on the doctors page.
+          </p>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h4>MediBook</h4>
+          <p>Connecting patients with trusted healthcare professionals. Quality care, simplified.</p>
+        </div>
+
+        <div class="footer-section">
+          <h4>Quick Links</h4>
+          <ul class="footer-links">
+            <li><a href="index.html"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="doctor.html"><i class="fas fa-search"></i> Find Doctors</a></li>
+            <li><a href="doctor-register.html"><i class="fas fa-user-plus"></i> Doctor Registration</a></li>
+            <li><a href="appointment.html"><i class="fas fa-calendar-check"></i> Appointments</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Support</h4>
+          <ul class="footer-links">
+            <li><a href="contact.html"><i class="fas fa-headset"></i> Contact Us</a></li>
+            <li><a href="faq.html"><i class="fas fa-question-circle"></i> FAQ</a></li>
+            <li><a href="privacy.html"><i class="fas fa-shield-alt"></i> Privacy Policy</a></li>
+            <li><a href="terms.html"><i class="fas fa-file-contract"></i> Terms of Service</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-section">
+          <h4>Contact Info</h4>
+          <ul class="footer-links">
+            <li><a href="mailto:support@medibook.com"><i class="fas fa-envelope"></i> support@medibook.com</a></li>
+            <li><a href="tel:+919556227777"><i class="fas fa-phone"></i> +91 95562 27777</a></li>
+            <li><a href="#"><i class="fas fa-map-marker-alt"></i> Bhubaneswar, Odisha</a></li>
+            <li><a href="#"><i class="fas fa-clock"></i> 24/7 Support</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>&copy; <span id="currentYear">2024</span> MediBook. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- LOCATION MAP MODAL -->
+  <div id="mapModal" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-header">
+        <h3 class="modal-title">
+          <i class="fas fa-map-marked-alt"></i> Select Clinic Location
+        </h3>
+        <button class="modal-close" id="closeMapModal">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      
+      <div class="modal-body">
+        <div class="map-instructions">
+          <i class="fas fa-info-circle"></i> Click on the map to mark your clinic location
+        </div>
+        
+        <div id="map"></div>
+        
+        <div class="selected-location" id="selectedLocation" style="display: none;">
+          <p><i class="fas fa-map-pin"></i> Selected Location:</p>
+          <div class="coordinates" id="coordinatesDisplay"></div>
+          <button class="btn btn-primary" id="confirmLocationBtn">
+            <i class="fas fa-check"></i> Confirm Location
+          </button>
+        </div>
+      </div>
+      
+      <div class="modal-footer">
+        <button class="btn btn-outline" id="cancelLocationBtn">
+          <i class="fas fa-times"></i> Cancel
+        </button>
+        <button class="btn btn-primary" id="useCurrentLocationBtn">
+          <i class="fas fa-location-arrow"></i> Use My Location
+        </button>
+      </div>
+    </div>
   </div>
-</div>
 
-<!-- Google Maps API -->
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
-<script>
-let map, marker;
-const mapModal = document.getElementById('mapModal');
-const clinicLocationInput = document.getElementById('clinicLocation');
-const pickLocationBtn = document.getElementById('pickLocationBtn');
-const addLocationBtn = document.getElementById('addLocationBtn');
+  <!-- TOAST NOTIFICATION -->
+  <div id="toast" class="toast" role="alert" aria-live="polite"></div>
 
-pickLocationBtn.addEventListener('click', () => {
-  mapModal.style.display = 'block';
-  initMap();
-});
+  <!-- Google Maps API -->
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCz5PpZsZQ_c8evspNxMhXWKj_2WZ9Nv4o&libraries=places"></script>
+  
+  <script>
+    // ================= INITIALIZATION =================
+    let map, marker, selectedLocation = null;
+    const mapModal = document.getElementById('mapModal');
+    const clinicLocationInput = document.getElementById('clinicLocation');
+    const pickLocationBtn = document.getElementById('pickLocationBtn');
+    const closeMapModal = document.getElementById('closeMapModal');
+    const cancelLocationBtn = document.getElementById('cancelLocationBtn');
+    const confirmLocationBtn = document.getElementById('confirmLocationBtn');
+    const useCurrentLocationBtn = document.getElementById('useCurrentLocationBtn');
+    const selectedLocationDiv = document.getElementById('selectedLocation');
+    const coordinatesDisplay = document.getElementById('coordinatesDisplay');
 
-addLocationBtn.addEventListener('click', () => {
-  if(marker){
-    const position = marker.getPosition();
-    clinicLocationInput.value = `Lat: ${position.lat().toFixed(6)}, Lng: ${position.lng().toFixed(6)}`;
-    mapModal.style.display = 'none';
-  } else {
-    alert('Please click on the map to select location.');
-  }
-});
-
-function initMap() {
-  const defaultLocation = { lat: 20.2961, lng: 85.8245 }; // Bhubaneswar
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: defaultLocation,
-    zoom: 12
-  });
-
-  map.addListener('click', function(e){
-    if(marker) marker.setMap(null);
-    marker = new google.maps.Marker({
-      position: e.latLng,
-      map: map
+    // ================= NAVIGATION =================
+    document.addEventListener('DOMContentLoaded', function() {
+      // Set current year in footer
+      document.getElementById('currentYear').textContent = new Date().getFullYear();
+      
+      // Mobile menu toggle
+      const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+      const navDesktop = document.querySelector('.nav-desktop');
+      
+      mobileMenuBtn.addEventListener('click', function() {
+        navDesktop.classList.toggle('active');
+      });
+      
+      // Close mobile menu when clicking outside
+      document.addEventListener('click', function(event) {
+        if (!navDesktop.contains(event.target) && !mobileMenuBtn.contains(event.target)) {
+          navDesktop.classList.remove('active');
+        }
+      });
+      
+      // Close mobile menu on link click
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+          navDesktop.classList.remove('active');
+        });
+      });
+      
+      // Login/Signup button handlers
+      document.getElementById('loginBtn')?.addEventListener('click', function() {
+        alert('Login functionality will be implemented soon!');
+      });
+      
+      document.getElementById('signupBtn')?.addEventListener('click', function() {
+        alert('Signup functionality will be implemented soon!');
+      });
+      
+      // Initialize form
+      initializeForm();
+      loadRegisteredDoctors();
+      
+      // Add keyboard shortcuts
+      document.addEventListener('keydown', function(e) {
+        if (e.ctrlKey && e.key === 'Enter') {
+          document.getElementById('submitBtn').click();
+        }
+        if (e.key === 'Escape' && mapModal.classList.contains('active')) {
+          closeMapModalFunc();
+        }
+      });
     });
-  });
-}
 
-// Form submission
-document.getElementById('doctorForm').addEventListener('submit', function(e){
-  e.preventDefault();
+    // ================= FORM FUNCTIONS =================
+    function initializeForm() {
+      // File upload handlers
+      handleFileSelect('photo', 'photoPreview', 'photoPreviewImage', 'photoFileName', 'photoFileSize');
+      handleFileSelect('certificate', 'certificatePreview', 'certificatePreviewImage', 'certificateFileName', 'certificateFileSize');
+      
+      // Map modal handlers
+      pickLocationBtn.addEventListener('click', openMapModal);
+      closeMapModal.addEventListener('click', closeMapModalFunc);
+      cancelLocationBtn.addEventListener('click', closeMapModalFunc);
+      
+      confirmLocationBtn.addEventListener('click', function() {
+        if (selectedLocation) {
+          const lat = selectedLocation.lat().toFixed(6);
+          const lng = selectedLocation.lng().toFixed(6);
+          
+          const geocoder = new google.maps.Geocoder();
+          geocoder.geocode({ location: selectedLocation }, function(results, status) {
+            let address = '';
+            if (status === 'OK' && results[0]) {
+              address = results[0].formatted_address;
+            }
+            
+            clinicLocationInput.value = address || `Latitude: ${lat}, Longitude: ${lng}`;
+            closeMapModalFunc();
+            showToast('Location selected successfully!', 'success');
+          });
+        }
+      });
+      
+      useCurrentLocationBtn.addEventListener('click', getCurrentLocation);
+      
+      // Form submission
+      document.getElementById('doctorForm').addEventListener('submit', handleFormSubmit);
+      
+      // Input validation
+      document.getElementById('adhar').addEventListener('input', function(e) {
+        this.value = this.value.replace(/\D/g, '').slice(0, 12);
+      });
+      
+      document.getElementById('contactNumber').addEventListener('input', function(e) {
+        this.value = this.value.replace(/\D/g, '').slice(0, 10);
+      });
+    }
 
-  const clinicName = document.getElementById('clinicName').value.trim();
-  const doctorName = document.getElementById('doctorName').value.trim();
-  const category = document.getElementById('category').value;
-  const experience = document.getElementById('experience').value;
-  const age = document.getElementById('age').value;
-  const adhar = document.getElementById('adhar').value.trim();
-  const clinicLocation = clinicLocationInput.value;
+    function handleFileSelect(inputId, previewId, imageId, fileNameId, fileSizeId) {
+      const input = document.getElementById(inputId);
+      const preview = document.getElementById(previewId);
+      const previewImage = document.getElementById(imageId);
+      const fileName = document.getElementById(fileNameId);
+      const fileSize = document.getElementById(fileSizeId);
+      
+      input.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        const maxSize = inputId === 'photo' ? 5 * 1024 * 1024 : 10 * 1024 * 1024;
+        if (file.size > maxSize) {
+          showToast(`File is too large. Maximum size is ${maxSize / (1024 * 1024)}MB`, 'error');
+          input.value = '';
+          return;
+        }
+        
+        fileName.textContent = file.name;
+        fileSize.textContent = formatFileSize(file.size);
+        
+        if (file.type.startsWith('image/')) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            previewImage.src = e.target.result;
+            preview.style.display = 'flex';
+          };
+          reader.readAsDataURL(file);
+        } else if (file.type === 'application/pdf') {
+          previewImage.src = 'https://cdn-icons-png.flaticon.com/512/337/337946.png';
+          preview.style.display = 'flex';
+        }
+      });
+    }
 
-  if(!/^\d{12}$/.test(adhar)){
-    alert('Aadhaar number must be 12 digits');
-    return;
-  }
+    function removeFile(inputId) {
+      const input = document.getElementById(inputId);
+      const previewId = inputId === 'photo' ? 'photoPreview' : 'certificatePreview';
+      const preview = document.getElementById(previewId);
+      
+      input.value = '';
+      preview.style.display = 'none';
+    }
 
-  const photoInput = document.getElementById('photo').files[0];
-  const certInput = document.getElementById('certificate').files[0];
+    function formatFileSize(bytes) {
+      if (bytes === 0) return '0 Bytes';
+      const k = 1024;
+      const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+      const i = Math.floor(Math.log(bytes) / Math.log(k));
+      return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+    }
 
-  if(!photoInput || !certInput){
-    alert('Please upload both photo and certificate');
-    return;
-  }
+    // ================= MAP FUNCTIONS =================
+    function initMap(center = { lat: 20.2961, lng: 85.8245 }) {
+      map = new google.maps.Map(document.getElementById('map'), {
+        center: center,
+        zoom: 14,
+        streetViewControl: false,
+        mapTypeControl: true,
+        fullscreenControl: true
+      });
 
-  const readerPhoto = new FileReader();
-  readerPhoto.onload = function() {
-    const photoBase64 = readerPhoto.result;
+      map.addListener('click', function(e) {
+        placeMarker(e.latLng);
+      });
 
-    const readerCert = new FileReader();
-    readerCert.onload = function() {
-      const certBase64 = readerCert.result;
+      // Add search box
+      const input = document.createElement('input');
+      input.type = 'text';
+      input.placeholder = 'Search for location...';
+      input.style.cssText = 'margin-top: 10px; padding: 8px; width: 300px; border: 1px solid #ddd; border-radius: 4px;';
+      
+      const searchBox = new google.maps.places.SearchBox(input);
+      map.controls[google.maps.ControlPosition.TOP_CENTER].push(input);
+      
+      searchBox.addListener('places_changed', function() {
+        const places = searchBox.getPlaces();
+        if (places.length === 0) return;
+        
+        const place = places[0];
+        if (!place.geometry) return;
+        
+        map.setCenter(place.geometry.location);
+        map.setZoom(16);
+        placeMarker(place.geometry.location);
+      });
+    }
 
-      const doctor = {
-        clinicName, doctorName, category, experience, age, adhar,
-        clinicLocation, photo: photoBase64, certificate: certBase64
-      };
+    function placeMarker(location) {
+      if (marker) {
+        marker.setMap(null);
+      }
+      
+      marker = new google.maps.Marker({
+        position: location,
+        map: map,
+        draggable: true,
+        animation: google.maps.Animation.DROP
+      });
+      
+      selectedLocation = location;
+      updateLocationDisplay();
+      
+      marker.addListener('dragend', function() {
+        selectedLocation = marker.getPosition();
+        updateLocationDisplay();
+      });
+    }
 
-      const doctors = JSON.parse(localStorage.getItem('registeredDoctors')) || [];
-      doctors.push(doctor);
-      localStorage.setItem('registeredDoctors', JSON.stringify(doctors));
+    function updateLocationDisplay() {
+      if (!selectedLocation) return;
+      
+      const lat = selectedLocation.lat().toFixed(6);
+      const lng = selectedLocation.lng().toFixed(6);
+      coordinatesDisplay.textContent = `${lat}, ${lng}`;
+      selectedLocationDiv.style.display = 'block';
+    }
 
-      alert('✅ Doctor registered successfully!');
-      document.getElementById('doctorForm').reset();
+    function getCurrentLocation() {
+      if (!navigator.geolocation) {
+        showToast('Geolocation is not supported by your browser', 'error');
+        return;
+      }
+      
+      showToast('Getting your location...', 'info');
+      
+      navigator.geolocation.getCurrentPosition(
+        function(position) {
+          const pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          
+          map.setCenter(pos);
+          map.setZoom(16);
+          placeMarker(pos);
+          showToast('Location found!', 'success');
+        },
+        function() {
+          showToast('Unable to retrieve your location', 'error');
+        }
+      );
+    }
+
+    function openMapModal() {
+      mapModal.classList.add('active');
+      document.body.style.overflow = 'hidden';
+      
+      if (!map) {
+        initMap();
+      }
+    }
+
+    function closeMapModalFunc() {
+      mapModal.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    // ================= FORM SUBMISSION =================
+    async function handleFormSubmit(e) {
+      e.preventDefault();
+      
+      const clinicName = document.getElementById('clinicName').value.trim();
+      const doctorName = document.getElementById('doctorName').value.trim();
+      const specialization = document.getElementById('specialization').value;
+      const experience = document.getElementById('experience').value;
+      const age = document.getElementById('age').value;
+      const adhar = document.getElementById('adhar').value.trim();
+      const contactNumber = document.getElementById('contactNumber').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const consultationFee = document.getElementById('consultationFee').value;
+      const clinicLocation = clinicLocationInput.value;
+      const notes = document.getElementById('notes').value.trim();
+      
+      // Validation
+      if (!clinicName || !doctorName || !specialization || !experience || !age || 
+          !adhar || !contactNumber || !email || !consultationFee || !clinicLocation) {
+        showToast('Please fill in all required fields', 'error');
+        return;
+      }
+      
+      if (!/^\d{12}$/.test(adhar)) {
+        showToast('Aadhaar number must be exactly 12 digits', 'error');
+        return;
+      }
+      
+      if (!/^\d{10}$/.test(contactNumber)) {
+        showToast('Contact number must be exactly 10 digits', 'error');
+        return;
+      }
+      
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        showToast('Please enter a valid email address', 'error');
+        return;
+      }
+      
+      if (age < 25 || age > 80) {
+        showToast('Age must be between 25 and 80 years', 'error');
+        return;
+      }
+      
+      if (experience < 0 || experience > 50) {
+        showToast('Experience must be between 0 and 50 years', 'error');
+        return;
+      }
+      
+      const photoFile = document.getElementById('photo').files[0];
+      const certificateFile = document.getElementById('certificate').files[0];
+      
+      if (!photoFile || !certificateFile) {
+        showToast('Please upload both photo and certificate', 'error');
+        return;
+      }
+      
+      document.getElementById('loading').classList.add('active');
+      document.getElementById('submitBtn').disabled = true;
+      
+      try {
+        const photoBase64 = await fileToBase64(photoFile);
+        const certificateBase64 = await fileToBase64(certificateFile);
+        
+        // Generate data for doctors page
+        const doctorId = 'DOC' + Date.now();
+        const specializationText = document.querySelector(`#specialization option[value="${specialization}"]`).textContent;
+        
+        // Doctor data for doctors page
+        const doctorForDoctorsPage = {
+          id: doctorId,
+          name: doctorName,
+          specialty: specializationText,
+          location: clinicLocation.split(',')[0] || "Bhubaneswar",
+          image: photoBase64,
+          rating: 4.5, // Default rating for new doctors
+          reviews: 0,
+          experience: experience + "+ years",
+          fee: parseInt(consultationFee),
+          description: notes || `${specializationText} with ${experience} years of experience.`,
+          availability: "next-week", // Default
+          languages: ["English", "Hindi"],
+          status: "available",
+          registrationDate: new Date().toISOString(),
+          isRegistered: true // Flag to identify registered doctors
+        };
+        
+        // Full doctor data for registration records
+        const fullDoctorData = {
+          ...doctorForDoctorsPage,
+          clinicName,
+          adhar,
+          contactNumber,
+          email,
+          certificate: certificateBase64,
+          clinicLocation,
+          status: "approved"
+        };
+        
+        // Save to registered doctors
+        let registeredDoctors = JSON.parse(localStorage.getItem('registeredDoctors')) || [];
+        registeredDoctors.push(fullDoctorData);
+        localStorage.setItem('registeredDoctors', JSON.stringify(registeredDoctors));
+        
+        // Update doctors data for doctors.html page
+        updateDoctorsData(doctorForDoctorsPage);
+        
+        // Simulate processing delay
+        setTimeout(() => {
+          document.getElementById('loading').classList.remove('active');
+          document.getElementById('doctorForm').style.display = 'none';
+          document.getElementById('successMessage').classList.add('active');
+          
+          showToast('Doctor registered successfully! Will appear on doctors page.', 'success');
+          
+          // Reload registered doctors preview
+          loadRegisteredDoctors();
+          
+          console.log('Doctor Registered:', {
+            id: doctorId,
+            name: doctorName,
+            specialization: specializationText
+          });
+        }, 1500);
+        
+      } catch (error) {
+        console.error('Error:', error);
+        showToast('An error occurred during registration', 'error');
+        document.getElementById('loading').classList.remove('active');
+        document.getElementById('submitBtn').disabled = false;
+      }
+    }
+
+    function updateDoctorsData(newDoctor) {
+      // Get existing doctors data from localStorage or use default
+      let doctorsData = JSON.parse(localStorage.getItem('doctorsData')) || [];
+      
+      // If no existing data, initialize with sample data
+      if (doctorsData.length === 0) {
+        doctorsData = [
+          {
+            id: 1,
+            name: "Dr. Sarah Johnson",
+            specialty: "Cardiologist",
+            location: "Delhi",
+            image: "https://images.unsplash.com/photo-1612349317150-e413f6a5b16d?w=400&auto=format&fit=crop",
+            rating: 4.9,
+            reviews: 1284,
+            experience: "15+ years",
+            fee: 800,
+            description: "Specializes in heart disease prevention and treatment.",
+            availability: "today",
+            languages: ["English", "Hindi"],
+            status: "available"
+          },
+          {
+            id: 2,
+            name: "Dr. Kunal Pandey",
+            specialty: "Dermatologist",
+            location: "Delhi",
+            image: "https://images.unsplash.com/photo-1622253692010-333f2da6031d?w=400&auto=format&fit=crop",
+            rating: 4.8,
+            reviews: 932,
+            experience: "12+ years",
+            fee: 600,
+            description: "Skin care specialist with expertise in cosmetic dermatology.",
+            availability: "today",
+            languages: ["Hindi", "English"],
+            status: "available"
+          }
+        ];
+      }
+      
+      // Add new doctor with unique ID
+      const maxId = Math.max(...doctorsData.map(d => d.id));
+      newDoctor.id = maxId + 1;
+      doctorsData.push(newDoctor);
+      
+      // Save updated data
+      localStorage.setItem('doctorsData', JSON.stringify(doctorsData));
+      
+      // Also save to a separate registered doctors list
+      let registeredDoctorsList = JSON.parse(localStorage.getItem('doctorsList')) || [];
+      registeredDoctorsList.push(newDoctor);
+      localStorage.setItem('doctorsList', JSON.stringify(registeredDoctorsList));
+    }
+
+    async function fileToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = error => reject(error);
+      });
+    }
+
+    // ================= REGISTERED DOCTORS DISPLAY =================
+    function loadRegisteredDoctors() {
+      const registeredDoctors = JSON.parse(localStorage.getItem('registeredDoctors')) || [];
+      const doctorsGrid = document.getElementById('doctorsGrid');
+      const noDoctors = document.getElementById('noDoctors');
+      const registeredCount = document.getElementById('registeredCount');
+      
+      registeredCount.textContent = `${registeredDoctors.length} doctor${registeredDoctors.length !== 1 ? 's' : ''} registered`;
+      
+      if (registeredDoctors.length === 0) {
+        noDoctors.style.display = 'block';
+        doctorsGrid.innerHTML = '';
+        return;
+      }
+      
+      noDoctors.style.display = 'none';
+      
+      doctorsGrid.innerHTML = registeredDoctors.slice(-6).reverse().map(doctor => `
+        <div class="doctor-card">
+          <div class="doctor-status ${doctor.status === 'approved' ? 'status-approved' : 'status-pending'}">
+            ${doctor.status === 'approved' ? 'Approved' : 'Pending'}
+          </div>
+          
+          <div class="doctor-image-container">
+            <img src="${doctor.image}" alt="${doctor.name}" class="doctor-image">
+          </div>
+          
+          <div class="doctor-info">
+            <h3 class="doctor-name">${doctor.name}</h3>
+            <p class="doctor-specialty">
+              <i class="fas fa-stethoscope"></i> ${doctor.specialty}
+            </p>
+            
+            <div class="doctor-meta">
+              <div class="meta-item">
+                <span class="meta-value">${doctor.experience}</span>
+                <span class="meta-label">Experience</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-value">₹${doctor.fee}</span>
+                <span class="meta-label">Fee</span>
+              </div>
+              <div class="meta-item">
+                <span class="meta-value">${doctor.rating}/5</span>
+                <span class="meta-label">Rating</span>
+              </div>
+            </div>
+            
+            <p class="doctor-location" style="color: var(--text-secondary); font-size: 0.875rem;">
+              <i class="fas fa-map-marker-alt"></i> ${doctor.location}
+            </p>
+            
+            <p style="font-size: 0.875rem; color: var(--text-muted); margin: 0.5rem 0;">
+              ${doctor.description.substring(0, 100)}...
+            </p>
+            
+            <div class="doctor-actions">
+              <button class="btn btn-outline btn-sm" onclick="viewDoctorDetails('${doctor.id}')">
+                <i class="fas fa-eye"></i> View
+              </button>
+              <a href="doctor.html" class="btn btn-primary btn-sm">
+                <i class="fas fa-external-link-alt"></i> On Doctors Page
+              </a>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function viewDoctorDetails(doctorId) {
+      const registeredDoctors = JSON.parse(localStorage.getItem('registeredDoctors')) || [];
+      const doctor = registeredDoctors.find(d => d.id === doctorId);
+      
+      if (doctor) {
+        const detailsHtml = `
+          <div style="padding: 1rem;">
+            <h3 style="margin-bottom: 1rem; color: var(--primary);">${doctor.name}</h3>
+            <p><strong>Clinic:</strong> ${doctor.clinicName}</p>
+            <p><strong>Specialty:</strong> ${doctor.specialty}</p>
+            <p><strong>Experience:</strong> ${doctor.experience}</p>
+            <p><strong>Location:</strong> ${doctor.clinicLocation}</p>
+            <p><strong>Contact:</strong> ${doctor.contactNumber}</p>
+            <p><strong>Email:</strong> ${doctor.email}</p>
+            <p><strong>Fee:</strong> ₹${doctor.fee}</p>
+            <p><strong>Status:</strong> <span style="color: ${doctor.status === 'approved' ? 'green' : 'orange'}">${doctor.status}</span></p>
+            ${doctor.notes ? `<p><strong>Notes:</strong> ${doctor.notes}</p>` : ''}
+          </div>
+        `;
+        
+        showModal('Doctor Details', detailsHtml);
+      }
+    }
+
+    // ================= UTILITY FUNCTIONS =================
+    function showToast(message, type = 'info') {
+      const toast = document.getElementById('toast');
+      toast.textContent = message;
+      toast.className = `toast ${type}`;
+      
+      if (window.toastTimeout) {
+        clearTimeout(window.toastTimeout);
+      }
+      
+      setTimeout(() => {
+        toast.classList.add('show');
+      }, 10);
+      
+      window.toastTimeout = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 5000);
+    }
+
+    function showModal(title, content) {
+      // Remove existing modal
+      const existingModal = document.getElementById('customModal');
+      if (existingModal) existingModal.remove();
+      
+      const modalHtml = `
+        <div id="customModal" class="modal-overlay" style="display: flex; opacity: 1; visibility: visible;">
+          <div class="modal">
+            <div class="modal-header">
+              <h3 class="modal-title">${title}</h3>
+              <button class="modal-close" onclick="closeCustomModal()">
+                <i class="fas fa-times"></i>
+              </button>
+            </div>
+            <div class="modal-body">
+              ${content}
+            </div>
+            <div class="modal-footer">
+              <button class="btn btn-primary" onclick="closeCustomModal()">
+                <i class="fas fa-times"></i> Close
+              </button>
+            </div>
+          </div>
+        </div>
+      `;
+      
+      document.body.insertAdjacentHTML('beforeend', modalHtml);
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeCustomModal() {
+      const modal = document.getElementById('customModal');
+      if (modal) modal.remove();
+      document.body.style.overflow = '';
+    }
+
+    function resetForm() {
+      if (confirm('Are you sure you want to reset the form? All entered data will be lost.')) {
+        document.getElementById('doctorForm').reset();
+        document.getElementById('photoPreview').style.display = 'none';
+        document.getElementById('certificatePreview').style.display = 'none';
+        clinicLocationInput.value = '';
+        selectedLocation = null;
+        showToast('Form has been reset', 'info');
+      }
+    }
+
+    function registerAnother() {
+      document.getElementById('successMessage').classList.remove('active');
+      document.getElementById('doctorForm').style.display = 'block';
+      document.getElementById('submitBtn').disabled = false;
+      resetForm();
+    }
+
+    // Export function for doctors page
+    window.getRegisteredDoctors = function() {
+      return JSON.parse(localStorage.getItem('doctorsData')) || [];
     };
-    readerCert.readAsDataURL(certInput);
-  };
-  readerPhoto.readAsDataURL(photoInput);
-});
-</script>
-
+  </script>
 </body>
 </html>
