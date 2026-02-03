@@ -520,6 +520,259 @@
             color: var(--primary);
         }
 
+        /* ================= LIVE CHAT ================= */
+        .chat-button {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .chat-button:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+        }
+
+        .chat-button.pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(37, 99, 235, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+        }
+
+        .chat-container {
+            position: fixed;
+            bottom: 5rem;
+            right: 2rem;
+            width: 350px;
+            height: 500px;
+            background: var(--bg-white);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-xl);
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            border: 1px solid var(--border);
+            visibility: hidden;
+        }
+
+        .chat-container.active {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header-info {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .chat-header-info i {
+            font-size: 1.25rem;
+        }
+
+        .chat-header-info h3 {
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .chat-header-info p {
+            font-size: 0.75rem;
+            opacity: 0.8;
+        }
+
+        .chat-close {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .chat-close:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            background: var(--bg-light);
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 0.75rem 1rem;
+            border-radius: var(--radius-lg);
+            position: relative;
+            animation: messageSlide 0.3s ease;
+        }
+
+        @keyframes messageSlide {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: var(--primary);
+            color: white;
+            border-bottom-right-radius: var(--radius-sm);
+        }
+
+        .message.bot {
+            align-self: flex-start;
+            background: var(--bg-white);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+            border-bottom-left-radius: var(--radius-sm);
+        }
+
+        .message-time {
+            font-size: 0.625rem;
+            opacity: 0.7;
+            margin-top: 0.25rem;
+            text-align: right;
+        }
+
+        .chat-input-container {
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+            background: var(--bg-white);
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .chat-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 0.875rem;
+            resize: none;
+            min-height: 45px;
+            max-height: 100px;
+            transition: var(--transition);
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .chat-send {
+            width: 45px;
+            height: 45px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: var(--radius-md);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: var(--transition);
+        }
+
+        .chat-send:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .chat-send:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .quick-replies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        .quick-reply {
+            padding: 0.375rem 0.75rem;
+            background: var(--bg-light);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-md);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .quick-reply:hover {
+            background: var(--primary-light);
+            border-color: var(--primary);
+        }
+
+        .chat-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+        }
+
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            background: var(--success);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
         /* ================= FOOTER ================= */
         .footer {
             background: #0f172a;
@@ -757,6 +1010,19 @@
             .faq-grid {
                 grid-template-columns: 1fr;
             }
+
+            .chat-container {
+                width: calc(100% - 2rem);
+                right: 1rem;
+                left: 1rem;
+                height: 400px;
+                bottom: 5rem;
+            }
+
+            .chat-button {
+                right: 1rem;
+                bottom: 1rem;
+            }
         }
 
         @media (max-width: 480px) {
@@ -779,6 +1045,11 @@
 
             .map-container {
                 height: 300px;
+            }
+
+            .chat-container {
+                height: 350px;
+                bottom: 4rem;
             }
         }
 
@@ -831,9 +1102,9 @@
 
             <ul class="nav-desktop">
                 <li><a href="index.html" class="nav-link">Home</a></li>
-                <li><a href="doctor.html" class="nav-link">Doctors</a></li>
+                <li><a href="docter.html" class="nav-link">Doctors</a></li>
                 <li><a href="appointment.html" class="nav-link">Appointments</a></li>
-                <li><a href="contact.html" class="nav-link active">Contact</a></li>
+                <li><a href="contacts.html" class="nav-link active">Contact</a></li>
                 
                 <div class="header-actions">
                     <button id="loginBtn" class="btn btn-outline">Login</button>
@@ -1112,6 +1383,61 @@
         </div>
     </main>
 
+    <!-- LIVE CHAT BUTTON -->
+    <button class="chat-button pulse" id="chatButton" aria-label="Open live chat">
+        <i class="fas fa-comment-dots"></i>
+    </button>
+
+    <!-- LIVE CHAT CONTAINER -->
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <div class="chat-header-info">
+                <i class="fas fa-headset"></i>
+                <div>
+                    <h3>MediBook Support</h3>
+                    <p>We're online now</p>
+                </div>
+            </div>
+            <button class="chat-close" id="closeChat" aria-label="Close chat">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+
+        <div class="chat-messages" id="chatMessages">
+            <!-- Messages will be added here dynamically -->
+            <div class="message bot">
+                <div class="message-content">
+                    Hello! 👋 I'm your MediBook assistant. How can I help you today?
+                </div>
+                <div class="message-time">Just now</div>
+            </div>
+        </div>
+
+        <div class="chat-input-container">
+            <div class="quick-replies" id="quickReplies">
+                <button class="quick-reply" data-message="I need help booking an appointment">Book Appointment</button>
+                <button class="quick-reply" data-message="I have a billing question">Billing Inquiry</button>
+                <button class="quick-reply" data-message="Need technical support">Technical Help</button>
+                <button class="quick-reply" data-message="Talk to a human agent">Human Agent</button>
+            </div>
+            
+            <div class="chat-input-wrapper">
+                <textarea class="chat-input" 
+                          id="chatInput" 
+                          placeholder="Type your message here..."
+                          rows="1"></textarea>
+                <button class="chat-send" id="sendMessage" aria-label="Send message">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+            
+            <div class="chat-status">
+                <div class="status-indicator"></div>
+                <span>Typically replies in 2 minutes</span>
+            </div>
+        </div>
+    </div>
+
     <!-- FOOTER -->
     <footer class="footer">
         <div class="container">
@@ -1228,13 +1554,203 @@
             
             // Initialize form validation
             initializeFormValidation();
+            
+            // Initialize chat
+            initializeChat();
         });
+
+        // ================= CHAT FUNCTIONALITY =================
+        let chatHistory = JSON.parse(localStorage.getItem('chatHistory')) || [];
+
+        function initializeChat() {
+            // Load chat history
+            loadChatHistory();
+            
+            // Auto-open chat if user submitted contact form
+            const contactData = localStorage.getItem('contactFormData');
+            if (contactData) {
+                setTimeout(() => {
+                    openChat();
+                    const data = JSON.parse(contactData);
+                    addMessage(data.message, 'user');
+                    setTimeout(() => {
+                        addMessage(`Thank you for your inquiry about "${data.subject}". We've received your message and will respond within 24 hours. In the meantime, how else can I help you?`, 'bot');
+                    }, 1000);
+                    localStorage.removeItem('contactFormData');
+                }, 2000);
+            }
+        }
+
+        function loadChatHistory() {
+            const chatMessages = document.getElementById('chatMessages');
+            
+            // Clear existing messages except the first welcome message
+            const existingMessages = chatMessages.querySelectorAll('.message.bot, .message.user');
+            existingMessages.forEach((msg, index) => {
+                if (index > 0) { // Keep the first welcome message
+                    msg.remove();
+                }
+            });
+            
+            // Load from history
+            chatHistory.forEach(msg => {
+                const messageElement = createMessageElement(msg.text, msg.sender);
+                chatMessages.appendChild(messageElement);
+            });
+            scrollToBottom();
+        }
+
+        function openChat() {
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.classList.add('active');
+            document.getElementById('chatButton').classList.remove('pulse');
+            setTimeout(scrollToBottom, 100);
+            
+            // Add animation
+            chatContainer.style.animation = 'none';
+            setTimeout(() => {
+                chatContainer.style.animation = 'modalSlideIn 0.3s ease';
+            }, 10);
+        }
+
+        function closeChat() {
+            const chatContainer = document.getElementById('chatContainer');
+            chatContainer.classList.remove('active');
+        }
+
+        function toggleChat() {
+            const chatContainer = document.getElementById('chatContainer');
+            
+            if (chatContainer.classList.contains('active')) {
+                closeChat();
+            } else {
+                openChat();
+            }
+        }
+
+        function addMessage(text, sender) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageElement = createMessageElement(text, sender);
+            chatMessages.appendChild(messageElement);
+            
+            // Save to history
+            chatHistory.push({
+                text,
+                sender,
+                timestamp: new Date().toISOString()
+            });
+            
+            // Keep only last 50 messages
+            if (chatHistory.length > 50) {
+                chatHistory = chatHistory.slice(-50);
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('chatHistory', JSON.stringify(chatHistory));
+            
+            scrollToBottom();
+            
+            // Auto-reply for bot messages
+            if (sender === 'user') {
+                setTimeout(() => generateBotReply(text), 1000);
+            }
+        }
+
+        function createMessageElement(text, sender) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${sender}`;
+            
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            
+            messageDiv.innerHTML = `
+                <div class="message-content">${text}</div>
+                <div class="message-time">${timeString}</div>
+            `;
+            
+            // Add animation
+            messageDiv.style.animation = 'messageSlide 0.3s ease';
+            
+            return messageDiv;
+        }
+
+        function scrollToBottom() {
+            const chatMessages = document.getElementById('chatMessages');
+            setTimeout(() => {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }, 50);
+        }
+
+        function generateBotReply(userMessage) {
+            const lowerMessage = userMessage.toLowerCase();
+            let reply = '';
+            
+            if (lowerMessage.includes('appointment') || lowerMessage.includes('book') || lowerMessage.includes('schedule')) {
+                reply = "I can help you book an appointment! Would you like me to direct you to our doctors page, or do you need help with an existing booking?";
+            } else if (lowerMessage.includes('billing') || lowerMessage.includes('payment') || lowerMessage.includes('fee')) {
+                reply = "For billing inquiries, please provide your appointment ID or contact our billing department at billing@medibook.com. You can also call +91 95562 27777 during business hours.";
+            } else if (lowerMessage.includes('technical') || lowerMessage.includes('website') || lowerMessage.includes('app')) {
+                reply = "I'm sorry you're experiencing technical issues. Please try clearing your browser cache or using a different browser. If the issue persists, contact technical support at tech@medibook.com.";
+            } else if (lowerMessage.includes('doctor') || lowerMessage.includes('specialist') || lowerMessage.includes('consult')) {
+                reply = "We have specialists in various fields. You can browse our doctors by specialty, location, or availability. Would you like me to show you how to find a doctor?";
+            } else if (lowerMessage.includes('human') || lowerMessage.includes('agent') || lowerMessage.includes('representative')) {
+                reply = "I'll connect you with a human agent. Our customer service team is available 24/7 at +91 95562 27777. You can also expect a callback within 15 minutes.";
+            } else if (lowerMessage.includes('emergency') || lowerMessage.includes('urgent') || lowerMessage.includes('immediate')) {
+                reply = "For medical emergencies, please call 108 or visit the nearest hospital emergency room immediately. For urgent but non-emergency care, please call +91 95562 27777.";
+            } else {
+                reply = "Thank you for your message. Our support team will review your inquiry and get back to you. Is there anything specific I can help you with in the meantime?";
+            }
+            
+            addMessage(reply, 'bot');
+        }
+
+        function sendChatMessage() {
+            const input = document.getElementById('chatInput');
+            const message = input.value.trim();
+            
+            if (!message) return;
+            
+            addMessage(message, 'user');
+            input.value = '';
+            input.style.height = 'auto';
+        }
 
         // ================= EVENT LISTENERS =================
         function initializeEventListeners() {
             // Mobile menu toggle
             document.querySelector('.mobile-menu-btn').addEventListener('click', () => {
                 document.querySelector('.nav-desktop').classList.toggle('active');
+            });
+            
+            // Chat functionality - FIXED EVENT LISTENERS
+            const chatButton = document.getElementById('chatButton');
+            const closeChatButton = document.getElementById('closeChat');
+            const sendMessageButton = document.getElementById('sendMessage');
+            
+            chatButton.addEventListener('click', toggleChat);
+            closeChatButton.addEventListener('click', closeChat);
+            sendMessageButton.addEventListener('click', sendChatMessage);
+            
+            // Handle Enter key in chat input
+            document.getElementById('chatInput').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    sendChatMessage();
+                }
+            });
+            
+            // Auto-resize textarea
+            document.getElementById('chatInput').addEventListener('input', function() {
+                this.style.height = 'auto';
+                this.style.height = Math.min(this.scrollHeight, 100) + 'px';
+            });
+            
+            // Quick replies
+            document.querySelectorAll('.quick-reply').forEach(button => {
+                button.addEventListener('click', function() {
+                    const message = this.getAttribute('data-message');
+                    addMessage(message, 'user');
+                });
             });
             
             // Auth modal buttons
@@ -1401,7 +1917,7 @@
                 // Reset form
                 e.target.reset();
                 
-                // Save to localStorage for chat page
+                // Save to localStorage for chat
                 const contactData = {
                     name: document.getElementById('contactName').value,
                     email: document.getElementById('contactEmail').value,
@@ -1411,8 +1927,12 @@
                 };
                 
                 localStorage.setItem('contactFormData', JSON.stringify(contactData));
-                localStorage.setItem('chatFirstMessage', contactData.message);
-                localStorage.setItem('chatUserName', contactData.name);
+                
+                // Open chat with welcome message
+                setTimeout(() => {
+                    openChat();
+                    addMessage(`Thank you for your inquiry about "${contactData.subject}". Our team will respond within 24 hours. How else can I help you today?`, 'bot');
+                }, 1000);
                 
             } catch (error) {
                 showToast('Failed to send message. Please try again.', 'error');

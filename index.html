@@ -11,9 +11,300 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Font Awesome for icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <!-- AI Assistant Styles -->
+  <style>
+    /* AI ASSISTANT STYLES - Added without affecting existing styles */
+    .ai-assistant-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+      z-index: 9999;
+      border: none;
+      transition: all 0.3s ease;
+      animation: pulse 2s infinite;
+    }
+    
+    .ai-assistant-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 12px 30px rgba(16, 185, 129, 0.4);
+    }
+    
+    .ai-assistant-btn i {
+      font-size: 24px;
+      color: white;
+    }
+    
+    .ai-assistant-container {
+      position: fixed;
+      bottom: 100px;
+      right: 30px;
+      width: 380px;
+      max-width: 90vw;
+      height: 550px;
+      background: white;
+      border-radius: 20px;
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+      z-index: 9998;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      border: 1px solid #e5e7eb;
+    }
+    
+    .ai-assistant-header {
+      background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+      color: white;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .ai-assistant-header h3 {
+      margin: 0;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    
+    .ai-close-btn {
+      background: rgba(255, 255, 255, 0.2);
+      border: none;
+      color: white;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+    }
+    
+    .ai-chat-messages {
+      flex: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background: #f8fafc;
+    }
+    
+    .ai-message {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+    }
+    
+    .ai-message.user {
+      justify-content: flex-end;
+    }
+    
+    .ai-message.ai {
+      justify-content: flex-start;
+    }
+    
+    .ai-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .ai-message.user .ai-avatar {
+      background: #3b82f6;
+    }
+    
+    .ai-message.ai .ai-avatar {
+      background: #10b981;
+    }
+    
+    .ai-message-content {
+      max-width: 70%;
+      padding: 12px 16px;
+      border-radius: 18px;
+      font-size: 14px;
+      line-height: 1.4;
+    }
+    
+    .ai-message.user .ai-message-content {
+      background: #3b82f6;
+      color: white;
+      border-bottom-right-radius: 4px;
+    }
+    
+    .ai-message.ai .ai-message-content {
+      background: white;
+      color: #1f2937;
+      border: 1px solid #e5e7eb;
+      border-bottom-left-radius: 4px;
+    }
+    
+    .ai-input-area {
+      padding: 20px;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      gap: 10px;
+      background: white;
+    }
+    
+    .ai-input {
+      flex: 1;
+      padding: 12px 16px;
+      border: 1px solid #d1d5db;
+      border-radius: 25px;
+      font-size: 14px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    
+    .ai-input:focus {
+      border-color: #10b981;
+    }
+    
+    .ai-voice-btn, .ai-send-btn {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      transition: all 0.2s;
+    }
+    
+    .ai-voice-btn {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+    
+    .ai-voice-btn.listening {
+      background: #ef4444;
+      color: white;
+      animation: pulse 1s infinite;
+    }
+    
+    .ai-send-btn {
+      background: #10b981;
+      color: white;
+    }
+    
+    .ai-send-btn:hover {
+      background: #0da271;
+    }
+    
+    .ai-quick-actions {
+      padding: 15px 20px;
+      background: #f8fafc;
+      border-top: 1px solid #e5e7eb;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .ai-quick-btn {
+      padding: 8px 16px;
+      background: white;
+      border: 1px solid #d1d5db;
+      border-radius: 20px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    
+    .ai-quick-btn:hover {
+      background: #f3f4f6;
+      border-color: #10b981;
+      color: #10b981;
+    }
+    
+    .ai-location-result, .ai-schedule-result {
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 15px;
+      margin-top: 10px;
+    }
+    
+    .ai-location-result h4, .ai-schedule-result h4 {
+      margin: 0 0 10px 0;
+      color: #1e3a8a;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .ai-resource-list {
+      list-style: none;
+      padding: 0;
+      margin: 10px 0 0 0;
+    }
+    
+    .ai-resource-list li {
+      padding: 8px 0;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .ai-resource-list li:last-child {
+      border-bottom: none;
+    }
+    
+    .ai-action-link {
+      color: #10b981;
+      text-decoration: none;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    
+    .ai-action-link:hover {
+      text-decoration: underline;
+    }
+    
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); }
+      70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+      100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+    }
+    
+    @media (max-width: 768px) {
+      .ai-assistant-btn {
+        bottom: 20px;
+        right: 20px;
+        width: 56px;
+        height: 56px;
+      }
+      
+      .ai-assistant-container {
+        bottom: 85px;
+        right: 20px;
+        left: 20px;
+        width: auto;
+        height: 500px;
+      }
+    }
+  </style>
 </head>
 
 <body>
+  <!-- Your existing HTML code remains EXACTLY the same -->
   <!-- Skip to Main Content for Accessibility -->
   <a href="#main-content" class="skip-to-main">Skip to main content</a>
 
@@ -469,6 +760,55 @@
     </div>
   </footer>
 
+  <!-- AI ASSISTANT - Added Here -->
+  <button class="ai-assistant-btn" aria-label="Open AI Assistant">
+    <i class="fas fa-comment-medical"></i>
+  </button>
+  
+  <div class="ai-assistant-container" id="aiAssistant">
+    <div class="ai-assistant-header">
+      <h3><i class="fas fa-robot"></i> MediGo Health Assistant</h3>
+      <button class="ai-close-btn" aria-label="Close AI Assistant">&times;</button>
+    </div>
+    
+    <div class="ai-chat-messages" id="aiChatMessages">
+      <div class="ai-message ai">
+        <div class="ai-avatar">
+          <i class="fas fa-robot"></i>
+        </div>
+        <div class="ai-message-content">
+          Hello! I'm your MediGo Health Assistant. How can I help you today? You can ask me about:
+          <ul style="margin: 8px 0 0 15px; padding: 0;">
+            <li>Finding nearest doctors</li>
+            <li>Doctor schedules/timings</li>
+            <li>Booking appointments</li>
+            <li>Healthcare resources</li>
+            <li>Or ask anything about MediGo</li>
+          </ul>
+          <p style="margin-top: 8px;"><small>Try clicking the microphone to use voice!</small></p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="ai-quick-actions">
+      <button class="ai-quick-btn" data-action="nearest-location">📍 Nearest Doctors</button>
+      <button class="ai-quick-btn" data-action="doctor-schedule">⏰ Doctor Timings</button>
+      <button class="ai-quick-btn" data-action="book-appointment">📅 Book Appointment</button>
+      <button class="ai-quick-btn" data-action="show-resources">📚 Resources</button>
+    </div>
+    
+    <div class="ai-input-area">
+      <input type="text" class="ai-input" id="aiInput" placeholder="Type your question here..." autocomplete="off">
+      <button class="ai-voice-btn" id="aiVoiceBtn" aria-label="Voice input">
+        <i class="fas fa-microphone"></i>
+      </button>
+      <button class="ai-send-btn" id="aiSendBtn" aria-label="Send message">
+        <i class="fas fa-paper-plane"></i>
+      </button>
+    </div>
+  </div>
+
+  <!-- Your existing modals and scripts remain -->
   <!-- Auth Modal -->
   <div id="authModal" class="modal-overlay" role="dialog" aria-labelledby="authModalTitle" aria-hidden="true">
     <div class="modal" role="document">
@@ -684,7 +1024,367 @@
   </div>
 
   <script src="app.js"></script>
+  <!-- AI ASSISTANT SCRIPT - Added Here -->
   <script>
+    // AI Assistant Script
+    document.addEventListener('DOMContentLoaded', function() {
+      // AI Assistant Elements
+      const aiBtn = document.querySelector('.ai-assistant-btn');
+      const aiContainer = document.getElementById('aiAssistant');
+      const aiCloseBtn = document.querySelector('.ai-close-btn');
+      const aiChatMessages = document.getElementById('aiChatMessages');
+      const aiInput = document.getElementById('aiInput');
+      const aiSendBtn = document.getElementById('aiSendBtn');
+      const aiVoiceBtn = document.getElementById('aiVoiceBtn');
+      const aiQuickBtns = document.querySelectorAll('.ai-quick-btn');
+      
+      // Open/Close AI Assistant
+      aiBtn.addEventListener('click', function() {
+        aiContainer.style.display = 'flex';
+        aiBtn.style.display = 'none';
+        aiInput.focus();
+      });
+      
+      aiCloseBtn.addEventListener('click', function() {
+        aiContainer.style.display = 'none';
+        aiBtn.style.display = 'flex';
+      });
+      
+      // Send Message Function
+      function sendMessage() {
+        const message = aiInput.value.trim();
+        if (!message) return;
+        
+        // Add user message
+        addMessage(message, 'user');
+        aiInput.value = '';
+        
+        // Process message and get AI response
+        setTimeout(() => {
+          const response = getAIResponse(message);
+          addMessage(response, 'ai');
+        }, 500);
+      }
+      
+      // Add message to chat
+      function addMessage(text, sender) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `ai-message ${sender}`;
+        
+        const avatarDiv = document.createElement('div');
+        avatarDiv.className = 'ai-avatar';
+        avatarDiv.innerHTML = sender === 'user' ? '<i class="fas fa-user"></i>' : '<i class="fas fa-robot"></i>';
+        
+        const contentDiv = document.createElement('div');
+        contentDiv.className = 'ai-message-content';
+        contentDiv.innerHTML = text;
+        
+        messageDiv.appendChild(avatarDiv);
+        messageDiv.appendChild(contentDiv);
+        aiChatMessages.appendChild(messageDiv);
+        
+        // Scroll to bottom
+        aiChatMessages.scrollTop = aiChatMessages.scrollHeight;
+      }
+      
+      // Get AI Response
+      function getAIResponse(message) {
+        const msg = message.toLowerCase();
+        
+        // Nearest location
+        if (msg.includes('nearest') || msg.includes('location') || msg.includes('near me') || msg.includes('clinic near')) {
+          return getNearestLocationResponse();
+        }
+        
+        // Doctor schedule/timeline
+        if (msg.includes('schedule') || msg.includes('timing') || msg.includes('time') || msg.includes('available') || msg.includes('hours')) {
+          return getDoctorScheduleResponse();
+        }
+        
+        // Book appointment
+        if (msg.includes('book') || msg.includes('appointment') || msg.includes('consult') || msg.includes('meet')) {
+          return getBookAppointmentResponse();
+        }
+        
+        // Show resources
+        if (msg.includes('resource') || msg.includes('help') || msg.includes('guide') || msg.includes('information')) {
+          return getResourcesResponse();
+        }
+        
+        // About application
+        if (msg.includes('about') || msg.includes('what is') || msg.includes('medi') || msg.includes('application')) {
+          return `MediGo is a healthcare platform that connects patients with verified doctors. We offer:
+          <br><br>
+          ✅ <strong>5000+ Verified Doctors</strong> across India
+          <br>
+          ✅ <strong>Instant Appointment Booking</strong> for clinic or video consultation
+          <br>
+          ✅ <strong>24/7 Support</strong> for medical queries
+          <br>
+          ✅ <strong>98% Patient Satisfaction</strong> rate
+          <br><br>
+          Our mission is to make quality healthcare accessible to everyone.`;
+        }
+        
+        // Default response
+        return `I understand you're asking about "${message}". As your MediGo Health Assistant, I can help you with:
+        <br><br>
+        1. <span class="ai-action-link" onclick="handleQuickAction('nearest-location')">📍 Finding nearest doctors/clinics</span>
+        <br>
+        2. <span class="ai-action-link" onclick="handleQuickAction('doctor-schedule')">⏰ Checking doctor schedules & timings</span>
+        <br>
+        3. <span class="ai-action-link" onclick="handleQuickAction('book-appointment')">📅 Booking appointments</span>
+        <br>
+        4. <span class="ai-action-link" onclick="handleQuickAction('show-resources')">📚 Accessing healthcare resources</span>
+        <br><br>
+        Try asking more specifically or click one of the quick buttons above!`;
+      }
+      
+      // Nearest Location Response
+      function getNearestLocationResponse() {
+        if (navigator.geolocation) {
+          navigator.geolocation.getCurrentPosition(
+            function(position) {
+              const lat = position.coords.latitude;
+              const lon = position.coords.longitude;
+              
+              const response = `<div class="ai-location-result">
+                <h4><i class="fas fa-map-marker-alt"></i> Nearest MediGo Clinics</h4>
+                <p><strong>📍 Based on your location:</strong></p>
+                <div style="margin: 10px 0;">
+                  <p>🏥 <strong>MediGo Clinic - Central</strong><br>
+                  <small>1.2 km away • 15 mins drive</small><br>
+                  <span>📞 +91 9556227001</span></p>
+                  
+                  <p>🏥 <strong>MediGo Specialty Center</strong><br>
+                  <small>2.5 km away • 25 mins drive</small><br>
+                  <span>📞 +91 9556227002</span></p>
+                  
+                  <p>🏥 <strong>MediGo General Hospital</strong><br>
+                  <small>3.8 km away • 35 mins drive</small><br>
+                  <span>📞 +91 9556227003</span></p>
+                </div>
+                <p><a href="docter.html?location=nearby" class="ai-action-link">👉 View all nearby doctors</a></p>
+              </div>`;
+              addMessage(response, 'ai');
+            },
+            function(error) {
+              const response = `<div class="ai-location-result">
+                <h4><i class="fas fa-map-marker-alt"></i> Nearest MediGo Clinics</h4>
+                <p>📍 <strong>Popular MediGo Locations:</strong></p>
+                <div style="margin: 10px 0;">
+                  <p>🏥 <strong>Mumbai Central Clinic</strong><br>
+                  <small>123 Healthcare Street, Mumbai</small><br>
+                  <span>📞 +91 9556227001</span></p>
+                  
+                  <p>🏥 <strong>Delhi Specialty Center</strong><br>
+                  <small>456 Medical Road, Delhi</small><br>
+                  <span>📞 +91 9556227002</span></p>
+                  
+                  <p>🏥 <strong>Bangalore General Hospital</strong><br>
+                  <small>789 Health Avenue, Bangalore</small><br>
+                  <span>📞 +91 9556227003</span></p>
+                </div>
+                <p><small><i>Enable location for personalized results</i></small></p>
+                <p><a href="contacts.html" class="ai-action-link">👉 View all clinic locations</a></p>
+              </div>`;
+              addMessage(response, 'ai');
+            }
+          );
+          return "Finding nearest clinics based on your location...";
+        } else {
+          return `<div class="ai-location-result">
+            <h4><i class="fas fa-map-marker-alt"></i> Nearest MediGo Clinics</h4>
+            <p>📍 <strong>Popular MediGo Locations:</strong></p>
+            <div style="margin: 10px 0;">
+              <p>🏥 <strong>Mumbai Central Clinic</strong><br>
+              <small>123 Healthcare Street, Mumbai</small><br>
+              <span>📞 +91 9556227001</span></p>
+              
+              <p>🏥 <strong>Delhi Specialty Center</strong><br>
+              <small>456 Medical Road, Delhi</small><br>
+              <span>📞 +91 9556227002</span></p>
+              
+              <p>🏥 <strong>Bangalore General Hospital</strong><br>
+              <small>789 Health Avenue, Bangalore</small><br>
+              <span>📞 +91 9556227003</span></p>
+            </div>
+            <p><a href="contacts.html" class="ai-action-link">👉 View all clinic locations</a></p>
+          </div>`;
+        }
+      }
+      
+      // Doctor Schedule Response
+      function getDoctorScheduleResponse() {
+        const today = new Date();
+        const options = { weekday: 'long', month: 'long', day: 'numeric' };
+        const todayStr = today.toLocaleDateString('en-US', options);
+        
+        return `<div class="ai-schedule-result">
+          <h4><i class="fas fa-calendar-alt"></i> Doctor Schedules for ${todayStr}</h4>
+          <p><strong>🕒 General Consultation Hours:</strong></p>
+          <ul style="margin: 10px 0; padding-left: 20px;">
+            <li><strong>Morning:</strong> 9:00 AM - 1:00 PM</li>
+            <li><strong>Afternoon:</strong> 2:00 PM - 5:00 PM</li>
+            <li><strong>Evening:</strong> 6:00 PM - 9:00 PM</li>
+          </ul>
+          
+          <p><strong>👨‍⚕️ Today's Available Specialists:</strong></p>
+          <div style="margin: 10px 0;">
+            <p>🩺 <strong>Dr. Sarah Johnson (Cardiologist)</strong><br>
+            <small>10:00 AM - 4:00 PM | Video consultations available</small></p>
+            
+            <p>🩺 <strong>Dr. Michael Chen (Dermatologist)</strong><br>
+            <small>9:00 AM - 1:00 PM | Clinic visits only</small></p>
+            
+            <p>🩺 <strong>Dr. Emily Davis (Pediatrician)</strong><br>
+            <small>2:00 PM - 8:00 PM | Both clinic & video</small></p>
+            
+            <p>🩺 <strong>Dr. James Wilson (Orthopedic)</strong><br>
+            <small>11:00 AM - 6:00 PM | Clinic visits only</small></p>
+          </div>
+          
+          <p><strong>📞 Emergency Services:</strong> 24/7 available</p>
+          <p><a href="docter.html" class="ai-action-link">👉 View detailed doctor schedules</a></p>
+        </div>`;
+      }
+      
+      // Book Appointment Response
+      function getBookAppointmentResponse() {
+        return `To book an appointment, you can:
+        <br><br>
+        1. <strong>Browse available doctors</strong> on our <a href="docter.html" class="ai-action-link">Doctors page</a>
+        <br>
+        2. <strong>Select a doctor</strong> and click "Book Now"
+        <br>
+        3. <strong>Choose appointment type</strong> (Clinic/Video/Home)
+        <br>
+        4. <strong>Select date & time</strong> from available slots
+        <br>
+        5. <strong>Fill patient details</strong> and confirm booking
+        <br><br>
+        <div style="background: #f0f9ff; padding: 15px; border-radius: 10px; border-left: 4px solid #3b82f6;">
+          <strong>📅 Quick Booking Options:</strong>
+          <br>
+          • <a href="appointment.html" class="ai-action-link">Direct Appointment Booking</a>
+          <br>
+          • <a href="docter.html" class="ai-action-link">Browse & Book Doctors</a>
+          <br>
+          • Call: <strong>+91 9556227000</strong> (24/7)
+        </div>
+        <br>
+        Would you like me to help you find a specific type of doctor?`;
+      }
+      
+      // Resources Response
+      function getResourcesResponse() {
+        return `Here are helpful healthcare resources:
+        <br><br>
+        <div style="background: #f0fdf4; padding: 15px; border-radius: 10px; border-left: 4px solid #10b981;">
+          <strong>📚 Health Resources:</strong>
+          <ul class="ai-resource-list">
+            <li><a href="resources.html" class="ai-action-link">Health Articles & Guides</a></li>
+            <li><a href="resources.html#preventive-care" class="ai-action-link">Preventive Care Tips</a></li>
+            <li><a href="resources.html#medication" class="ai-action-link">Medication Information</a></li>
+            <li><a href="resources.html#first-aid" class="ai-action-link">First Aid Instructions</a></li>
+          </ul>
+        </div>
+        
+        <br>
+        
+        <div style="background: #eff6ff; padding: 15px; border-radius: 10px; border-left: 4px solid #3b82f6;">
+          <strong>🏥 Emergency Contacts:</strong>
+          <ul class="ai-resource-list">
+            <li>Medical Emergency: <strong>102/108</strong></li>
+            <li>MediGo Support: <strong>+91 9556227000</strong></li>
+            <li>Poison Control: <strong>+91 9266693666</strong></li>
+            <li>Mental Health Helpline: <strong>+91 9152987821</strong></li>
+          </ul>
+        </div>
+        
+        <br>
+        <p>For more detailed resources, visit our <a href="resources.html" class="ai-action-link">Resources page</a>.</p>`;
+      }
+      
+      // Quick action handlers
+      window.handleQuickAction = function(action) {
+        aiInput.value = '';
+        let response = '';
+        
+        switch(action) {
+          case 'nearest-location':
+            response = getNearestLocationResponse();
+            if (typeof response === 'string') {
+              addMessage(response, 'ai');
+            }
+            break;
+          case 'doctor-schedule':
+            response = getDoctorScheduleResponse();
+            addMessage(response, 'ai');
+            break;
+          case 'book-appointment':
+            response = getBookAppointmentResponse();
+            addMessage(response, 'ai');
+            break;
+          case 'show-resources':
+            response = getResourcesResponse();
+            addMessage(response, 'ai');
+            break;
+        }
+      };
+      
+      // Quick buttons
+      aiQuickBtns.forEach(btn => {
+        btn.addEventListener('click', function() {
+          const action = this.getAttribute('data-action');
+          handleQuickAction(action);
+        });
+      });
+      
+      // Send button click
+      aiSendBtn.addEventListener('click', sendMessage);
+      
+      // Enter key in input
+      aiInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          sendMessage();
+        }
+      });
+      
+      // Voice input
+      let recognition = null;
+      if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+        recognition = new SpeechRecognition();
+        recognition.continuous = false;
+        recognition.interimResults = false;
+        recognition.lang = 'en-US';
+        
+        aiVoiceBtn.addEventListener('click', function() {
+          if (aiVoiceBtn.classList.contains('listening')) {
+            recognition.stop();
+            aiVoiceBtn.classList.remove('listening');
+          } else {
+            recognition.start();
+            aiVoiceBtn.classList.add('listening');
+          }
+        });
+        
+        recognition.onresult = function(event) {
+          const transcript = event.results[0][0].transcript;
+          aiInput.value = transcript;
+          aiVoiceBtn.classList.remove('listening');
+          sendMessage();
+        };
+        
+        recognition.onerror = function() {
+          aiVoiceBtn.classList.remove('listening');
+        };
+      } else {
+        aiVoiceBtn.style.display = 'none';
+      }
+    });
+    
     // Set current year in footer
     document.getElementById('currentYear').textContent = new Date().getFullYear();
     
