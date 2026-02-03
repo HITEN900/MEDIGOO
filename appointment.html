@@ -805,13 +805,10 @@
 
       <ul class="nav-desktop">
         <li><a href="index.html" class="nav-link">Home</a></li>
-        <li><a href="docter.html" class="nav-link">Doctors</a></li>
+        <li><a href="doctor.html" class="nav-link">Doctors</a></li> <!-- FIXED: Changed docter.html to doctor.html -->
         <li><a href="appointment.html" class="nav-link active">Appointments</a></li>
         <li><a href="medical-records.html" class="nav-link">Medical Records</a></li>
-        <li><a href="contacts.html" class="nav-link">Contact</a></li>
-        
-       
-        </div>
+        <li><a href="contact.html" class="nav-link">Contact</a></li> <!-- FIXED: Changed contacts.html to contact.html -->
       </ul>
     </div>
   </header>
@@ -884,7 +881,7 @@
         <p class="empty-description">
           You haven't booked any appointments yet. Start your healthcare journey by finding a doctor.
         </p>
-        <a href="docter.html" class="action-btn action-view">
+        <a href="doctor.html" class="action-btn action-view"> <!-- FIXED: Changed docter.html to doctor.html -->
           <i class="fas fa-search"></i> Find a Doctor
         </a>
       </div>
@@ -915,10 +912,10 @@
           <h4>Quick Links</h4>
           <ul class="footer-links">
             <li><a href="index.html">Home</a></li>
-            <li><a href="docter.html">Find Doctors</a></li>
+            <li><a href="doctor.html">Find Doctors</a></li> <!-- FIXED: Changed docter.html to doctor.html -->
             <li><a href="appointment.html">My Appointments</a></li>
             <li><a href="medical-records.html">Medical Records</a></li>
-            <li><a href="contacts.html">Contact Us</a></li>
+            <li><a href="contact.html">Contact Us</a></li> <!-- FIXED: Changed contacts.html to contact.html -->
           </ul>
         </div>
 
@@ -1031,81 +1028,82 @@
 
   <script>
     // ================= GLOBAL VARIABLES =================
-    let appointments = JSON.parse(localStorage.getItem("appointments")) || [];
+    let appointments = [];
     let currentFilter = "all";
     let cancelAppointmentId = null;
     let rescheduleAppointmentId = null;
-
-    // ================= SAMPLE DATA (for demo) =================
-    const sampleDoctors = [
-      { id: 1, name: "Dr. Sarah Johnson", specialty: "Cardiologist", avatar: "SJ" },
-      { id: 2, name: "Dr. Michael Chen", specialty: "Dermatologist", avatar: "MC" },
-      { id: 3, name: "Dr. Emily Davis", specialty: "Pediatrician", avatar: "ED" },
-      { id: 4, name: "Dr. James Wilson", specialty: "Orthopedic Surgeon", avatar: "JW" }
-    ];
 
     // ================= INITIALIZATION =================
     document.addEventListener('DOMContentLoaded', () => {
       // Set current year in footer
       document.getElementById('currentYear').textContent = new Date().getFullYear();
       
-      // Load user data
-      loadUserData();
-      
-      // Initialize appointments (add sample data if empty)
-      if (appointments.length === 0) {
-        appointments = generateSampleAppointments();
-        localStorage.setItem("appointments", JSON.stringify(appointments));
-      }
+      // Load appointments from localStorage
+      loadAppointments();
       
       // Display appointments
       renderAppointments();
       
       // Initialize event listeners
       initEventListeners();
+      
+      // Debug: Log appointments to console
+      console.log('Loaded appointments:', appointments);
     });
 
-    // ================= SAMPLE APPOINTMENTS GENERATOR =================
-    function generateSampleAppointments() {
-      const statuses = ['upcoming', 'completed', 'cancelled'];
-      const types = ['clinic', 'video'];
-      const sampleAppointments = [];
-      
-      for (let i = 0; i < 6; i++) {
-        const doctor = sampleDoctors[Math.floor(Math.random() * sampleDoctors.length)];
-        const date = new Date();
-        date.setDate(date.getDate() + (i * 7));
+    // ================= LOAD APPOINTMENTS =================
+    function loadAppointments() {
+      try {
+        // Try to load appointments from localStorage
+        const storedAppointments = localStorage.getItem('appointments');
         
-        sampleAppointments.push({
-          id: Date.now() + i,
-          doctorId: doctor.id,
-          doctorName: doctor.name,
-          doctorSpecialty: doctor.specialty,
-          doctorAvatar: doctor.avatar,
-          date: date.toISOString().split('T')[0],
-          time: ['09:00', '10:00', '11:00', '14:00', '15:00'][Math.floor(Math.random() * 5)],
-          type: types[Math.floor(Math.random() * types.length)],
-          status: statuses[Math.floor(Math.random() * statuses.length)],
-          location: "City Hospital",
-          notes: i === 0 ? "Follow-up for blood pressure" : "Regular checkup",
-          createdAt: new Date().toISOString()
-        });
+        if (storedAppointments) {
+          appointments = JSON.parse(storedAppointments);
+          
+          // Check if appointments have payment status
+          appointments = appointments.map(app => {
+            // Ensure all appointments have required fields
+            if (!app.status) {
+              app.status = app.payment?.status === 'completed' ? 'confirmed' : 'pending';
+            }
+            
+            // Ensure appointment type is set
+            if (!app.appointmentType) {
+              app.appointmentType = 'clinic';
+            }
+            
+            // Ensure location is set
+            if (!app.location) {
+              app.location = 'Clinic Visit';
+            }
+            
+            // Ensure notes are set
+            if (!app.notes) {
+              app.notes = 'Follow-up appointment';
+            }
+            
+            // Generate avatar initials
+            if (!app.doctorAvatar) {
+              app.doctorAvatar = app.doctorName
+                .split(' ')
+                .map(n => n[0])
+                .join('')
+                .toUpperCase()
+                .substring(0, 2);
+            }
+            
+            return app;
+          });
+          
+          console.log('Appointments loaded successfully:', appointments.length, 'appointments');
+        } else {
+          console.log('No appointments found in localStorage');
+          appointments = [];
+        }
+      } catch (error) {
+        console.error('Error loading appointments:', error);
+        appointments = [];
       }
-      
-      return sampleAppointments;
-    }
-
-    // ================= USER DATA =================
-    function loadUserData() {
-      const user = JSON.parse(localStorage.getItem("currentUser")) || {
-        name: "John Smith",
-        email: "john@example.com"
-      };
-      
-      document.getElementById('userName').textContent = user.name;
-      document.getElementById('userEmail').textContent = user.email;
-      document.getElementById('userInitials').textContent = 
-        user.name.split(' ').map(n => n[0]).join('').toUpperCase();
     }
 
     // ================= APPOINTMENT RENDERING =================
@@ -1119,10 +1117,10 @@
       // Apply search filter
       if (searchTerm) {
         displayAppointments = displayAppointments.filter(app => 
-          app.doctorName.toLowerCase().includes(searchTerm) ||
-          app.doctorSpecialty.toLowerCase().includes(searchTerm) ||
-          app.location.toLowerCase().includes(searchTerm) ||
-          app.notes.toLowerCase().includes(searchTerm)
+          app.doctorName?.toLowerCase().includes(searchTerm) ||
+          app.doctorSpecialty?.toLowerCase().includes(searchTerm) ||
+          app.location?.toLowerCase().includes(searchTerm) ||
+          app.notes?.toLowerCase().includes(searchTerm)
         );
       }
       
@@ -1147,28 +1145,48 @@
       
       // Sort appointments by date (upcoming first)
       displayAppointments.sort((a, b) => {
-        if (a.status === 'upcoming' && b.status !== 'upcoming') return -1;
-        if (a.status !== 'upcoming' && b.status === 'upcoming') return 1;
-        return new Date(a.date) - new Date(b.date);
+        // First sort by status: upcoming > confirmed > completed > cancelled
+        const statusOrder = { 'upcoming': 1, 'confirmed': 2, 'pending': 3, 'completed': 4, 'cancelled': 5 };
+        const statusA = statusOrder[a.status] || 6;
+        const statusB = statusOrder[b.status] || 6;
+        
+        if (statusA !== statusB) return statusA - statusB;
+        
+        // Then sort by date (earliest first)
+        const dateA = new Date(a.date || a.appointmentDate || '2099-12-31');
+        const dateB = new Date(b.date || b.appointmentDate || '2099-12-31');
+        return dateA - dateB;
       });
       
       // Generate appointment cards
-      container.innerHTML = displayAppointments.map(app => `
+      container.innerHTML = displayAppointments.map(app => {
+        const appointmentDate = app.date || app.appointmentDate;
+        const appointmentTime = app.time || app.displayTime || '10:00 AM';
+        const appointmentType = app.appointmentType || app.type || 'clinic';
+        const appointmentStatus = app.status || 'pending';
+        const doctorName = app.doctorName || 'Doctor';
+        const doctorSpecialty = app.doctorSpecialty || 'General Practitioner';
+        const location = app.location || 'Clinic';
+        const notes = app.notes || 'Regular checkup';
+        const doctorAvatar = app.doctorAvatar || 
+          doctorName.split(' ').map(n => n[0]).join('').toUpperCase().substring(0, 2);
+        
+        return `
         <div class="appointment-card" data-id="${app.id}">
-          <span class="appointment-status status-${app.status}">
-            <i class="fas fa-${getStatusIcon(app.status)}"></i> ${app.status}
+          <span class="appointment-status status-${appointmentStatus}">
+            <i class="fas fa-${getStatusIcon(appointmentStatus)}"></i> ${appointmentStatus}
           </span>
           
           <div class="appointment-header">
-            <div class="doctor-avatar">${app.doctorAvatar}</div>
+            <div class="doctor-avatar">${doctorAvatar}</div>
             <div class="doctor-info">
-              <h3 class="doctor-name">${app.doctorName}</h3>
+              <h3 class="doctor-name">${doctorName}</h3>
               <p class="doctor-specialty">
-                <i class="fas fa-stethoscope"></i> ${app.doctorSpecialty}
+                <i class="fas fa-stethoscope"></i> ${doctorSpecialty}
               </p>
               <span class="appointment-type">
-                <i class="fas fa-${app.type === 'video' ? 'video' : 'clinic-medical'}"></i>
-                ${app.type === 'video' ? 'Video Consultation' : 'Clinic Visit'}
+                <i class="fas fa-${appointmentType === 'video' ? 'video' : 'clinic-medical'}"></i>
+                ${appointmentType === 'video' ? 'Video Consultation' : appointmentType === 'home' ? 'Home Visit' : 'Clinic Visit'}
               </span>
             </div>
           </div>
@@ -1176,24 +1194,30 @@
           <div class="appointment-details">
             <div class="detail-item">
               <span class="detail-label"><i class="fas fa-calendar"></i> Date</span>
-              <span class="detail-value">${formatDate(app.date)}</span>
+              <span class="detail-value">${formatDate(appointmentDate)}</span>
             </div>
             <div class="detail-item">
               <span class="detail-label"><i class="fas fa-clock"></i> Time</span>
-              <span class="detail-value">${formatTime(app.time)}</span>
+              <span class="detail-value">${formatTime(appointmentTime)}</span>
             </div>
             <div class="detail-item">
               <span class="detail-label"><i class="fas fa-map-marker-alt"></i> Location</span>
-              <span class="detail-value">${app.location}</span>
+              <span class="detail-value">${location}</span>
             </div>
             <div class="detail-item">
               <span class="detail-label"><i class="fas fa-file-medical"></i> Notes</span>
-              <span class="detail-value">${app.notes || 'No additional notes'}</span>
+              <span class="detail-value">${notes}</span>
             </div>
+            ${app.fee ? `
+            <div class="detail-item">
+              <span class="detail-label"><i class="fas fa-money-bill-wave"></i> Fee</span>
+              <span class="detail-value">₹${app.fee}</span>
+            </div>
+            ` : ''}
           </div>
           
           <div class="appointment-actions">
-            ${app.status === 'upcoming' ? `
+            ${appointmentStatus === 'upcoming' || appointmentStatus === 'confirmed' || appointmentStatus === 'pending' ? `
               <button class="action-btn action-cancel" onclick="openCancelModal('${app.id}')">
                 <i class="fas fa-times"></i> Cancel
               </button>
@@ -1206,39 +1230,68 @@
             </button>
           </div>
         </div>
-      `).join('');
+      `;
+      }).join('');
     }
 
     // ================= HELPER FUNCTIONS =================
     function getStatusIcon(status) {
-      switch(status) {
+      switch(status.toLowerCase()) {
         case 'upcoming': return 'clock';
+        case 'confirmed': return 'check-circle';
         case 'completed': return 'check-circle';
+        case 'pending': return 'hourglass-half';
         case 'cancelled': return 'times-circle';
         default: return 'calendar';
       }
     }
 
     function formatDate(dateString) {
-      const date = new Date(dateString);
-      return date.toLocaleDateString('en-US', { 
-        weekday: 'short', 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric' 
-      });
+      if (!dateString) return 'Date not set';
+      
+      try {
+        const date = new Date(dateString);
+        if (isNaN(date.getTime())) return 'Invalid date';
+        
+        return date.toLocaleDateString('en-US', { 
+          weekday: 'short', 
+          year: 'numeric', 
+          month: 'short', 
+          day: 'numeric' 
+        });
+      } catch (error) {
+        console.error('Error formatting date:', dateString, error);
+        return 'Date error';
+      }
     }
 
     function formatTime(timeString) {
-      const [hours, minutes] = timeString.split(':');
-      const hour = parseInt(hours);
-      const ampm = hour >= 12 ? 'PM' : 'AM';
-      const displayHour = hour % 12 || 12;
-      return `${displayHour}:${minutes} ${ampm}`;
+      if (!timeString) return 'Time not set';
+      
+      try {
+        // Handle both "10:00" and "10:00 AM" formats
+        let time = timeString;
+        if (timeString.includes(':')) {
+          const [hours, minutes] = timeString.split(':');
+          const hour = parseInt(hours);
+          if (!isNaN(hour)) {
+            const ampm = hour >= 12 ? 'PM' : 'AM';
+            const displayHour = hour % 12 || 12;
+            time = `${displayHour}:${minutes || '00'} ${ampm}`;
+          }
+        }
+        return time;
+      } catch (error) {
+        console.error('Error formatting time:', timeString, error);
+        return timeString;
+      }
     }
 
     function updateAppointmentCounts() {
-      const upcoming = appointments.filter(a => a.status === 'upcoming').length;
+      const upcoming = appointments.filter(a => 
+        a.status === 'upcoming' || a.status === 'confirmed' || a.status === 'pending'
+      ).length;
+      
       const completed = appointments.filter(a => a.status === 'completed').length;
       
       document.getElementById('upcomingCount').textContent = upcoming;
@@ -1253,9 +1306,9 @@
       
       cancelAppointmentId = appointmentId;
       
-      document.getElementById('modalDoctorName').textContent = appointment.doctorName;
+      document.getElementById('modalDoctorName').textContent = appointment.doctorName || 'Doctor';
       document.getElementById('modalDateTime').textContent = 
-        `${formatDate(appointment.date)} at ${formatTime(appointment.time)}`;
+        `${formatDate(appointment.date || appointment.appointmentDate)} at ${formatTime(appointment.time || appointment.displayTime)}`;
       
       document.getElementById('cancelModal').classList.add('active');
     }
@@ -1271,23 +1324,39 @@
       tomorrow.setDate(tomorrow.getDate() + 1);
       document.getElementById('newDate').min = tomorrow.toISOString().split('T')[0];
       
+      // Set current date if available
+      if (appointment.date || appointment.appointmentDate) {
+        document.getElementById('newDate').value = appointment.date || appointment.appointmentDate;
+      }
+      
       document.getElementById('rescheduleModal').classList.add('active');
     }
 
     function viewAppointmentDetails(appointmentId) {
       const appointment = appointments.find(a => a.id == appointmentId);
-      if (!appointment) return;
+      if (!appointment) {
+        alert('Appointment not found!');
+        return;
+      }
       
-      alert(`Appointment Details:\n\n` +
-            `Doctor: ${appointment.doctorName}\n` +
-            `Specialty: ${appointment.doctorSpecialty}\n` +
-            `Date: ${formatDate(appointment.date)}\n` +
-            `Time: ${formatTime(appointment.time)}\n` +
-            `Type: ${appointment.type === 'video' ? 'Video Consultation' : 'Clinic Visit'}\n` +
-            `Status: ${appointment.status}\n` +
-            `Location: ${appointment.location}\n` +
-            `Notes: ${appointment.notes || 'None'}\n` +
-            `Booked on: ${formatDate(appointment.createdAt)}`);
+      const details = [
+        `Appointment Details:`,
+        ``,
+        `Doctor: ${appointment.doctorName || 'Not specified'}`,
+        `Specialty: ${appointment.doctorSpecialty || 'General'}`,
+        `Date: ${formatDate(appointment.date || appointment.appointmentDate)}`,
+        `Time: ${formatTime(appointment.time || appointment.displayTime)}`,
+        `Type: ${appointment.appointmentType === 'video' ? 'Video Consultation' : appointment.appointmentType === 'home' ? 'Home Visit' : 'Clinic Visit'}`,
+        `Status: ${appointment.status || 'Pending'}`,
+        `Location: ${appointment.location || 'Clinic'}`,
+        `Patient: ${appointment.patientName || 'Not specified'}`,
+        `Phone: ${appointment.patientPhone || 'Not specified'}`,
+        `Fee: ${appointment.fee ? '₹' + appointment.fee : 'Not specified'}`,
+        `Notes: ${appointment.notes || 'No additional notes'}`,
+        `Booked on: ${formatDate(appointment.createdAt)}`
+      ];
+      
+      alert(details.join('\n'));
     }
 
     // ================= EVENT LISTENERS =================
@@ -1387,6 +1456,17 @@
           }
         });
       });
+      
+      // Debug button to check localStorage
+      const debugBtn = document.createElement('button');
+      debugBtn.textContent = 'Debug';
+      debugBtn.style.cssText = 'position: fixed; bottom: 10px; left: 10px; padding: 10px; background: #f00; color: white; border: none; border-radius: 5px; z-index: 9999;';
+      debugBtn.addEventListener('click', () => {
+        console.log('Appointments in localStorage:', JSON.parse(localStorage.getItem('appointments') || '[]'));
+        console.log('Current appointments array:', appointments);
+        alert(`Total appointments: ${appointments.length}\nCheck console for details.`);
+      });
+      document.body.appendChild(debugBtn);
     }
 
     // ================= TOAST NOTIFICATION =================

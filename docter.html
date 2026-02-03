@@ -1591,7 +1591,7 @@
                                 </div>
                                 <div class="meta-item">
                                     <span class="meta-value">₹${doctor.fee}</span>
-                                    <span class="meta-label">Consultation</span>
+                                    <span class="meta-label">Consultation Fee</span>
                                 </div>
                                 <div class="meta-item">
                                     <span class="meta-value">${doctor.languages.length}</span>
@@ -1610,7 +1610,7 @@
                                     <i class="fas fa-eye"></i> View Profile
                                 </button>
                                 <button class="btn btn-primary book-appointment" data-id="${doctor.id}">
-                                    <i class="fas fa-calendar-check"></i> Book Now
+                                    <i class="fas fa-calendar-check"></i> Book Now (₹${doctor.fee})
                                 </button>
                             </div>
                         </div>
@@ -1973,20 +1973,21 @@
                 return;
             }
             
-            // Create appointment object
+            // Create appointment object with doctor's actual fee
             const appointment = {
                 id: Date.now(),
                 doctorId: selectedDoctor.id,
                 doctorName: selectedDoctor.name,
                 doctorSpecialty: selectedDoctor.specialty,
                 doctorImage: selectedDoctor.image,
+                doctorFee: selectedDoctor.fee, // Store doctor's fee separately
                 date: date,
                 time: selectedSlot.dataset.time,
                 displayTime: selectedSlot.dataset.display,
                 patientName: patientName,
                 patientPhone: patientPhone,
                 appointmentType: document.getElementById('appointmentType').value,
-                fee: selectedDoctor.fee,
+                fee: selectedDoctor.fee, // This is the actual doctor's fee
                 status: 'pending',
                 createdAt: new Date().toISOString()
             };

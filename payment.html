@@ -215,6 +215,54 @@
       font-size: 0.875rem;
     }
 
+    /* ================= DOCTOR INFO ================= */
+    .doctor-summary {
+      background: var(--bg-light);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      border: 1px solid var(--border);
+    }
+
+    .doctor-avatar-payment {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid white;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .doctor-details-payment {
+      flex: 1;
+    }
+
+    .doctor-details-payment h4 {
+      font-size: 1.125rem;
+      margin-bottom: 0.25rem;
+      color: var(--text-primary);
+    }
+
+    .doctor-details-payment p {
+      color: var(--text-secondary);
+      font-size: 0.875rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .doctor-fee-badge {
+      display: inline-block;
+      background: var(--primary);
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-weight: 600;
+      margin-top: 0.25rem;
+    }
+
     /* ================= AMOUNT BREAKDOWN ================= */
     .amount-breakdown {
       background: var(--bg-light);
@@ -619,6 +667,12 @@
         padding: 1.5rem;
       }
 
+      .doctor-summary {
+        flex-direction: column;
+        text-align: center;
+        gap: 1rem;
+      }
+
       .form-row {
         grid-template-columns: 1fr;
       }
@@ -700,11 +754,22 @@
             </div>
           </div>
 
+          <!-- DOCTOR INFO -->
+          <div class="doctor-summary" id="doctorSummary">
+            <img id="doctorAvatar" src="" alt="Doctor" class="doctor-avatar-payment">
+            <div class="doctor-details-payment">
+              <h4 id="doctorName">Loading doctor information...</h4>
+              <p id="doctorSpecialty">Specialty</p>
+              <p id="doctorAppointment">Date & Time</p>
+              <div class="doctor-fee-badge" id="doctorFeeBadge">₹0</div>
+            </div>
+          </div>
+
           <!-- AMOUNT BREAKDOWN -->
           <div class="amount-breakdown">
             <div class="breakdown-item">
-              <span class="breakdown-label">Appointment Fee</span>
-              <span class="breakdown-value" id="appointmentFee">₹199</span>
+              <span class="breakdown-label">Consultation Fee</span>
+              <span class="breakdown-value" id="consultationFee">₹0</span>
             </div>
             <div class="breakdown-item">
               <span class="breakdown-label">Platform Fee</span>
@@ -712,11 +777,11 @@
             </div>
             <div class="breakdown-item">
               <span class="breakdown-label">GST (18%)</span>
-              <span class="breakdown-value" id="gstAmount">₹37.44</span>
+              <span class="breakdown-value" id="gstAmount">₹0</span>
             </div>
             <div class="breakdown-total">
               <span>Total Amount</span>
-              <span id="totalAmount">₹245.44</span>
+              <span id="totalAmount">₹0</span>
             </div>
           </div>
 
@@ -904,7 +969,7 @@
     // ================= INITIALIZATION =================
     let selectedMethod = null;
     let appointmentData = null;
-    const appointmentFee = 199;
+    let appointmentFee = 0; // Dynamic fee from doctor
     const platformFee = 9;
     const gstRate = 0.18;
 
@@ -929,7 +994,6 @@
       
       // Load appointment data
       loadAppointmentData();
-      calculateTotal();
       
       // Input formatting
       document.getElementById('cardNumber')?.addEventListener('input', formatCardNumber);
@@ -943,16 +1007,56 @@
       
       if (!pendingBooking) {
         // Redirect to doctors page if no pending booking
-        window.location.href = 'doctor.html';
+        showToast('No pending appointment found. Please book an appointment first.', 'error');
+        setTimeout(() => {
+          window.location.href = 'doctor.html';
+        }, 2000);
         return;
       }
       
       appointmentData = pendingBooking;
       
+      // Set the appointment fee from doctor's actual fee
+      if (appointmentData && appointmentData.fee) {
+        appointmentFee = appointmentData.fee;
+      } else if (appointmentData && appointmentData.doctorFee) {
+        appointmentFee = appointmentData.doctorFee;
+      } else {
+        // Fallback to default if fee not found
+        appointmentFee = 500;
+        showToast('Using default fee. Doctor fee information not found.', 'warning');
+      }
+      
       // Display appointment details
+      displayAppointmentDetails();
+      
+      // Calculate and display total
+      calculateTotal();
+    }
+
+    function displayAppointmentDetails() {
       const detailsElement = document.getElementById('appointmentDetails');
+      const doctorNameElement = document.getElementById('doctorName');
+      const doctorSpecialtyElement = document.getElementById('doctorSpecialty');
+      const doctorAppointmentElement = document.getElementById('doctorAppointment');
+      const doctorFeeBadgeElement = document.getElementById('doctorFeeBadge');
+      const doctorAvatarElement = document.getElementById('doctorAvatar');
+      
       if (appointmentData) {
-        detailsElement.textContent = `Appointment with ${appointmentData.doctorName} - ${appointmentData.date} at ${appointmentData.displayTime}`;
+        // Update appointment details
+        detailsElement.textContent = `Payment for appointment with ${appointmentData.doctorName}`;
+        
+        // Update doctor summary
+        doctorNameElement.textContent = appointmentData.doctorName;
+        doctorSpecialtyElement.textContent = appointmentData.doctorSpecialty;
+        doctorAppointmentElement.textContent = `${appointmentData.date} at ${appointmentData.displayTime}`;
+        doctorFeeBadgeElement.textContent = `₹${appointmentFee}`;
+        
+        // Set doctor avatar if available
+        if (appointmentData.doctorImage) {
+          doctorAvatarElement.src = appointmentData.doctorImage;
+          doctorAvatarElement.alt = `Dr. ${appointmentData.doctorName}`;
+        }
       }
     }
 
@@ -961,7 +1065,7 @@
       const gstAmount = (appointmentFee + platformFee) * gstRate;
       const totalAmount = appointmentFee + platformFee + gstAmount;
       
-      document.getElementById('appointmentFee').textContent = `₹${appointmentFee}`;
+      document.getElementById('consultationFee').textContent = `₹${appointmentFee}`;
       document.getElementById('platformFee').textContent = `₹${platformFee}`;
       document.getElementById('gstAmount').textContent = `₹${gstAmount.toFixed(2)}`;
       document.getElementById('totalAmount').textContent = `₹${totalAmount.toFixed(2)}`;
@@ -1094,6 +1198,18 @@
           return false;
         }
         
+        // Validate expiry date is not in the past
+        const [month, year] = cardExpiry.split('/');
+        const now = new Date();
+        const currentYear = now.getFullYear() % 100;
+        const currentMonth = now.getMonth() + 1;
+        
+        if (parseInt(year) < currentYear || 
+            (parseInt(year) === currentYear && parseInt(month) < currentMonth)) {
+          showToast('Card has expired', 'error');
+          return false;
+        }
+        
         if (!cardCvv || cardCvv.length !== 3) {
           showToast('Please enter a valid 3-digit CVV', 'error');
           return false;
@@ -1150,15 +1266,27 @@
       appointmentData.payment = {
         ...paymentDetails,
         amount: total.totalAmount,
+        consultationFee: appointmentFee,
+        platformFee: platformFee,
+        gst: total.gstAmount,
         status: 'completed',
         date: new Date().toISOString()
       };
       
       appointmentData.status = 'confirmed';
+      appointmentData.paidAmount = total.totalAmount;
       
       // Save to appointments
       let appointments = JSON.parse(localStorage.getItem('appointments')) || [];
-      appointments.push(appointmentData);
+      
+      // Update existing appointment or add new one
+      const existingIndex = appointments.findIndex(a => a.id === appointmentData.id);
+      if (existingIndex !== -1) {
+        appointments[existingIndex] = appointmentData;
+      } else {
+        appointments.push(appointmentData);
+      }
+      
       localStorage.setItem('appointments', JSON.stringify(appointments));
       
       // Clear pending booking
@@ -1185,8 +1313,8 @@
         patientName: appointment.patientName,
         phoneNumber: appointment.patientPhone,
         breakdown: {
-          appointmentFee: total.appointmentFee,
-          platformFee: total.platformFee,
+          consultationFee: appointmentFee,
+          platformFee: platformFee,
           gst: total.gstAmount,
           total: total.totalAmount
         },
@@ -1205,6 +1333,9 @@
       localStorage.setItem('transactions', JSON.stringify(transactions));
       
       console.log('Receipt Generated:', receipt);
+      
+      // Show receipt in console for debugging
+      showToast(`Payment of ₹${total.totalAmount} completed successfully!`, 'success');
     }
 
     // ================= NAVIGATION =================
@@ -1230,13 +1361,14 @@
         position: fixed;
         bottom: 2rem;
         right: 2rem;
-        background: ${type === 'error' ? 'var(--danger)' : 'var(--text-primary)'};
+        background: ${type === 'error' ? 'var(--danger)' : type === 'warning' ? 'var(--warning)' : type === 'success' ? 'var(--success)' : 'var(--text-primary)'};
         color: white;
         padding: 1rem 1.5rem;
         border-radius: var(--radius-md);
         box-shadow: var(--shadow-lg);
         z-index: 3000;
         animation: slideIn 0.3s ease;
+        max-width: 300px;
       `;
       
       document.body.appendChild(toast);
@@ -1245,7 +1377,9 @@
       setTimeout(() => {
         toast.style.animation = 'slideOut 0.3s ease';
         setTimeout(() => {
-          document.body.removeChild(toast);
+          if (document.body.contains(toast)) {
+            document.body.removeChild(toast);
+          }
         }, 300);
       }, 3000);
     }
