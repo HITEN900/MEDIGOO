@@ -773,6 +773,28 @@
     .mt-4 { margin-top: 2rem; }
 
     .hidden { display: none; }
+
+    /* Toast Notification */
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--success);
+      color: white;
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius-md);
+      box-shadow: var(--shadow-lg);
+      z-index: 3000;
+      max-width: 300px;
+      transform: translateY(100px);
+      opacity: 0;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+    }
+
+    .toast.show {
+      transform: translateY(0);
+      opacity: 1;
+    }
   </style>
 </head>
 
@@ -781,23 +803,24 @@
   <header class="header">
     <div class="container nav-container">
       <a href="index.html" class="logo">
-<h1 style="
-    font-family: 'Arial', sans-serif;
-    font-size: 1.6rem;
-    font-weight: bold;
-    color: #1e3a8a;
-    margin: 0;
-    padding: 6px 12px;
-    background: white;
-    border-radius: 8px;
-    border-left: 4px solid #10b981;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-">
-    <i class="fas fa-stethoscope" style="color: #ef4444; font-size: 1.1rem;"></i>
-    <span>MediGo</span>
-</h1>      </a>
+        <h1 style="
+            font-family: 'Arial', sans-serif;
+            font-size: 1.6rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin: 0;
+            padding: 6px 12px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #10b981;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        ">
+          <i class="fas fa-stethoscope" style="color: #ef4444; font-size: 1.1rem;"></i>
+          <span>MediGo</span>
+        </h1>
+      </a>
 
       <button class="mobile-menu-btn" aria-label="Toggle menu">
         <i class="fas fa-bars"></i>
@@ -805,9 +828,9 @@
 
       <ul class="nav-desktop">
         <li><a href="index.html" class="nav-link">Home</a></li>
-        <li><a href="docter.html" class="nav-link">Doctors</a></li> <!-- FIXED: Changed docter.html to doctor.html -->
+        <li><a href="doctor.html" class="nav-link">Doctors</a></li>
         <li><a href="appointment.html" class="nav-link active">Appointments</a></li>
-        <li><a href="contacts.html" class="nav-link">Contact</a></li> <!-- FIXED: Changed contacts.html to contact.html -->
+        <li><a href="contact.html" class="nav-link">Contact</a></li>
       </ul>
     </div>
   </header>
@@ -861,7 +884,6 @@
         <button class="filter-btn" id="filterBtn">
           <i class="fas fa-filter"></i> Filter
         </button>
-        
       </div>
     </div>
   </div>
@@ -878,7 +900,7 @@
         <p class="empty-description">
           You haven't booked any appointments yet. Start your healthcare journey by finding a doctor.
         </p>
-        <a href="doctor.html" class="action-btn action-view"> <!-- FIXED: Changed docter.html to doctor.html -->
+        <a href="doctor.html" class="action-btn action-view">
           <i class="fas fa-search"></i> Find a Doctor
         </a>
       </div>
@@ -895,7 +917,7 @@
     <div class="container">
       <div class="footer-content">
         <div class="footer-section">
-          <h4>MediBook</h4>
+          <h4>MediGo</h4>
           <p>Your trusted partner for finding and booking quality healthcare professionals.</p>
           <div class="mt-2">
             <a href="#" style="color: #94a3b8;"><i class="fab fa-facebook"></i></a>
@@ -909,9 +931,9 @@
           <h4>Quick Links</h4>
           <ul class="footer-links">
             <li><a href="index.html">Home</a></li>
-            <li><a href="docter.html">Find Doctors</a></li> <!-- FIXED: Changed docter.html to doctor.html -->
+            <li><a href="doctor.html">Find Doctors</a></li>
             <li><a href="appointment.html">My Appointments</a></li>
-            <li><a href="contacts.html">Contact Us</a></li> <!-- FIXED: Changed contacts.html to contact.html -->
+            <li><a href="contact.html">Contact Us</a></li>
           </ul>
         </div>
 
@@ -929,7 +951,7 @@
         <div class="footer-section">
           <h4>Contact Info</h4>
           <ul class="footer-links">
-            <li><i class="fas fa-envelope"></i> support@medibook.com</li>
+            <li><i class="fas fa-envelope"></i> support@MediGo.com</li>
             <li><i class="fas fa-phone"></i> +91 9556227000</li>
             <li><i class="fas fa-map-marker-alt"></i> 123 Healthcare St, Medical District, India</li>
           </ul>
@@ -937,7 +959,7 @@
       </div>
 
       <div class="footer-bottom">
-        <p>&copy; <span id="currentYear">2024</span> MediBook. All rights reserved.</p>
+        <p>&copy; <span id="currentYear">2024</span> MediGo. All rights reserved.</p>
       </div>
     </div>
   </footer>
@@ -1020,7 +1042,7 @@
   </div>
 
   <!-- TOAST NOTIFICATION -->
-  <div id="toast" class="toast hidden" style="position: fixed; bottom: 20px; right: 20px; background: var(--primary); color: white; padding: 1rem 1.5rem; border-radius: var(--radius-md); box-shadow: var(--shadow-lg); z-index: 3000; max-width: 300px; transform: translateY(100px); opacity: 0; transition: transform 0.3s ease, opacity 0.3s ease;"></div>
+  <div id="toast" class="toast"></div>
 
   <script>
     // ================= GLOBAL VARIABLES =================
@@ -1030,9 +1052,12 @@
     let rescheduleAppointmentId = null;
 
     // ================= INITIALIZATION =================
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', function() {
       // Set current year in footer
       document.getElementById('currentYear').textContent = new Date().getFullYear();
+      
+      // Load sample appointments if none exist
+      loadSampleAppointments();
       
       // Load appointments from localStorage
       loadAppointments();
@@ -1047,38 +1072,100 @@
       console.log('Loaded appointments:', appointments);
     });
 
+    // ================= LOAD SAMPLE APPOINTMENTS =================
+    function loadSampleAppointments() {
+      const existingAppointments = localStorage.getItem('appointments');
+      
+      if (!existingAppointments || JSON.parse(existingAppointments).length === 0) {
+        const sampleAppointments = [
+          {
+            id: "1",
+            doctorName: "Dr. Sarah Johnson",
+            doctorSpecialty: "Cardiologist",
+            date: "2024-12-20",
+            time: "10:00",
+            displayTime: "10:00 AM",
+            appointmentType: "clinic",
+            status: "upcoming",
+            location: "Heart Clinic, Room 305",
+            notes: "Annual heart checkup",
+            patientName: "John Doe",
+            patientPhone: "+1234567890",
+            fee: 1500,
+            doctorAvatar: "SJ",
+            createdAt: new Date().toISOString()
+          },
+          {
+            id: "2",
+            doctorName: "Dr. Michael Chen",
+            doctorSpecialty: "Dermatologist",
+            date: "2024-11-15",
+            time: "14:30",
+            displayTime: "02:30 PM",
+            appointmentType: "video",
+            status: "completed",
+            location: "Video Consultation",
+            notes: "Skin allergy follow-up",
+            patientName: "John Doe",
+            patientPhone: "+1234567890",
+            fee: 2000,
+            doctorAvatar: "MC",
+            createdAt: new Date().toISOString()
+          },
+          {
+            id: "3",
+            doctorName: "Dr. Emily Rodriguez",
+            doctorSpecialty: "Pediatrician",
+            date: "2024-10-05",
+            time: "09:00",
+            displayTime: "09:00 AM",
+            appointmentType: "clinic",
+            status: "cancelled",
+            location: "Children's Health Center",
+            notes: "Child vaccination",
+            patientName: "John Doe",
+            patientPhone: "+1234567890",
+            fee: 1200,
+            doctorAvatar: "ER",
+            createdAt: new Date().toISOString()
+          },
+          {
+            id: "4",
+            doctorName: "Dr. James Wilson",
+            doctorSpecialty: "Neurologist",
+            date: "2024-12-25",
+            time: "11:00",
+            displayTime: "11:00 AM",
+            appointmentType: "home",
+            status: "pending",
+            location: "Home Visit",
+            notes: "Migraine consultation",
+            patientName: "John Doe",
+            patientPhone: "+1234567890",
+            fee: 2500,
+            doctorAvatar: "JW",
+            createdAt: new Date().toISOString()
+          }
+        ];
+        
+        localStorage.setItem('appointments', JSON.stringify(sampleAppointments));
+      }
+    }
+
     // ================= LOAD APPOINTMENTS =================
     function loadAppointments() {
       try {
-        // Try to load appointments from localStorage
         const storedAppointments = localStorage.getItem('appointments');
         
         if (storedAppointments) {
           appointments = JSON.parse(storedAppointments);
           
-          // Check if appointments have payment status
+          // Ensure all appointments have required fields
           appointments = appointments.map(app => {
-            // Ensure all appointments have required fields
-            if (!app.status) {
-              app.status = app.payment?.status === 'completed' ? 'confirmed' : 'pending';
-            }
-            
-            // Ensure appointment type is set
-            if (!app.appointmentType) {
-              app.appointmentType = 'clinic';
-            }
-            
-            // Ensure location is set
-            if (!app.location) {
-              app.location = 'Clinic Visit';
-            }
-            
-            // Ensure notes are set
-            if (!app.notes) {
-              app.notes = 'Follow-up appointment';
-            }
-            
-            // Generate avatar initials
+            if (!app.status) app.status = 'pending';
+            if (!app.appointmentType) app.appointmentType = 'clinic';
+            if (!app.location) app.location = 'Clinic Visit';
+            if (!app.notes) app.notes = 'Follow-up appointment';
             if (!app.doctorAvatar) {
               app.doctorAvatar = app.doctorName
                 .split(' ')
@@ -1087,7 +1174,6 @@
                 .toUpperCase()
                 .substring(0, 2);
             }
-            
             return app;
           });
           
@@ -1141,14 +1227,12 @@
       
       // Sort appointments by date (upcoming first)
       displayAppointments.sort((a, b) => {
-        // First sort by status: upcoming > confirmed > completed > cancelled
         const statusOrder = { 'upcoming': 1, 'confirmed': 2, 'pending': 3, 'completed': 4, 'cancelled': 5 };
         const statusA = statusOrder[a.status] || 6;
         const statusB = statusOrder[b.status] || 6;
         
         if (statusA !== statusB) return statusA - statusB;
         
-        // Then sort by date (earliest first)
         const dateA = new Date(a.date || a.appointmentDate || '2099-12-31');
         const dateB = new Date(b.date || b.appointmentDate || '2099-12-31');
         return dateA - dateB;
@@ -1265,18 +1349,16 @@
       if (!timeString) return 'Time not set';
       
       try {
-        // Handle both "10:00" and "10:00 AM" formats
-        let time = timeString;
         if (timeString.includes(':')) {
           const [hours, minutes] = timeString.split(':');
           const hour = parseInt(hours);
           if (!isNaN(hour)) {
             const ampm = hour >= 12 ? 'PM' : 'AM';
             const displayHour = hour % 12 || 12;
-            time = `${displayHour}:${minutes || '00'} ${ampm}`;
+            return `${displayHour}:${minutes || '00'} ${ampm}`;
           }
         }
-        return time;
+        return timeString;
       } catch (error) {
         console.error('Error formatting time:', timeString, error);
         return timeString;
@@ -1296,7 +1378,7 @@
     }
 
     // ================= MODAL FUNCTIONS =================
-    function openCancelModal(appointmentId) {
+    window.openCancelModal = function(appointmentId) {
       const appointment = appointments.find(a => a.id == appointmentId);
       if (!appointment) return;
       
@@ -1309,18 +1391,16 @@
       document.getElementById('cancelModal').classList.add('active');
     }
 
-    function openRescheduleModal(appointmentId) {
+    window.openRescheduleModal = function(appointmentId) {
       const appointment = appointments.find(a => a.id == appointmentId);
       if (!appointment) return;
       
       rescheduleAppointmentId = appointmentId;
       
-      // Set minimum date to tomorrow
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
       document.getElementById('newDate').min = tomorrow.toISOString().split('T')[0];
       
-      // Set current date if available
       if (appointment.date || appointment.appointmentDate) {
         document.getElementById('newDate').value = appointment.date || appointment.appointmentDate;
       }
@@ -1328,7 +1408,7 @@
       document.getElementById('rescheduleModal').classList.add('active');
     }
 
-    function viewAppointmentDetails(appointmentId) {
+    window.viewAppointmentDetails = function(appointmentId) {
       const appointment = appointments.find(a => a.id == appointmentId);
       if (!appointment) {
         alert('Appointment not found!');
@@ -1358,118 +1438,164 @@
     // ================= EVENT LISTENERS =================
     function initEventListeners() {
       // Mobile menu toggle
-      document.querySelector('.mobile-menu-btn').addEventListener('click', () => {
-        document.querySelector('.nav-desktop').classList.toggle('active');
-      });
+      const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+      if (mobileMenuBtn) {
+        mobileMenuBtn.addEventListener('click', function() {
+          document.querySelector('.nav-desktop').classList.toggle('active');
+        });
+      }
 
       // Tab switching
       document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
+        btn.addEventListener('click', function() {
           document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-          btn.classList.add('active');
-          currentFilter = btn.dataset.filter;
+          this.classList.add('active');
+          currentFilter = this.dataset.filter;
           renderAppointments();
         });
       });
 
       // Search appointments
-      document.getElementById('searchAppointments').addEventListener('input', () => {
-        renderAppointments();
-      });
+      const searchInput = document.getElementById('searchAppointments');
+      if (searchInput) {
+        searchInput.addEventListener('input', function() {
+          renderAppointments();
+        });
+      }
 
-      // Filter and sort buttons
-      document.getElementById('filterBtn').addEventListener('click', () => {
-        alert('Filter functionality coming soon!');
-      });
-
-      document.getElementById('sortBtn').addEventListener('click', () => {
-        alert('Sort functionality coming soon!');
-      });
+      // Filter button
+      const filterBtn = document.getElementById('filterBtn');
+      if (filterBtn) {
+        filterBtn.addEventListener('click', function() {
+          alert('Filter functionality coming soon!');
+        });
+      }
 
       // Cancel reason dropdown
-      document.getElementById('cancelReason').addEventListener('change', (e) => {
-        const otherReason = document.getElementById('otherReason');
-        otherReason.classList.toggle('hidden', e.target.value !== 'other');
-      });
+      const cancelReason = document.getElementById('cancelReason');
+      if (cancelReason) {
+        cancelReason.addEventListener('change', function(e) {
+          const otherReason = document.getElementById('otherReason');
+          if (otherReason) {
+            otherReason.classList.toggle('hidden', e.target.value !== 'other');
+          }
+        });
+      }
 
       // Modal close buttons
-      document.getElementById('closeCancelModal').addEventListener('click', () => {
-        document.getElementById('cancelModal').classList.remove('active');
-      });
+      const closeCancelModal = document.getElementById('closeCancelModal');
+      if (closeCancelModal) {
+        closeCancelModal.addEventListener('click', function() {
+          document.getElementById('cancelModal').classList.remove('active');
+          cancelAppointmentId = null;
+        });
+      }
 
-      document.getElementById('closeRescheduleModal').addEventListener('click', () => {
-        document.getElementById('rescheduleModal').classList.remove('active');
-      });
+      const closeRescheduleModal = document.getElementById('closeRescheduleModal');
+      if (closeRescheduleModal) {
+        closeRescheduleModal.addEventListener('click', function() {
+          document.getElementById('rescheduleModal').classList.remove('active');
+          rescheduleAppointmentId = null;
+        });
+      }
 
-      document.getElementById('goBackBtn').addEventListener('click', () => {
-        document.getElementById('cancelModal').classList.remove('active');
-      });
+      const goBackBtn = document.getElementById('goBackBtn');
+      if (goBackBtn) {
+        goBackBtn.addEventListener('click', function() {
+          document.getElementById('cancelModal').classList.remove('active');
+          cancelAppointmentId = null;
+        });
+      }
 
-      document.getElementById('cancelRescheduleBtn').addEventListener('click', () => {
-        document.getElementById('rescheduleModal').classList.remove('active');
-      });
+      const cancelRescheduleBtn = document.getElementById('cancelRescheduleBtn');
+      if (cancelRescheduleBtn) {
+        cancelRescheduleBtn.addEventListener('click', function() {
+          document.getElementById('rescheduleModal').classList.remove('active');
+          rescheduleAppointmentId = null;
+        });
+      }
 
       // Confirm cancel appointment
-      document.getElementById('confirmCancelBtn').addEventListener('click', () => {
-        const appointmentIndex = appointments.findIndex(a => a.id == cancelAppointmentId);
-        if (appointmentIndex !== -1) {
-          appointments[appointmentIndex].status = 'cancelled';
-          localStorage.setItem("appointments", JSON.stringify(appointments));
+      const confirmCancelBtn = document.getElementById('confirmCancelBtn');
+      if (confirmCancelBtn) {
+        confirmCancelBtn.addEventListener('click', function() {
+          if (!cancelAppointmentId) {
+            document.getElementById('cancelModal').classList.remove('active');
+            return;
+          }
           
-          document.getElementById('cancelModal').classList.remove('active');
-          renderAppointments();
-          showToast('Appointment cancelled successfully!');
-        }
-      });
+          const appointmentIndex = appointments.findIndex(a => a.id == cancelAppointmentId);
+          if (appointmentIndex !== -1) {
+            appointments[appointmentIndex].status = 'cancelled';
+            localStorage.setItem('appointments', JSON.stringify(appointments));
+            
+            document.getElementById('cancelModal').classList.remove('active');
+            renderAppointments();
+            showToast('Appointment cancelled successfully!');
+            cancelAppointmentId = null;
+          }
+        });
+      }
 
       // Confirm reschedule appointment
-      document.getElementById('confirmRescheduleBtn').addEventListener('click', () => {
-        const newDate = document.getElementById('newDate').value;
-        const newTime = document.getElementById('newTime').value;
-        
-        if (!newDate || !newTime) {
-          alert('Please select both date and time');
-          return;
-        }
-        
-        const appointmentIndex = appointments.findIndex(a => a.id == rescheduleAppointmentId);
-        if (appointmentIndex !== -1) {
-          appointments[appointmentIndex].date = newDate;
-          appointments[appointmentIndex].time = newTime;
-          localStorage.setItem("appointments", JSON.stringify(appointments));
+      const confirmRescheduleBtn = document.getElementById('confirmRescheduleBtn');
+      if (confirmRescheduleBtn) {
+        confirmRescheduleBtn.addEventListener('click', function() {
+          const newDate = document.getElementById('newDate').value;
+          const newTime = document.getElementById('newTime').value;
           
-          document.getElementById('rescheduleModal').classList.remove('active');
-          renderAppointments();
-          showToast('Appointment rescheduled successfully!');
-        }
-      });
+          if (!newDate || !newTime) {
+            alert('Please select both date and time');
+            return;
+          }
+          
+          if (!rescheduleAppointmentId) {
+            document.getElementById('rescheduleModal').classList.remove('active');
+            return;
+          }
+          
+          const appointmentIndex = appointments.findIndex(a => a.id == rescheduleAppointmentId);
+          if (appointmentIndex !== -1) {
+            appointments[appointmentIndex].date = newDate;
+            appointments[appointmentIndex].time = newTime;
+            appointments[appointmentIndex].displayTime = formatTime(newTime);
+            localStorage.setItem('appointments', JSON.stringify(appointments));
+            
+            document.getElementById('rescheduleModal').classList.remove('active');
+            renderAppointments();
+            showToast('Appointment rescheduled successfully!');
+            rescheduleAppointmentId = null;
+          }
+        });
+      }
 
       // Close modals when clicking outside
       document.querySelectorAll('.modal-overlay').forEach(modal => {
-        modal.addEventListener('click', (e) => {
-          if (e.target === modal) {
-            modal.classList.remove('active');
+        modal.addEventListener('click', function(e) {
+          if (e.target === this) {
+            this.classList.remove('active');
+            if (this.id === 'cancelModal') {
+              cancelAppointmentId = null;
+            } else if (this.id === 'rescheduleModal') {
+              rescheduleAppointmentId = null;
+            }
           }
         });
       });
-      
-      // Debug button to check localStorage
-      const debugBtn = document.createElement('button');
-      debugBtn.textContent = 'Debug';
-      debugBtn.style.cssText = 'position: fixed; bottom: 10px; left: 10px; padding: 10px; background: #f00; color: white; border: none; border-radius: 5px; z-index: 9999;';
-      debugBtn.addEventListener('click', () => {
-        console.log('Appointments in localStorage:', JSON.parse(localStorage.getItem('appointments') || '[]'));
-        console.log('Current appointments array:', appointments);
-        alert(`Total appointments: ${appointments.length}\nCheck console for details.`);
+
+      // Close mobile menu when clicking on a link
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', function() {
+          document.querySelector('.nav-desktop').classList.remove('active');
+        });
       });
-      document.body.appendChild(debugBtn);
     }
 
     // ================= TOAST NOTIFICATION =================
     function showToast(message, type = 'success') {
       const toast = document.getElementById('toast');
       toast.textContent = message;
-      toast.className = 'toast';
+      toast.className = 'toast show';
       
       if (type === 'success') {
         toast.style.background = 'var(--success)';
@@ -1480,22 +1606,28 @@
       }
       
       setTimeout(() => {
-        toast.style.transform = 'translateY(0)';
-        toast.style.opacity = '1';
-      }, 10);
-      
-      setTimeout(() => {
-        toast.style.transform = 'translateY(100px)';
-        toast.style.opacity = '0';
+        toast.classList.remove('show');
       }, 3000);
     }
 
-    // Close mobile menu when clicking on a link
-    document.querySelectorAll('.nav-link').forEach(link => {
-      link.addEventListener('click', () => {
-        document.querySelector('.nav-desktop').classList.remove('active');
-      });
-    });
+    // Debug function
+    window.debugAppointments = function() {
+      console.log('Appointments in localStorage:', JSON.parse(localStorage.getItem('appointments') || '[]'));
+      console.log('Current appointments array:', appointments);
+      alert(`Total appointments: ${appointments.length}\nCheck console for details.`);
+    }
+
+    // Add debug button
+    setTimeout(() => {
+      if (!document.getElementById('debugBtn')) {
+        const debugBtn = document.createElement('button');
+        debugBtn.id = 'debugBtn';
+        debugBtn.textContent = 'Debug';
+        debugBtn.style.cssText = 'position: fixed; bottom: 10px; left: 10px; padding: 10px; background: #f00; color: white; border: none; border-radius: 5px; z-index: 9999; cursor: pointer;';
+        debugBtn.addEventListener('click', debugAppointments);
+        document.body.appendChild(debugBtn);
+      }
+    }, 1000);
   </script>
 </body>
 </html>
